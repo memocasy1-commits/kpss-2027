@@ -40,7 +40,7 @@ class KpssSoruBankasiApp extends StatelessWidget {
         }
 
         return MaterialApp(
-          title: 'KPSS Çözümlü Soru Bankası',
+          title: 'KPSS 2027 Çözümlü Soru Bankası',
           debugShowCheckedModeBanner: false,
           theme: activeTheme,
           builder: (context, child) {
