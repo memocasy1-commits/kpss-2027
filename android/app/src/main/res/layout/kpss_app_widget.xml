@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_bg"
+    android:padding="14dp">
+
+    <!-- 1. Üst Bar: Ders Etiketi, Başlık ve Sonraki Butonu -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/widget_course_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/widget_chip_bg"
+            android:paddingStart="8dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="3dp"
+            android:text="TÜRKÇE"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/widget_header_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="🎯 Günün KPSS Sorusu"
+            android:textColor="#E2E8F0"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/widget_btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@drawable/widget_btn_bg"
+            android:text="🔄 Başka Soru"
+            android:textColor="#38BDF8"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+    </LinearLayout>
+
+    <!-- 2. Soru Metni -->
+    <TextView
+        android:id="@+id/widget_question_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="6dp"
+        android:text="Soru metni yükleniyor..."
+        android:textColor="#F8FAFC"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:maxLines="4"
+        android:ellipsize="end" />
+
+    <!-- 3. Şıklar -->
+    <TextView
+        android:id="@+id/widget_option_a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="A) Seçenek"
+        android:textColor="#CBD5E1"
+        android:textSize="11sp"
+        android:layout_marginBottom="2dp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/widget_option_b"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="B) Seçenek"
+        android:textColor="#CBD5E1"
+        android:textSize="11sp"
+        android:layout_marginBottom="2dp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/widget_option_c"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="C) Seçenek"
+        android:textColor="#CBD5E1"
+        android:textSize="11sp"
+        android:layout_marginBottom="2dp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/widget_option_d"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="D) Seçenek"
+        android:textColor="#CBD5E1"
+        android:textSize="11sp"
+        android:layout_marginBottom="2dp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/widget_option_e"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="E) Seçenek"
+        android:textColor="#CBD5E1"
+        android:textSize="11sp"
+        android:layout_marginBottom="4dp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <!-- 4. Altın Bilgi & Çözüm Açıklaması (Başlangıçta gizli, butonla açılır) -->
+    <LinearLayout
+        android:id="@+id/widget_solution_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/widget_reveal_bg"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/widget_solution_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="💡 ALTIN BİLGİ..."
+            android:textColor="#D1FAE5"
+            android:textSize="11sp"
+            android:textStyle="normal"
+            android:maxLines="5"
+            android:ellipsize="end" />
+    </LinearLayout>
+
+    <!-- 5. Alt Aksiyon Butonları -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/widget_btn_reveal"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:background="@drawable/widget_btn_bg"
+            android:text="💡 Çözümü / Altın Bilgiyi Gör"
+            android:textColor="#FBBF24"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:minHeight="0dp"
+            android:minWidth="0dp" />
+
+        <Button
+            android:id="@+id/widget_btn_open_app"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/widget_btn_bg"
+            android:text="Uygulamada Aç ➔"
+            android:textColor="#818CF8"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+    </LinearLayout>
+
+</LinearLayout>

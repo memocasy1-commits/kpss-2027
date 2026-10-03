@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KPSS Soru Bankası</string>
+    <string name="app_widget_name">KPSS Günün Sorusu &amp; Pratik</string>
+    <string name="app_widget_description">Telefon ana ekranınızdan tek dokunuşla KPSS soru pratiği yapın ve altın bilgileri öğrenin.</string>
+</resources>

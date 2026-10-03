@@ -1,0 +1,1985 @@
+{
+  "totals": {
+    "tarih": {
+      "questions": 3483,
+      "tests": 196
+    },
+    "turkce": {
+      "questions": 1880,
+      "tests": 139
+    }
+  },
+  "issueCounts": {
+    "solution_answer_requires_review": 27,
+    "visible_placeholder_option": 254
+  },
+  "issues": [
+    {
+      "course": "tarih",
+      "id": "qb2_t4_q1",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "tarih",
+      "id": "qb2_t44_q7",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "tarih",
+      "id": "qb2_t76_q8",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t3_q2",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t4_q4",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t5_q6",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t12_q6",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t12_q8",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t17_q10",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t24_q10",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t26_q10",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t28_q22",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t32_q10",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t34_q10",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t35_q10",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t44_q11",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t48_q10",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t55_q8",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t70_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t70_q10",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t70_q11",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t72_q5",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t81_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t81_q6",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t81_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t81_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t81_q11",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t82_q4",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t82_q6",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t83_q1",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t83_q2",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t83_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t83_q6",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t84_q12",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t84_q14",
+      "issues": [
+        "solution_answer_requires_review"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr_t85_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t1_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t1_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t1_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t1_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t2_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t2_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t2_q18",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t3_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t3_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t3_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t3_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t3_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t4_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t4_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t4_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t4_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t5_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t5_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t5_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t5_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t6_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t6_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t6_q11",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t6_q16",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t7_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t7_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t7_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t8_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t8_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t8_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t9_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t9_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t9_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t10_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t10_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t10_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t10_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t10_q20",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t11_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t11_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t11_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t11_q18",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t12_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t12_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t12_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t12_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t13_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t13_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t14_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t14_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t14_q18",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t14_q19",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t15_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t15_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t15_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t16_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t16_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t16_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t16_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t17_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t17_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t17_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t18_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t18_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t19_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t19_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t19_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t19_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t19_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t19_q20",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t20_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t20_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t20_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t20_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t20_q16",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t20_q20",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t20_q24",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q1",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q19",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t21_q20",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q16",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t22_q19",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t23_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t23_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t23_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t23_q11",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t23_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t23_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t23_q19",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q16",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t24_q20",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t25_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t25_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t25_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t25_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t25_q18",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t26_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t26_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t26_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t26_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t26_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t26_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t26_q16",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t26_q19",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t27_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t27_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t27_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t27_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t27_q16",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t27_q18",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t27_q20",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t28_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t28_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t28_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t28_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t28_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t28_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t29_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t29_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t29_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t29_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t29_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t30_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t30_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t31_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t31_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t31_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t31_q18",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t31_q20",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t32_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t32_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t32_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t32_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t32_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t32_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t32_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t32_q19",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t33_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t33_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t33_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t33_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t33_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t33_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t33_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t33_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t34_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t34_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t34_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t34_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t34_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q11",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q16",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q18",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t35_q20",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t36_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t36_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t36_q11",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t36_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t36_q16",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t36_q17",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t36_q19",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t37_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t38_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t38_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t39_q1",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t39_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t39_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t39_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t39_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t40_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t40_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t40_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t40_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t41_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t41_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t41_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t41_q11",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t41_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t42_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t42_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t42_q11",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t42_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t43_q1",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t43_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t43_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t43_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t44_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t44_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t44_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t44_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t45_q3",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t45_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t45_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t45_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t45_q13",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t46_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t46_q9",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t46_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t46_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t47_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t47_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t47_q7",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t47_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t47_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t48_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t48_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t48_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t48_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t48_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t49_q2",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t49_q4",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t49_q6",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t49_q8",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t49_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t49_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t49_q15",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t50_q5",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t50_q10",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t50_q12",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    },
+    {
+      "course": "turkce",
+      "id": "qb_tr2_t50_q14",
+      "issues": [
+        "visible_placeholder_option"
+      ]
+    }
+  ]
+}
