@@ -8,6 +8,7 @@ import '../services/notification_service.dart';
 import '../services/haptic_service.dart';
 import '../theme/app_theme.dart';
 import 'activation_screen.dart';
+import '../services/update_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -101,7 +102,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildDataManagementSection(isDark, cardBg, cardBorder, textPrimary, textSecondary),
               const SizedBox(height: 20),
 
-              // 7. Uygulama Hakkında & Sürüm
+              // 7. Güncelleme & Canlı Senkronizasyon Modu
+              _buildSectionHeader('GÜNCELLEME & SENKRONİZASYON', Icons.sync_rounded, isDark),
+              _buildUpdateSection(isDark, cardBg, cardBorder, textPrimary, textSecondary, textMuted),
+              const SizedBox(height: 20),
+
+              // 8. Uygulama Hakkında & Sürüm
               _buildAboutSection(isDark, cardBg, cardBorder, textPrimary, textMuted),
               const SizedBox(height: 32),
             ],
@@ -1101,6 +1107,366 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildUpdateSection(
+    bool isDark,
+    Color cardBg,
+    Color cardBorder,
+    Color textPrimary,
+    Color textSecondary,
+    Color textMuted,
+  ) {
+    return ValueListenableBuilder<UpdateMode>(
+      valueListenable: UpdateService.instance.modeNotifier,
+      builder: (context, currentMode, _) {
+        return ValueListenableBuilder<bool>(
+          valueListenable: UpdateService.instance.isCheckingNotifier,
+          builder: (context, isChecking, _) {
+            return ValueListenableBuilder<RemoteVersionInfo?>(
+              valueListenable: UpdateService.instance.availableUpdateNotifier,
+              builder: (context, updateInfo, _) {
+                final bool hasUpdate = updateInfo != null;
+
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: cardBg,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: hasUpdate ? const Color(0xFF10B981) : cardBorder,
+                      width: hasUpdate ? 1.5 : 1.0,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(
+                              Icons.cloud_sync_rounded,
+                              size: 20,
+                              color: Color(0xFF6366F1),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Güncelleme Tercihi',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  'Soruların ve uygulamanın nasıl güncelleneceğini seçin',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: textMuted,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Mod Seçenekleri
+                      _buildUpdateModeTile(
+                        title: '⚡ Canlı Soru Senkronizasyonu (Önerilen)',
+                        subtitle: 'APK indirmeden yeni soruları ve konu özetlerini internetten otomatik çeker.',
+                        mode: UpdateMode.liveSync,
+                        selectedMode: currentMode,
+                        isDark: isDark,
+                        textPrimary: textPrimary,
+                        textMuted: textMuted,
+                      ),
+                      const SizedBox(height: 8),
+                      _buildUpdateModeTile(
+                        title: '📦 Tam APK Güncellemesi',
+                        subtitle: 'Yeni bir uygulama sürümü çıktığında tam APK indirme bağlantısı sunar.',
+                        mode: UpdateMode.fullApk,
+                        selectedMode: currentMode,
+                        isDark: isDark,
+                        textPrimary: textPrimary,
+                        textMuted: textMuted,
+                      ),
+                      const SizedBox(height: 8),
+                      _buildUpdateModeTile(
+                        title: '🔍 Manuel Kontrol',
+                        subtitle: 'Yalnızca siz "Güncellemeleri Denetle" butonuna bastığınızda kontrol eder.',
+                        mode: UpdateMode.manual,
+                        selectedMode: currentMode,
+                        isDark: isDark,
+                        textPrimary: textPrimary,
+                        textMuted: textMuted,
+                      ),
+
+                      const SizedBox(height: 16),
+                      Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+                      const SizedBox(height: 14),
+
+                      // Durum Bilgileri
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Mevcut Sürüm:',
+                            style: TextStyle(fontSize: 12, color: textSecondary),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              'v${UpdateService.currentVersionName} (${UpdateService.currentVersionCode})',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: textPrimary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      ValueListenableBuilder<String?>(
+                        valueListenable: UpdateService.instance.lastCheckedTimeNotifier,
+                        builder: (context, lastChecked, _) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Son Kontrol:',
+                                style: TextStyle(fontSize: 12, color: textSecondary),
+                              ),
+                              Text(
+                                lastChecked ?? 'Henüz kontrol edilmedi',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                  color: textMuted,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+
+                      if (hasUpdate) ...[
+                        const SizedBox(height: 14),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF10B981).withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.3)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.stars_rounded, color: Color(0xFF10B981), size: 18),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'Yeni Güncelleme Mevcut (v${updateInfo.versionName})',
+                                    style: const TextStyle(
+                                      color: Color(0xFF10B981),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              if (updateInfo.releaseNotes.isNotEmpty) ...[
+                                const SizedBox(height: 6),
+                                Text(
+                                  updateInfo.releaseNotes,
+                                  style: TextStyle(
+                                    fontSize: 11.5,
+                                    height: 1.4,
+                                    color: textPrimary,
+                                  ),
+                                ),
+                              ],
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFF10B981),
+                                        foregroundColor: Colors.white,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                      ),
+                                      icon: const Icon(Icons.download_rounded, size: 16),
+                                      label: const Text('APK İndir', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                                      onPressed: () => UpdateService.instance.launchApkDownload(updateInfo.apkUrl),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: OutlinedButton.icon(
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: const Color(0xFF10B981),
+                                        side: const BorderSide(color: Color(0xFF10B981)),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                      ),
+                                      icon: const Icon(Icons.sync_rounded, size: 16),
+                                      label: const Text('Soruları Çek', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                                      onPressed: () async {
+                                        final ok = await UpdateService.instance.syncQuestionsOnline(updateInfo);
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(ok ? 'Tüm sorular başarıyla güncellendi!' : 'Güncelleme sunucusuna erişilemedi.'),
+                                              backgroundColor: ok ? const Color(0xFF10B981) : Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+
+                      const SizedBox(height: 14),
+
+                      // Güncellemeleri Denetle Butonu
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isDark ? const Color(0xFF4F46E5) : const Color(0xFF4338CA),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          icon: isChecking
+                              ? const SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                )
+                              : const Icon(Icons.refresh_rounded, size: 18),
+                          label: Text(
+                            isChecking ? 'Denetleniyor...' : 'Güncellemeleri Şimdi Denetle',
+                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                          ),
+                          onPressed: isChecking
+                              ? null
+                              : () async {
+                                  final info = await UpdateService.instance.checkForUpdates();
+                                  if (context.mounted) {
+                                    if (info == null || (info.versionCode <= UpdateService.currentVersionCode && info.questionsUpdatedAt.isEmpty)) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Tebrikler! Uygulamanız ve sorularınız en güncel sürümde.'),
+                                          backgroundColor: Color(0xFF10B981),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildUpdateModeTile({
+    required String title,
+    required String subtitle,
+    required UpdateMode mode,
+    required UpdateMode selectedMode,
+    required bool isDark,
+    required Color textPrimary,
+    required Color textMuted,
+  }) {
+    final bool isSelected = mode == selectedMode;
+
+    return InkWell(
+      onTap: () => UpdateService.instance.setUpdateMode(mode),
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? (isDark ? const Color(0xFF6366F1).withValues(alpha: 0.15) : const Color(0xFFEEF2FF))
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: isSelected
+                ? const Color(0xFF6366F1)
+                : (isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              isSelected ? Icons.radio_button_checked_rounded : Icons.radio_button_off_rounded,
+              size: 18,
+              color: isSelected ? const Color(0xFF6366F1) : textMuted,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                      color: isSelected ? const Color(0xFF6366F1) : textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: textMuted,
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

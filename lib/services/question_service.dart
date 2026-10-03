@@ -72,20 +72,41 @@ class QuestionService {
     );
   }
 
+  Future<void> reloadFromCacheOrAssets() async {
+    _isLoaded = false;
+    _tarihQuestions.clear();
+    _turkceQuestions.clear();
+    _matematikQuestions.clear();
+    _cografyaQuestions.clear();
+    _vatandaslikQuestions.clear();
+    _mantikQuestions.clear();
+    _sayisalMantikQuestions.clear();
+    _denemeExams.clear();
+    await loadData();
+  }
+
+  Future<String?> _loadRawContent(SharedPreferences prefs, String course, String assetPath) async {
+    final cached = prefs.getString('cached_questions_$course');
+    if (cached != null && cached.isNotEmpty) {
+      return cached;
+    }
+    try {
+      return await rootBundle.loadString(assetPath);
+    } catch (_) {
+      try {
+        return await rootBundle.loadString('assets/$assetPath');
+      } catch (_) {}
+    }
+    return null;
+  }
+
   Future<void> loadData() async {
     if (_isLoaded) return;
+    final prefs = await SharedPreferences.getInstance();
 
     // 1. Load Tarih (isolated try-catch so failure does not block Turkce or Matematik)
     try {
-      String? tarihStr;
-      try {
-        tarihStr = await rootBundle.loadString('assets/data/tarih_questions.json');
-      } catch (_) {
-        try {
-          tarihStr = await rootBundle.loadString('assets/assets/data/tarih_questions.json');
-        } catch (_) {}
-      }
-
+      final tarihStr = await _loadRawContent(prefs, 'tarih', 'assets/data/tarih_questions.json');
       if (tarihStr != null && tarihStr.isNotEmpty) {
         final dynamic tarihJson = json.decode(tarihStr);
         if (tarihJson is List) {
@@ -102,15 +123,7 @@ class QuestionService {
 
     // 2. Load Turkce (isolated try-catch)
     try {
-      String? turkceStr;
-      try {
-        turkceStr = await rootBundle.loadString('assets/data/turkce_questions.json');
-      } catch (_) {
-        try {
-          turkceStr = await rootBundle.loadString('assets/assets/data/turkce_questions.json');
-        } catch (_) {}
-      }
-
+      final turkceStr = await _loadRawContent(prefs, 'turkce', 'assets/data/turkce_questions.json');
       if (turkceStr != null && turkceStr.isNotEmpty) {
         final dynamic turkceJson = json.decode(turkceStr);
         if (turkceJson is List) {
@@ -127,15 +140,7 @@ class QuestionService {
 
     // 3. Load Matematik (isolated try-catch)
     try {
-      String? matStr;
-      try {
-        matStr = await rootBundle.loadString('assets/data/matematik_questions.json');
-      } catch (_) {
-        try {
-          matStr = await rootBundle.loadString('assets/assets/data/matematik_questions.json');
-        } catch (_) {}
-      }
-
+      final matStr = await _loadRawContent(prefs, 'matematik', 'assets/data/matematik_questions.json');
       if (matStr != null && matStr.isNotEmpty) {
         final dynamic matJson = json.decode(matStr);
         if (matJson is List) {
@@ -152,15 +157,7 @@ class QuestionService {
 
     // 4. Load Cografya (isolated try-catch)
     try {
-      String? cogStr;
-      try {
-        cogStr = await rootBundle.loadString('assets/data/cografya_questions.json');
-      } catch (_) {
-        try {
-          cogStr = await rootBundle.loadString('assets/assets/data/cografya_questions.json');
-        } catch (_) {}
-      }
-
+      final cogStr = await _loadRawContent(prefs, 'cografya', 'assets/data/cografya_questions.json');
       if (cogStr != null && cogStr.isNotEmpty) {
         final dynamic cogJson = json.decode(cogStr);
         if (cogJson is List) {
@@ -177,15 +174,7 @@ class QuestionService {
 
     // 5. Load Vatandaslik (isolated try-catch)
     try {
-      String? vatStr;
-      try {
-        vatStr = await rootBundle.loadString('assets/data/vatandaslik_questions.json');
-      } catch (_) {
-        try {
-          vatStr = await rootBundle.loadString('assets/assets/data/vatandaslik_questions.json');
-        } catch (_) {}
-      }
-
+      final vatStr = await _loadRawContent(prefs, 'vatandaslik', 'assets/data/vatandaslik_questions.json');
       if (vatStr != null && vatStr.isNotEmpty) {
         final dynamic vatJson = json.decode(vatStr);
         if (vatJson is List) {
@@ -202,15 +191,7 @@ class QuestionService {
 
     // 6. Load Denemeler (isolated try-catch)
     try {
-      String? denemeStr;
-      try {
-        denemeStr = await rootBundle.loadString('assets/data/denemeler.json');
-      } catch (_) {
-        try {
-          denemeStr = await rootBundle.loadString('assets/assets/data/denemeler.json');
-        } catch (_) {}
-      }
-
+      final denemeStr = await _loadRawContent(prefs, 'denemeler', 'assets/data/denemeler.json');
       if (denemeStr != null && denemeStr.isNotEmpty) {
         final dynamic denemeJson = json.decode(denemeStr);
         if (denemeJson is List) {
@@ -229,15 +210,7 @@ class QuestionService {
 
     // 7. Load Mantik (isolated try-catch)
     try {
-      String? mantikStr;
-      try {
-        mantikStr = await rootBundle.loadString('assets/data/mantik_questions.json');
-      } catch (_) {
-        try {
-          mantikStr = await rootBundle.loadString('assets/assets/data/mantik_questions.json');
-        } catch (_) {}
-      }
-
+      final mantikStr = await _loadRawContent(prefs, 'mantik', 'assets/data/mantik_questions.json');
       if (mantikStr != null && mantikStr.isNotEmpty) {
         final dynamic mantikJson = json.decode(mantikStr);
         if (mantikJson is List) {
@@ -254,15 +227,7 @@ class QuestionService {
 
     // 8. Load Sayisal Mantik (isolated try-catch)
     try {
-      String? sayisalStr;
-      try {
-        sayisalStr = await rootBundle.loadString('assets/data/sayisal_mantik_questions.json');
-      } catch (_) {
-        try {
-          sayisalStr = await rootBundle.loadString('assets/assets/data/sayisal_mantik_questions.json');
-        } catch (_) {}
-      }
-
+      final sayisalStr = await _loadRawContent(prefs, 'sayisal_mantik', 'assets/data/sayisal_mantik_questions.json');
       if (sayisalStr != null && sayisalStr.isNotEmpty) {
         final dynamic sayisalJson = json.decode(sayisalStr);
         if (sayisalJson is List) {

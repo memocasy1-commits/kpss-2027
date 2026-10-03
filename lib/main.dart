@@ -7,12 +7,14 @@ import 'services/license_service.dart';
 import 'services/theme_service.dart';
 import 'services/settings_service.dart';
 import 'services/notification_service.dart';
+import 'services/update_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ThemeService.instance.init();
   await SettingsService.instance.init();
   await NotificationService.instance.init();
+  await UpdateService.instance.init();
   ThemeService.instance.updateSystemOverlay(ThemeService.instance.currentMode);
 
   runApp(const KpssSoruBankasiApp());

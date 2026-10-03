@@ -1,0 +1,9 @@
+{
+  "versionCode": 1,
+  "versionName": "1.0.0",
+  "releaseNotes": "KPSS 2027 Çözümlü Soru Bankası ilk sürüm. Tüm dersler ve deneme sınavları aktif.",
+  "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
+  "webUrl": "https://kpss-2027.netlify.app",
+  "questionsUpdatedAt": "2026-10-04T01:00:00Z",
+  "mandatory": false
+}
