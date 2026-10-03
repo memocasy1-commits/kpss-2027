@@ -31,9 +31,16 @@ class RemoteVersionInfo {
   });
 
   factory RemoteVersionInfo.fromJson(Map<String, dynamic> json) {
+    int parsedCode = 1;
+    if (json['versionCode'] is num) {
+      parsedCode = (json['versionCode'] as num).toInt();
+    } else if (json['build_number'] != null) {
+      parsedCode = int.tryParse(json['build_number'].toString()) ?? 1;
+    }
+
     return RemoteVersionInfo(
-      versionCode: json['versionCode'] as int? ?? 1,
-      versionName: json['versionName'] as String? ?? '1.0.0',
+      versionCode: parsedCode,
+      versionName: json['versionName'] as String? ?? json['version'] as String? ?? '1.0.0',
       releaseNotes: json['releaseNotes'] as String? ?? '',
       apkUrl: json['apkUrl'] as String? ?? '',
       webUrl: json['webUrl'] as String? ?? 'https://kpss-2027.netlify.app',
@@ -50,11 +57,13 @@ class UpdateService {
   static const int currentVersionCode = 1;
   static const String currentVersionName = '1.0.0';
 
-  // GitHub Raw & Netlify Fallback endpoints
-  static const String _primaryVersionUrl =
-      'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/version.json';
-  static const String _fallbackVersionUrl =
-      'https://kpss-2027.netlify.app/version.json';
+  // Primary: Netlify public CDN (CORS free, public)
+  // Fallbacks: update_manifest.json, version.json, GitHub raw
+  static const List<String> _versionEndpoints = [
+    'https://kpss-2027.netlify.app/update_manifest.json',
+    'https://kpss-2027.netlify.app/version.json',
+    'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/update_manifest.json',
+  ];
 
   // SharedPreferences keys
   static const String _keyUpdateMode = 'pref_update_mode';
@@ -109,24 +118,18 @@ class UpdateService {
     try {
       RemoteVersionInfo? info;
 
-      // 1. Önce GitHub'dan çekmeyi dene
-      try {
-        final res = await http.get(Uri.parse(_primaryVersionUrl)).timeout(
-              const Duration(seconds: 6),
-            );
-        if (res.statusCode == 200) {
-          final data = json.decode(utf8.decode(res.bodyBytes));
-          info = RemoteVersionInfo.fromJson(data);
-        }
-      } catch (_) {
-        // 2. Başarısız olursa Netlify üzerinden dene
+      // Endpointleri sırayla dene (Netlify CDN -> Fallbacks)
+      for (final endpoint in _versionEndpoints) {
         try {
-          final resFallback = await http.get(Uri.parse(_fallbackVersionUrl)).timeout(
-                const Duration(seconds: 6),
+          final res = await http.get(Uri.parse(endpoint)).timeout(
+                const Duration(seconds: 5),
               );
-          if (resFallback.statusCode == 200) {
-            final data = json.decode(utf8.decode(resFallback.bodyBytes));
-            info = RemoteVersionInfo.fromJson(data);
+          if (res.statusCode == 200) {
+            final data = json.decode(utf8.decode(res.bodyBytes));
+            if (data is Map<String, dynamic>) {
+              info = RemoteVersionInfo.fromJson(data);
+              break;
+            }
           }
         } catch (_) {}
       }
@@ -192,20 +195,26 @@ class UpdateService {
 
       for (final course in courses) {
         final filename = course == 'denemeler' ? 'denemeler.json' : '${course}_questions.json';
-        final url = 'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/assets/data/$filename';
+        final urls = [
+          'https://kpss-2027.netlify.app/data/$filename',
+          'https://kpss-2027.netlify.app/assets/assets/data/$filename',
+          'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/assets/data/$filename',
+        ];
 
-        try {
-          final res = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 8));
-          if (res.statusCode == 200) {
-            final body = utf8.decode(res.bodyBytes);
-            // JSON doğrulaması yap
-            final parsed = json.decode(body);
-            if (parsed is List && parsed.isNotEmpty) {
-              await prefs.setString('cached_questions_$course', body);
-              successCount++;
+        for (final url in urls) {
+          try {
+            final res = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 8));
+            if (res.statusCode == 200) {
+              final body = utf8.decode(res.bodyBytes);
+              final parsed = json.decode(body);
+              if (parsed is List && parsed.isNotEmpty) {
+                await prefs.setString('cached_questions_$course', body);
+                successCount++;
+                break;
+              }
             }
-          }
-        } catch (_) {}
+          } catch (_) {}
+        }
       }
 
       if (successCount > 0) {
