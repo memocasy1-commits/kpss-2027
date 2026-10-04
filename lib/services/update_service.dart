@@ -170,7 +170,13 @@ class UpdateService {
 
   /// Soruları internet üzerinden canlı senkronize et (APK indirmeden)
   Future<bool> syncQuestionsOnline(RemoteVersionInfo info) async {
-    if (isSyncingNotifier.value) return false;
+    if (isSyncingNotifier.value) {
+      // Halihazırda senkronizasyon çalışıyorsa tamamlanmasını bekle
+      while (isSyncingNotifier.value) {
+        await Future.delayed(const Duration(milliseconds: 300));
+      }
+      return syncStatusMessageNotifier.value?.contains('başarıyla') ?? true;
+    }
     isSyncingNotifier.value = true;
     syncStatusMessageNotifier.value = 'Sorular internetten güncelleniyor...';
 
@@ -193,7 +199,11 @@ class UpdateService {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      for (final course in courses) {
+      for (int i = 0; i < courses.length; i++) {
+        final course = courses[i];
+        syncStatusMessageNotifier.value =
+            'Sorular indiriliyor (${i + 1}/${courses.length}): ${course.toUpperCase()}';
+
         final filename = course == 'denemeler' ? 'denemeler.json' : '${course}_questions.json';
         final urls = [
           'https://kpss-2027.netlify.app/data/$filename',
@@ -203,12 +213,20 @@ class UpdateService {
 
         for (final url in urls) {
           try {
-            final res = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 8));
+            final res = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 15));
             if (res.statusCode == 200) {
               final body = utf8.decode(res.bodyBytes);
               final parsed = json.decode(body);
               if (parsed is List && parsed.isNotEmpty) {
-                await prefs.setString('cached_questions_$course', body);
+                // Bellek önbelleğine yaz (hızlı ve kotasız)
+                QuestionService.instance.setMemoryCache(course, body);
+
+                // Mobilde yerel kalıcı hafızaya da yaz (Web'de localStorage 5MB kotasını aşmamak için kIsWeb hariç)
+                if (!kIsWeb) {
+                  try {
+                    await prefs.setString('cached_questions_$course', body);
+                  } catch (_) {}
+                }
                 successCount++;
                 break;
               }
@@ -221,7 +239,7 @@ class UpdateService {
         await prefs.setString(_keyQuestionsTimestamp, info.questionsUpdatedAt);
         // QuestionService'deki soruları yeniden yükle
         await QuestionService.instance.reloadFromCacheOrAssets();
-        syncStatusMessageNotifier.value = 'Tüm sorular başarıyla güncellendi!';
+        syncStatusMessageNotifier.value = 'Tüm sorular başarıyla güncellendi ($successCount dosya)!';
         return true;
       } else {
         syncStatusMessageNotifier.value = 'Güncelleme sunucusuna erişilemedi.';
@@ -237,10 +255,11 @@ class UpdateService {
   /// Yeni APK indirme bağlantısını aç
   Future<void> launchApkDownload(String? customUrl) async {
     final targetUrl = customUrl ?? availableUpdateNotifier.value?.apkUrl;
-    if (targetUrl == null || targetUrl.isEmpty) return;
+    final fallbackUrl = 'https://github.com/memocasy1-commits/kpss-2027/releases/tag/v1.0.0';
+    final urlToOpen = (targetUrl != null && targetUrl.isNotEmpty) ? targetUrl : fallbackUrl;
 
     try {
-      final uri = Uri.parse(targetUrl);
+      final uri = Uri.parse(urlToOpen);
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }

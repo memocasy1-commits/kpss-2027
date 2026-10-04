@@ -1307,47 +1307,88 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                               ],
                               const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton.icon(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF10B981),
-                                        foregroundColor: Colors.white,
-                                        elevation: 0,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                              ValueListenableBuilder<bool>(
+                                valueListenable: UpdateService.instance.isSyncingNotifier,
+                                builder: (context, isSyncing, _) {
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: ElevatedButton.icon(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color(0xFF10B981),
+                                                foregroundColor: Colors.white,
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                              ),
+                                              icon: const Icon(Icons.download_rounded, size: 16),
+                                              label: const Text('APK İndir', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                                              onPressed: isSyncing
+                                                  ? null
+                                                  : () => UpdateService.instance.launchApkDownload(updateInfo.apkUrl),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: OutlinedButton.icon(
+                                              style: OutlinedButton.styleFrom(
+                                                foregroundColor: const Color(0xFF10B981),
+                                                side: const BorderSide(color: Color(0xFF10B981)),
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                              ),
+                                              icon: isSyncing
+                                                  ? const SizedBox(
+                                                      width: 14,
+                                                      height: 14,
+                                                      child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF10B981)),
+                                                    )
+                                                  : const Icon(Icons.sync_rounded, size: 16),
+                                              label: Text(
+                                                isSyncing ? 'İndiriliyor...' : 'Soruları Çek',
+                                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                                              ),
+                                              onPressed: isSyncing
+                                                  ? null
+                                                  : () async {
+                                                      final ok = await UpdateService.instance.syncQuestionsOnline(updateInfo);
+                                                      if (context.mounted) {
+                                                        ScaffoldMessenger.of(context).showSnackBar(
+                                                          SnackBar(
+                                                            content: Text(ok ? 'Tüm sorular başarıyla güncellendi!' : 'Güncelleme sunucusuna erişilemedi.'),
+                                                            backgroundColor: ok ? const Color(0xFF10B981) : Colors.red,
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      icon: const Icon(Icons.download_rounded, size: 16),
-                                      label: const Text('APK İndir', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-                                      onPressed: () => UpdateService.instance.launchApkDownload(updateInfo.apkUrl),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: OutlinedButton.icon(
-                                      style: OutlinedButton.styleFrom(
-                                        foregroundColor: const Color(0xFF10B981),
-                                        side: const BorderSide(color: Color(0xFF10B981)),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                      ),
-                                      icon: const Icon(Icons.sync_rounded, size: 16),
-                                      label: const Text('Soruları Çek', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-                                      onPressed: () async {
-                                        final ok = await UpdateService.instance.syncQuestionsOnline(updateInfo);
-                                        if (context.mounted) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: Text(ok ? 'Tüm sorular başarıyla güncellendi!' : 'Güncelleme sunucusuna erişilemedi.'),
-                                              backgroundColor: ok ? const Color(0xFF10B981) : Colors.red,
+                                      ValueListenableBuilder<String?>(
+                                        valueListenable: UpdateService.instance.syncStatusMessageNotifier,
+                                        builder: (context, msg, _) {
+                                          if (msg == null || msg.isEmpty) return const SizedBox.shrink();
+                                          return Padding(
+                                            padding: const EdgeInsets.only(top: 8),
+                                            child: Text(
+                                              msg,
+                                              style: const TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFF10B981),
+                                              ),
+                                              textAlign: TextAlign.center,
                                             ),
                                           );
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ],
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                             ],
                           ),

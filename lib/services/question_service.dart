@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/question_model.dart';
@@ -72,6 +73,12 @@ class QuestionService {
     );
   }
 
+  final Map<String, String> _memoryCache = {};
+
+  void setMemoryCache(String course, String jsonContent) {
+    _memoryCache[course] = jsonContent;
+  }
+
   Future<void> reloadFromCacheOrAssets() async {
     _isLoaded = false;
     _tarihQuestions.clear();
@@ -86,9 +93,14 @@ class QuestionService {
   }
 
   Future<String?> _loadRawContent(SharedPreferences prefs, String course, String assetPath) async {
-    final cached = prefs.getString('cached_questions_$course');
-    if (cached != null && cached.isNotEmpty) {
-      return cached;
+    if (_memoryCache.containsKey(course) && _memoryCache[course]!.isNotEmpty) {
+      return _memoryCache[course];
+    }
+    if (!kIsWeb) {
+      final cached = prefs.getString('cached_questions_$course');
+      if (cached != null && cached.isNotEmpty) {
+        return cached;
+      }
     }
     try {
       return await rootBundle.loadString(assetPath);
