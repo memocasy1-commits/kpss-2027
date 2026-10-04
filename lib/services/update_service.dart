@@ -54,8 +54,8 @@ class UpdateService {
   static final UpdateService instance = UpdateService._internal();
   UpdateService._internal();
 
-  static const int currentVersionCode = 1;
-  static const String currentVersionName = '1.0.0';
+  static const int currentVersionCode = 2;
+  static const String currentVersionName = '1.0.1';
 
   // Primary: Netlify public CDN (CORS free, public)
   // Fallbacks: update_manifest.json, version.json, GitHub raw
