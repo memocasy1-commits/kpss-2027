@@ -43,7 +43,7 @@ final LectureTopic konu4ParagraftaYapi = LectureTopic(
     LectureSection(
       title: 'Dört Temel Anlatım Biçimi (Tekniği)',
       type: LectureSectionType.comparison,
-      leadText: 'Yazarın metni oluştururken amacına uygun olarak seçtiği 4 temel anlatım biçimi (turkce1.pdf Sayfa 67-68):',
+      leadText: 'Yazarın metni oluştururken amacına uygun olarak seçtiği 4 temel anlatım biçimi:',
       bulletPoints: [
         '▸ 1. Açıklayıcı Anlatım (Açıklama):\n• Amaç: Okuyucuya bilgi vermek, bir konuyu öğretmek veya aydınlatmaktır.\n• Özellikleri: Sade, anlaşılır, nesnel bir dil kullanılır. Yazar kişisel duygularını katmaz. Ansiklopedik, bilimsel ve ders kitaplarındaki metinler açıklayıcı anlatımdır.\n• *Örnek:* "Burdur Gölü, pek çok su kuşuna ev sahipliği yapmaktadır. Dikkuyruk, kaşıkgaga ve yeşilbaş bu türlerden bazılarıdır."',
         '▸ 2. Tartışmacı Anlatım (Tartışma):\n• Amaç: Yazarın kendi doğrularına okuyucuyu inandırmak, yerleşik veya yanlış bulduğu bir düşünceyi çürütmektir.\n• Özellikleri: Yazar karşısında birisi varmış gibi soru-cevaplı, sohbet havasında konuşur. "Bence, bana göre, oysa, hiç de öyle değil, yanılıyorlar" gibi ifadelere sıkça yer verir. Kendi tezini savunup antitezi çürütür.\n• *Örnek:* "Kimi eleştirmenler romanın bittiğini söylüyor. Onlara asla katılmıyorum! Roman insan ruhunu yansıttığı sürece bitmeyecektir."',
@@ -67,7 +67,7 @@ final LectureTopic konu4ParagraftaYapi = LectureTopic(
     LectureSection(
       title: 'Düşünceyi Geliştirme Yolları',
       type: LectureSectionType.formula,
-      leadText: 'Yazarın savunduğu düşünceyi somutlaştırmak, inandırıcı kılmak ve zenginleştirmek için başvurduğu 6 temel yöntem (turkce1.pdf Sayfa 69-70):',
+      leadText: 'Yazarın savunduğu düşünceyi somutlaştırmak, inandırıcı kılmak ve zenginleştirmek için başvurduğu 6 temel yöntem:',
       bulletPoints: [
         '▸ 1. Tanımlama:\n• Bir kavramın ya da varlığın ne olduğunu eksiksiz açıklamaktır.\n• "Bu nedir?" veya "Bu kimdir?" sorusuna cevap verir. Genellikle "...-dır / ...-dir" veya "... denir" şeklinde biter.\n• *Örnek:* "Deneme, yazarın herhangi bir konudaki kişisel görüşlerini kesin kurallara bağlamadan anlattığı yazı türüdür."',
         '▸ 2. Örnekleme:\n• Soyut bir düşünceyi anlaşılır ve somut kılmak için konuyla ilgili bilinen kişi, eser, olay veya varlıkların metinde sıralanmasıdır.\n• *Örnek:* "Milli Edebiyat Dönemi\'nde sade dille muazzam eserler verilmiştir. Ömer Seyfettin\'in hikâyeleri, Yakup Kadri\'nin romanları buna en güzel örnektir."',
@@ -82,7 +82,7 @@ final LectureTopic konu4ParagraftaYapi = LectureTopic(
     LectureSection(
       title: 'Anlatıcı Türleri ve Bakış Açıları',
       type: LectureSectionType.ruleList,
-      leadText: 'Metinlerde olayları anlatan anlatıcının konumu ve olaylara vakıf olma derecesi (turkce1.pdf Sayfa 71):',
+      leadText: 'Metinlerde olayları anlatan anlatıcının konumu ve olaylara vakıf olma derecesi:',
       bulletPoints: [
         '▸ 1. Birinci Kişi Ağzıyla Anlatım (Ben / Biz):\n• Yazar olayın bizzat içindedir, olayları yaşayan ya da şahit olan kişidir.\n• Yüklemler 1. tekil (-m, -dim) veya 1. çoğul (-k, -dik) şahıs ekleriyle çekimlenir.\n• *Örnek:* "Sabah erkenden kalktım, bavulumu toplayıp gardan ilk trene bindim."',
         '▸ 2. Üçüncü Kişi Ağzıyla Anlatım (O / Onlar):\n• Yazar olayların dışındadır; bir gözlemci veya dış tanık olarak gördüklerini ya da duyduklarını anlatır.\n• Yüklemler 3. tekil (-di, -miş, -r) veya 3. çoğul (-ler) şahıs ekleriyle çekimlenir.\n• *Örnek:* "Pencereden dışarı baktı, yağmurun dinmesini bekleyerek kahvesini yudumladı."',
@@ -93,7 +93,7 @@ final LectureTopic konu4ParagraftaYapi = LectureTopic(
     LectureSection(
       title: 'Anlatımın Nitelikleri (İlkeleri)',
       type: LectureSectionType.ruleList,
-      leadText: 'Başarılı bir edebî metnin taşıması gereken ve sorularda sıkça yoklanan nitelikler (turkce1.pdf Sayfa 75-77):',
+      leadText: 'Başarılı bir edebî metnin taşıması gereken ve sorularda sıkça yoklanan nitelikler:',
       bulletPoints: [
         '▸ 1. Özgünlük: Anlatımda başkasına benzememek, taklitçilikten uzak durmak, kendine has (orijinal) bir üslup yakalamaktır.',
         '▸ 2. Özlülük (Yoğunluk): Az sözle çok ve derin anlam ifade etmektir. Atasözleri, özdeyişler ve vecizeler özlü anlatımın zirvesidir ("Adalet evrenin ruhudur.").',
@@ -111,7 +111,7 @@ final LectureTopic konu4ParagraftaYapi = LectureTopic(
     LectureSection(
       title: 'Paragrafta Yapı ve Anlatım Çözümlü Testi',
       type: LectureSectionType.interactiveQuiz,
-      leadText: 'ÖSYM ve EKPSS formatındaki çıkmış nitelikli paragraf yapı soruları ve adım adım çözümleri (turkce1.pdf Sayfa 73-80):',
+      leadText: 'ÖSYM ve EKPSS formatındaki çıkmış nitelikli paragraf yapı soruları ve adım adım çözümleri:',
       bulletPoints: const [],
       quizzes: [
         LectureInteractiveQuiz(

@@ -18,7 +18,7 @@ final LectureTopic konu3ParagraftaAnlam = LectureTopic(
     LectureSection(
       title: '1. Paragrafın Anlam Haritası: Konu, Başlık ve Ana Düşünce',
       type: LectureSectionType.overview,
-      leadText: 'Herhangi bir yazıda ele alınan düşünceyle ilgili bir araya gelmiş cümleler topluluğuna paragraf denir. Başka bir deyişle bir duygu, düşünce ya da olayın bir yönünü ele alarak anlatan yazılardır. Paragraflar herhangi bir yazının küçük ölçekli bir örneği şeklinde olurlar (turkce1.pdf s. 57-64).',
+      leadText: 'Herhangi bir yazıda ele alınan düşünceyle ilgili bir araya gelmiş cümleler topluluğuna paragraf denir. Başka bir deyişle bir duygu, düşünce ya da olayın bir yönünü ele alarak anlatan yazılardır. Paragraflar herhangi bir yazının küçük ölçekli bir örneği şeklinde olurlar.',
       bulletPoints: [
         '1. Paragrafın Konusu: Yazarın paragrafta üzerinde durduğu olay, durum, kavram ya da problemdir. "Yazar bu parçada neden söz ediyor, neyi anlatıyor?" sorusunun karşılığıdır. Paragrafın tamamını kapsar; ne çok dar ne de çok geniş olmalıdır. Genellikle ilk iki cümlede ipucu verilir.',
         '2. Paragrafın Başlığı: Konuyu en özlü ve çarpıcı biçimde özetleyen bir veya birkaç sözcükten oluşan söz öbeğidir. Hem konuyu hem de ana düşünceyi yansıtmalı, metnin bütünüyle uyumlu olmalıdır.',
@@ -31,7 +31,7 @@ final LectureTopic konu3ParagraftaAnlam = LectureTopic(
     LectureSection(
       title: '2. Yardımcı Düşünceler ve Olumsuz Soru Kökleri Taktikleri',
       type: LectureSectionType.ruleList,
-      leadText: 'KPSS\'de en çok zaman kaybettiren olumsuz köklü ("değinilmemiştir", "çıkarılamaz", "ulaşılamaz", "söylenemez") paragraf sorularını 40 saniyede çözme tekniği (turkce1.pdf s. 64-68):',
+      leadText: 'KPSS\'de en çok zaman kaybettiren olumsuz köklü ("değinilmemiştir", "çıkarılamaz", "ulaşılamaz", "söylenemez") paragraf sorularını 40 saniyede çözme tekniği:',
       bulletPoints: [
         '1. Adım (Önce Soru Kökü ve Seçenekler): Olumsuz soru kökünde ("değinilmemiştir, çıkarılamaz") önce metin DEĞİL, seçenekler taranır! Seçeneklerdeki anahtar kelimelerin (özellikle isimlerin ve kavramların) altı çizilir.',
         '2. Adım (Metni Seçenek Avcısı Olarak Okuma): Seçenekleri zihninizde tutarak metni okuyun. Metinde bir seçenekteki yargıyı gördüğünüz an o şıkkı eleyin.',
@@ -44,7 +44,7 @@ final LectureTopic konu3ParagraftaAnlam = LectureTopic(
     LectureSection(
       title: '3. Yazarın Tutumu, Bakış Açısı ve Şiirde Tema',
       type: LectureSectionType.comparison,
-      leadText: 'Metnin arkasındaki yazar tavrı ve edebî duyarlılık unsurları (turkce1.pdf s. 68-70):',
+      leadText: 'Metnin arkasındaki yazar tavrı ve edebî duyarlılık unsurları:',
       bulletPoints: const [],
       goldenRule: 'ŞİİRDE ANA DUYGU: Şiir sorularında dizelerdeki tekil kelimelere değil, son dizede düğümlenen genel duygu durumuna (hasret, yalnızlık, isyan, hüzün, umut) odaklanın.',
       osymTrap: 'ÖSYM TUZAĞI: "Bu şiirin teması nedir?" sorusunda seçeneklerde hem "ayrılık" hem de "ayrılık acısı" varsa, şiirde duygu yoğunluğu bulunduğu için "ayrılık acısı" işaretlenmelidir.',
@@ -64,7 +64,7 @@ final LectureTopic konu3ParagraftaAnlam = LectureTopic(
     LectureSection(
       title: 'İnteraktif Sınav Simülasyonu: Paragrafta Ana Düşünce',
       type: LectureSectionType.interactiveQuiz,
-      leadText: 'turkce1.pdf Ünite Değerlendirme Testi kaynaklı çözümlü pekiştirme sorusu:',
+      leadText: 'Ünite değerlendirme testlerinden çözümlü pekiştirme sorusu:',
       bulletPoints: const [],
       quizzes: [
         LectureInteractiveQuiz(

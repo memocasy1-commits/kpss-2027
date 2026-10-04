@@ -18,7 +18,7 @@ final LectureTopic konu6YazimKurallari = LectureTopic(
     LectureSection(
       title: 'Büyük Harflerin Kullanıldığı Yerler',
       type: LectureSectionType.ruleList,
-      leadText: 'TDK güncel kılavuzuna ve turkce1.pdf Sayfa 277-282\'ye göre büyük harflerin yazımıyla ilgili temel kurallar:',
+      leadText: 'TDK güncel kılavuzuna göre büyük harflerin yazımıyla ilgili temel kurallar:',
       bulletPoints: [
         '▸ 1. Cümleler ve Dizeler: Cümleler ve şiir dizeleri daima büyük harfle başlar.',
         '▸ 2. Kişi Adları, Soyadları, Unvanlar ve Saygı Sözleri:\n• Kişi adlarından önce ve sonra gelen unvanlar, meslek adları, saygı sözleri ve lakaplar büyük harfle başlar:\n  • Prof. Dr. Zeynep Korkmaz, Kaymakam Erol Bey, Sayın Bakan, Avukat Kemal, Mustafa Efendi, Deli Petro, Genç Osman.\n• Akrabalık Bildiren Sözcükler:\n  • Gerçek öz akrabalık bildiriyorsa KÜÇÜK yazılır: Ayşe teyzem, Ali amcam, Zeynep ablam.\n  • Lakap, unvan veya tarihi kişilik olmuşsa BÜYÜK yazılır: Nene Hatun, Müslüm Baba, Gül Baba, Susuz Dede, Dayı Kemal.',
@@ -40,7 +40,7 @@ final LectureTopic konu6YazimKurallari = LectureTopic(
     LectureSection(
       title: 'Birleşik Sözcüklerin Yazımı (Bitişik ve Ayrı Yazılanlar)',
       type: LectureSectionType.comparison,
-      leadText: 'ÖSYM\'nin yazım kurallarında en çok elediği konu: Bitişik mi, ayrı mı? (turkce1.pdf Sayfa 273-276):',
+      leadText: 'ÖSYM\'nin yazım kurallarında en çok elediği konu: Bitişik mi, ayrı mı?:',
       bulletPoints: [
         '▸ A. BİTİŞİK YAZILAN BİRLEŞİK KELİMELER:\n• 1. Ses Düşmesi veya Türemesine Uğrayanlar: kaynana, cumartesi, nasıl, niçin, hissetmek, reddetmek, affetmek, emretmek.\n• 2. Kelimelerden Biri veya İkisi Anlam Kaymasına Uğrayanlar:\n  • Bitki adları: aslanağzı, civanperçemi, keçiboynuzu, kuşburnu.\n  • Hayvan adları: danaburnu (böcek), karafatma, yalıçapkını (kuş).\n  • Hastalık/Alet/Yiyecek: itdirseği (arpacık), kargaburnu (pense), dilberdudağı (tatlı), hanımgöbeği, kadınbudu (köfte).\n• 3. "-an/-en, -ar/-er, -maz/-mez, -mış/-miş" Sıfat-Fiil Ekleriyle Kurulan Kalıplaşmış Sözcükler:\n  • gökdelen, barışsever, vatansever, cankurtaran, dalgakıran, karıncaezmez, çokbilmiş, yurtsever.\n• 4. İkinci Kelimesi Emir Kipiyle veya İki Fiilin Birleşmesiyle Kurulanlar:\n  • çekyat, kapkaç, tutkal, örtbas, biçerdöver, uyurgezer, dedikodu, kaptıkaçtı, oldu bitti.\n• 5. "Somut Olarak Yer Bildirmeyen" Alt, Üst ve Üzeri Sözleri:\n  • bilinçaltı, şuuraltı, ayakaltı, akşamüstü, ayaküstü, olağanüstü, gerçeküstü, suçüstü, yüzüstü.\n• 6. Hane, Name, Zade, Perver, Sever ile Bitenler:\n  • yazıhane, dershane, beyanname, amcazade, yardımsever, müziksever.\n• 7. Ara Yönler Daima Bitişik Yazılır:\n  • kuzeydoğu, kuzeybatı, güneydoğu, güneybatı.',
         '▸ B. AYRI YAZILAN BİRLEŞİK KELİMELER:\n• 1. Birleşme Sırasında Hiçbir Kelimesi Anlam Değişikliğine Uğramayanlar:\n  • Hayvan türleri: köpek balığı, deve kuşu, cırcır böceği, ateş böceği, dağ keçisi.\n  • Bitki türleri: çam fıstığı, kuru fasulye, yer elması, çörek otu, lale soğanı.\n  • Yiyecek/İçecek: talaş böreği, çiğ köfte, kuru yemiş, maden suyu, tulum peyniri.\n• 2. "Etmek, Olmak, Kılmak" Yardımcı Fiillerinde Ses Olayı Yoksa:\n  • terk etmek, ayırt etmek, fark etmek, terk olmak, arz etmek, yok etmek, dans etmek, sağ olmak.\n• 3. Somut Olarak Yer / Mekân Bildiren Alt ve Üst Sözleri:\n  • yer altı (maden/zemin kastedilirse), su altı, deri altı, böbrek üstü bezi, tepe üstü.\n• 4. Dış, İç, Sıra Sözleriyle Oluşturulan Sözler AYRI Yazılır:\n  • çağ dışı, din dışı, ahlak dışı, kanun dışı, olağan dışı, ceviz içi, hafta içi, yurt içi, yurt dışı, aklı sıra, ardı sıra, peşi sıra, yanı sıra.\n• 5. Durum, Olgu, Bilim ve Yol Bildiren Birleşikler:\n  • açık oturum, açık öğretim, dil bilgisi, ses bilgisi, ana dili, ön lisans, hava yolu, kara yolu, deniz yolu, çevre yolu.'
@@ -72,7 +72,7 @@ final LectureTopic konu6YazimKurallari = LectureTopic(
     LectureSection(
       title: 'Kritik Ek ve Bağlaçların Yazımı (de, ki, mi)',
       type: LectureSectionType.comparison,
-      leadText: 'ÖSYM sınavlarının vazgeçilmez 3 yazım kuralı (turkce1.pdf Sayfa 270-272):',
+      leadText: 'ÖSYM sınavlarının vazgeçilmez 3 yazım kuralı:',
       bulletPoints: [
         '▸ 1. "de / da" Bağlacı ve "-de / -da" Bulunma Hâl Eki:\n• "de / da" Bağlacı: Cümleden çıkarıldığında cümlenin anlamı bozulmaz (sadece daralabilir). Daima AYRI yazılır. Asla "te / ta" şekli yoktur ("Sen de mi brütüs?" - Sente YAZILMAZ).\n• "-de / -da / -te / -ta" Bulunma Eki: İsme bitişik yazılır. Cümleden çıkarıldığında anlam tamamen bozulur. Ünsüz sertleşmesine uğrayabilir ("evde", "okulda", "sınıfta", "1923\'te").\n• *Pratik Test:* Cümleden "de"yi çıkarıp okuyun; anlam bozulmuyorsa bağlaçtır (ayrı yaz), anlam çöküyorsa ektir (bitişik yaz).',
         '▸ 2. "ki" Bağlacı ve "-ki" Ekinin Yazımı:\n• A. Bağlaç Olan "ki": Sözcükten ayrı yazılır. İki cümleyi bağlar ("Duydum ki unutmuşsun.", "Öyle bir insan ki herkes sever."). Kendisine "-ler" çoğul eki alamaz ("Duydum kiler" denmez!).\n• B. Kalıplaşmış Olarak Bitişik Yazılan "ki" Bağlaçları (SOMBAHÇEMİ Formülü):\n  • Sanki\n  • Oysaki\n  • Madenki\n  • Belki\n  • A (boş)\n  • Halbuki\n  • Çünkü\n  • E (boş)\n  • Meğerki\n  • İllaki\n• C. Sıfat Yapan "-ki": Eklendiği sözcüğü sıfat yapar, bitişik yazılır ("evdeki hesap", "bahçedeki ağaçlar", "akşamki maç"). "-ler" eki alabilir ("evdekiler").\n• D. İlgi Zamiri Olan "-ki": İsmin yerini tutar, bitişik yazılır ("Benim kalemim kırıldı, seninkini alabilir miyim?", "Bizimki yine geç kaldı").',
@@ -100,7 +100,7 @@ final LectureTopic konu6YazimKurallari = LectureTopic(
     LectureSection(
       title: 'Kısaltmaların ve Sayıların Yazımı',
       type: LectureSectionType.ruleList,
-      leadText: 'ÖSYM\'nin sıkça yokladığı teknik yazım detayları (turkce1.pdf Sayfa 283-286):',
+      leadText: 'ÖSYM\'nin sıkça yokladığı teknik yazım detayları:',
       bulletPoints: [
         '▸ 1. Büyük Harfle Yapılan Kısaltmalar:\n• Büyük harfli kısaltmalara getirilen eklerde kısaltmanın SON HARFİNİN OKUNUŞU esas alınır:\n  • TDK\'ye (TDK\'ya YANLIŞ, çünkü Türkçede "ka" sesi yoktur, "ke" denir),\n  • TBMM\'nin, MEB\'e, THY\'de, SGK\'nin (SGK\'nın YANLIŞ).\n• Nokta Kuralı: Büyük harfli kısaltmalarda araya ve sona NOKTA KONMAZ! (İki istisna: "T.C." ve "T." [Türkçe]).',
         '▸ 2. Küçük Harfle Yapılan Kısaltmalar:\n• Ölçü birimleri uluslararası simgelerle yazılır ve sonuna nokta konmaz: m (metre), kg (kilogram), cm (santimetre), km (kilometre).\n• Küçük harfli kısaltmalara getirilen eklerde KELİMENİN AÇILIMI esas alınır:\n  • kg\'dan (kilosundan değil kilogramdan),\n  • cm\'yi (santimetreyi),\n  • mm\'den (milimetreden).\n• Sonunda nokta bulunan kısaltmalara ek getirilirken kesme işareti KULLANILMAZ: vb.leri, mad.nin, yy.da.',
@@ -112,7 +112,7 @@ final LectureTopic konu6YazimKurallari = LectureTopic(
     LectureSection(
       title: 'Yazım Kuralları Çözümlü Uygulamalar',
       type: LectureSectionType.interactiveQuiz,
-      leadText: 'turkce1.pdf Ünite Değerlendirme Testi (Sayfa 288-289) soruları ve detaylı çözümleri:',
+      leadText: 'Ünite değerlendirme testlerinden sorular ve detaylı çözümleri:',
       bulletPoints: const [],
       quizzes: [
         LectureInteractiveQuiz(

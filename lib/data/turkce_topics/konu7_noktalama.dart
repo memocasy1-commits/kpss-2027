@@ -18,7 +18,7 @@ final LectureTopic konu7Noktalama = LectureTopic(
     LectureSection(
       title: 'Nokta (.), Virgül (,) ve Virgülün Kullanıldığı Yerler',
       type: LectureSectionType.overview,
-      leadText: 'Duygu ve düşünceleri daha açık ifade etmek, cümlenin yapısını ve duraklama noktalarını belirlemek için kullanılan noktalama işaretleri (turkce1.pdf Sayfa 291-294):',
+      leadText: 'Duygu ve düşünceleri daha açık ifade etmek, cümlenin yapısını ve duraklama noktalarını belirlemek için kullanılan noktalama işaretleri:',
       bulletPoints: [
         '▸ A. NOKTA (.):\n• 1. Anlamca tamamlanmış cümlenin sonuna konur: "Türk Dil Kurumu 1932 yılında kurulmuştur."\n• 2. Bazı kısaltmaların sonuna konur: Alb. (albay), Prof. (profesör), Cad. (cadde), Sok. (sokak), sf. (sayfa), vb. (ve benzeri).\n• 3. Sayılardan sonra sıra bildirmek için (-inci anlamında) konur: 3. (üçüncü), II. Mehmet, 15. yüzyıl.\n• 4. Arka arkaya sıralanan sayılarda sadece son sayının ardına konur: 3, 4 ve 7. maddeler.\n• 5. Tarihlerin yazılışında gün, ay ve yılı gösteren sayıları ayırmak için konur: 29.10.1923, 15.05.2024.\n• 6. Saat ve dakika gösteren sayıları ayırmak için TEK NOKTA konur: "Toplantı 14.30\'da başlayacak." (Dijital saatlerdeki iki nokta yazı dilinde YANLIŞTIR!).\n• 7. Dört ve daha çok basamaklı sayılarda üçlü basamak gruplarını ayırmak için konur: 1.000, 326.197, 49.200.000.\n• 8. Kitap, makale künyelerinin sonuna konur.',
         '▸ B. VİRGÜL (,):\n• 1. Birbiri ardınca sıralanan eş görevli kelime ve kelime gruplarının arasına konur: "Fırtınadan, soğuktan, karanlıktan korkuyordu."\n• 2. Sıralı cümleleri birbirinden ayırmak için konur: "Geldik, gördük, başardık.", "Boyaları hazırladı, fırçayı eline aldı, tuvale ilk çizgiyi vurdu."\n• 3. Uzun cümlelerde yüklemden uzak düşmüş olan özneyi belirtmek için konur: "Yaşlı adam, yıllardır adım atmadığı bu tenha sokakta anılarını arıyordu."\n• 4. Cümle içindeki ara sözlerin veya ara cümlelerin başına ve sonuna konur: "Bu kasabayı, çocukluğumun geçtiği yeri, asla unutamam."\n• 5. Tırnak içine alınmamış alıntı cümlelerinden sonra konur: "Yarın sabah erkenden yola çıkacağız, dedi."\n• 6. Anlam karışıklığını (anlam belirsizliğini) önlemek için konur: "Genç, doktora derdini anlattı." (Genç bir doktor mu, yoksa genç bir kişi mi?).\n• 7. Ret, kabul, teşvik bildiren "hayır, yok, evet, peki, pekâlâ, tamam, elbette, hayhay" gibi sözlerden sonra konur: "Peki, bu akşam senin dediğin yere gidelim."',
@@ -30,7 +30,7 @@ final LectureTopic konu7Noktalama = LectureTopic(
     LectureSection(
       title: 'Virgülün KESİNLİKLE KULLANILAMAYACAĞI 6 Kritik Durum',
       type: LectureSectionType.warning,
-      leadText: 'ÖSYM ve EKPSS\'de noktalama sorularında en çok soru getiren ve hatalı konulan yerler (turkce1.pdf Sayfa 294):',
+      leadText: 'ÖSYM ve EKPSS\'de noktalama sorularında en çok soru getiren ve hatalı konulan yerler:',
       bulletPoints: [
         '▸ 1. Metin İçinde Zarf-Fiil Eklerinden Sonra Virgül Konmaz!:\n• "-ıp, -erek, -ken, -alı, -ınca, -dıkça, -madan, -maksızın" eklerini alan tek bir kelimeden sonra ASLA virgül konamaz:\n  • Yanlış: "Sınavı kazanıp, memleketine döndü."\n  • Doğru: "Sınavı kazanıp memleketine döndü."\n  • TEK İSTİSNA: Metinde art arda sıralanmış birden fazla zarf-fiil varsa bunlar eş görevli sayıldığından aralarına virgül konur: "Arkadaşlarıyla gülüşerek, şakalaşarak sınıfa girdi."',
         '▸ 2. Şart Ekinden (-se / -sa) Sonra Virgül Konmaz!:\n• Cümlede şart bildiren "-se / -sa" ekinden sonra asla virgül kullanılmaz:\n  • Yanlış: "Görüşmeler erken biterse, seni ararım."\n  • Doğru: "Görüşmeler erken biterse seni ararım."',
@@ -45,7 +45,7 @@ final LectureTopic konu7Noktalama = LectureTopic(
     LectureSection(
       title: 'Noktalı Virgül (;), İki Nokta (:) ve Üç Nokta (...) Ayrımı',
       type: LectureSectionType.comparison,
-      leadText: 'Öğrencilerin en çok karıştırdığı 3 noktalama işaretinin kesin ayrımı (turkce1.pdf Sayfa 295-298):',
+      leadText: 'Öğrencilerin en çok karıştırdığı 3 noktalama işaretinin kesin ayrımı:',
       bulletPoints: [
         '▸ A. NOKTALI VİRGÜL (;):\n• 1. Kural: Cümle içinde virgüllerle ayrılmış tür veya takımları birbirinden ayırmak için konur:\n  • "Erkek çocuklara Doğan, Tuğrul, Orhan; kız çocuklara ise İnci, Çiçek, Gönül adları verilir."\n  • "Pazardan elma, armut, muz; patates, soğan, domates aldık."\n• 2. Kural: Ögeleri arasında virgül bulunan sıralı cümleleri birbirinden ayırmak için konur:\n  • "Sevinçten, heyecandan içim içime sığmıyor; bağırmak, kahkahalar atmak istiyorum."\n  • "At ölür, meydan kalır; yiğit ölür, şan kalır."\n• 3. Kural: İkiden fazla eş değer ögesi arasında virgül bulunan cümlelerde özneden sonra konur:\n  • "Yeni şiirimiz; zevksiz, köksüz, acemice görünüyordu."',
         '▸ B. İKİ NOKTA (:):\n• 1. Kural: Kendisiyle ilgili ÖRNEK verilecek cümlenin sonuna konur:\n  • "Milli Edebiyat akımının temsilcilerinden bazılarını sayalım: Ömer Seyfettin, Ziya Gökalp, Ali Canip Yöntem."\n• 2. Kural: Kendisiyle ilgili AÇIKLAMA yapılacak cümlenin sonuna konur:\n  • "Kendimi takdim edeyim: Meclis kâtiplerindenim."\n• 3. Kural: Edebi eserlerde konuşma bölümünden önce konuşan kişinin adından sonra konur:\n  • "Bilge Kağan: Türklerim, işitin!"\n• BÜYÜK/KÜÇÜK HARF KURALI: İki noktadan sonra gelen kısım TAM BİR CÜMLE ise büyük harfle başlar; sadece ÖRNEKLER sıralanıyorsa küçük harfle başlar!',
@@ -73,7 +73,7 @@ final LectureTopic konu7Noktalama = LectureTopic(
     LectureSection(
       title: 'Soru (?), Ünlem (!), Kısa Çizgi (-), Tırnak ("") ve Kesme (\') İşaretleri',
       type: LectureSectionType.ruleList,
-      leadText: 'Metin düzeni ve anlam vurgusunu sağlayan diğer temel noktalama işaretleri (turkce1.pdf Sayfa 299-308):',
+      leadText: 'Metin düzeni ve anlam vurgusunu sağlayan diğer temel noktalama işaretleri:',
       bulletPoints: [
         '▸ 1. Soru İşareti (?):\n• Soru eki veya soru sözü içeren cümlelerin sonuna konur: "Sular mı yandı?", "Ne zaman tükenecek bu yollar?"\n• ⚠️ DİKKAT: Soru ifadesi taşıyan sıralı cümlelerde soru işareti EN SONA konur, aralara virgül atılır: "Yarın sinemaya mı gidelim, tiyatroya mı?"\n• Kesin olmayan, şüpheli tarih ve bilgilerin yanına yay ayraç içinde (?) konur: "Yunus Emre (1240?-1320)", "Ankara\'dan Konya\'ya iki saatte (?) gitmiş."',
         '▸ 2. Ünlem İşareti (!):\n• Sevinç, korku, acı, şaşma bildiren cümlelerin veya hitapların sonuna konur: "Hava ne kadar da soğuk!", "Ordular! İlk hedefiniz Akdeniz\'dir, ileri!"\n• Alay, kinaye veya küçümseme anlamı katmak için yay ayraç içinde (!) kullanılır: "İsteseymiş bir günde bitirirmiş (!) ama ne yazık ki vakti yokmuş (!)."',
@@ -87,7 +87,7 @@ final LectureTopic konu7Noktalama = LectureTopic(
     LectureSection(
       title: 'Noktalama İşaretleri Çözümlü Testi',
       type: LectureSectionType.interactiveQuiz,
-      leadText: 'turkce1.pdf Sayfa 309-311 aralığındaki karma noktalama değerlendirme soruları:',
+      leadText: 'Karma noktalama değerlendirme soruları ve çözümleri:',
       bulletPoints: const [],
       quizzes: [
         LectureInteractiveQuiz(

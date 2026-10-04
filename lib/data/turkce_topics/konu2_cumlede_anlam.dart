@@ -18,7 +18,7 @@ final LectureTopic konu2CumledeAnlam = LectureTopic(
     LectureSection(
       title: '1. Cümlede Temel Anlam Unsurları (Konu, Ana Fikir ve Çıkarımlar)',
       type: LectureSectionType.overview,
-      leadText: 'Bir duyguyu, düşünceyi, isteği, haberi, durumu veya olayı ifade etmek için kurulan ve kendi içinde anlam ve yargı bütünlüğü olan sözcüğe veya söz dizisine cümle denir (turkce1.pdf s. 31-36).',
+      leadText: 'Bir duyguyu, düşünceyi, isteği, haberi, durumu veya olayı ifade etmek için kurulan ve kendi içinde anlam ve yargı bütünlüğü olan sözcüğe veya söz dizisine cümle denir.',
       bulletPoints: [
         '1. Cümlenin Konusu: Cümlede üzerine görüş bildirilen olay ya da durum cümlenin konusudur. "Bu cümle neden söz etmektedir / neyi anlatıyor?" sorusunun cevabıdır.\n  • Örnek: "Düzenli kitap okumak, bireyin kelime dağarcığını ve empati yeteneğini geliştirir." -> Konu: Kitap okumanın bireye zihinsel ve duygusal faydaları.\n  • Örnek: "Tarih boyunca su kenarlarına kurulan medeniyetler daha hızlı kalkınmıştır." -> Konu: Suyun medeniyetlerin gelişimi üzerindeki etkisi.',
         '2. Cümlede Ana Fikir (Ana Düşünce): Cümlede asıl iletilmek istenen temel mesaj, varılmak istenen nihai yargı ve öğüttür. "Yazar bu cümleyi hangi amaçla söyledi, bize neyi kanıtlamak istiyor?" sorusunun yanıtıdır.\n  • Örnek: "Hiçbir rüzgâr, hedefi olmayan bir gemiye yardım edemez." -> Ana fikir: Hayatta başarıya ulaşabilmek için mutlaka belirgin bir amaca ve rotaya sahip olunmalıdır.',
@@ -31,7 +31,7 @@ final LectureTopic konu2CumledeAnlam = LectureTopic(
     LectureSection(
       title: '2. Anlatımına Göre Cümleler: Öznel vs Nesnel, Üslup vs İçerik, Doğrudan vs Dolaylı',
       type: LectureSectionType.comparison,
-      leadText: 'Kanıtlanabilirlik, anlatıcının tavrı ve ifade biçimi bakımından cümle türleri (turkce1.pdf s. 36-41):',
+      leadText: 'Kanıtlanabilirlik, anlatıcının tavrı ve ifade biçimi bakımından cümle türleri:',
       bulletPoints: const [],
       goldenRule: 'ÜSLUP = NASIL? | İÇERİK = NE?: Bir cümlenin üslup mu içerik mi olduğunu anlamak için yükleme şu soruları sorun: "Yazar neyi anlatıyor?" cevabı İÇERİK; "Yazar nasıl anlatıyor?" cevabı ÜSLUPTUR.',
       osymTrap: 'ÖSYM TUZAĞI: "Yazar, köy yaşamını şiirsel ve akıcı bir dille okuyucuya aktarmış." cümlesinde hem içerik ("köy yaşamını") hem de üslup ("şiirsel ve akıcı bir dille") bir arada verilmiştir.',
@@ -71,7 +71,7 @@ final LectureTopic konu2CumledeAnlam = LectureTopic(
     LectureSection(
       title: '3. Anlam İlişkilerine Göre Cümleler (Neden, Amaç, Koşul ve Örtülü Anlam)',
       type: LectureSectionType.ruleList,
-      leadText: 'ÖSYM dil sınavlarında en çok karıştırılan neden-sonuç ve amaç-sonuç bağıntıları (turkce1.pdf s. 41-48):',
+      leadText: 'ÖSYM dil sınavlarında en çok karıştırılan neden-sonuç ve amaç-sonuç bağıntıları:',
       bulletPoints: [
         '1. Neden-Sonuç (Sebep-Sonuç / Gerekçeli) Cümleleri:\n  • Bir eylemin hangi somut gerekçeyle gerçekleştiğini bildiren cümlelerdir. İki yargı da fiilen gerçekleşmiştir.\n  • Yükleme "Neden?, Niçin?, Hangi gerekçeyle?" soruları sorulur.\n  • "-dığı için, -den dolayı, yüzünden, sebebiyle, gerekçesiyle" ekleriyle kurulur.\n  • Örnek: "Kar yağdığı için köy yolları kapandı." (Köy yolları neden kapandı? -> Kar yağdığı için. Kar yağması da yolların kapanması da gerçekleşmiştir).\n  • Örnek: "Uykusuz kaldığından gözleri kanlanmıştı.", "Şiddetli fırtına yüzünden vapur seferleri iptal edildi."',
         '2. Amaç-Sonuç Cümleleri:\n  • Eylemin hangi hedefe, gayeye ulaşmak maksadıyla yapıldığını bildiren cümlelerdir. Amaç henüz gerçekleşmemiştir, bir tasarıdır.\n  • Cümlede "-mek için, amacıyla, maksadıyla, gayesiyle, -mek üzere" ifadeleri yer alır.\n  • Formül: Cümleye "amacıyla" sözcüğünü koyduğunuzda anlamlı oluyorsa AMAÇ-SONUÇTUR!\n  • Örnek: "Sınavı kazanmak için (amacıyla) gece gündüz çalıştı.", "Arkadaşını görmek üzere (amacıyla) hastaneye gitti.", "Kilo vermek maksadıyla diyete başladı."',
@@ -83,9 +83,9 @@ final LectureTopic konu2CumledeAnlam = LectureTopic(
       osymTrap: 'ÖSYM TUZAĞI: "-mek için" kalıbı amaç bildirirken, "-dığı için" kalıbı daima sebep (neden) bildirir: "Geç kaldığı için özür diledi" (Neden-sonuç) vs "Geç kalmamak için taksiye bindi" (Amaç-sonuç).'
     ),
     LectureSection(
-      title: '4. Cümlede Duygu, Durum ve Anlam İfadeleri Rehberi (turkce1.pdf s. 48-56)',
+      title: '4. Cümlede Duygu, Durum ve Anlam İfadeleri Rehberi',
       type: LectureSectionType.formula,
-      leadText: 'KPSS testlerinde seçeneklerde sıkça geçen cümle çeşitleri ve şifreleri (turkce1.pdf s. 48-56):',
+      leadText: 'KPSS testlerinde seçeneklerde sıkça geçen cümle çeşitleri ve şifreleri:',
       bulletPoints: [
         '1. Tanım Cümlesi: "Bu nedir?" sorusunun yanıtıdır. Varlığın veya kavramın değişmez niteliklerini açıklar. Genellikle "-dır/-dir" veya "denir" ile biter: "Cümle, bir duyguyu tam olarak anlatan söz dizisidir."',
         '2. Varsayım Cümlesi: Gerçekte olmadığı halde bir durumu bir an için olmuş gibi kabul etmektir: "Diyelim ki, tut ki, farz edelim ki, kabul edelim ki, varsayalım ki sınav iptal edildi."',
@@ -103,7 +103,7 @@ final LectureTopic konu2CumledeAnlam = LectureTopic(
     LectureSection(
       title: 'İnteraktif Sınav Simülasyonu: Cümlede Anlam Analizi',
       type: LectureSectionType.interactiveQuiz,
-      leadText: 'turkce1.pdf Ünite Değerlendirme Testi kaynaklı çözümlü pekiştirme sorusu:',
+      leadText: 'Ünite değerlendirme testlerinden çözümlü pekiştirme sorusu:',
       bulletPoints: const [],
       quizzes: [
         LectureInteractiveQuiz(

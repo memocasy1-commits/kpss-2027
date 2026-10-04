@@ -18,7 +18,7 @@ final LectureTopic konu5SesBilgisi = LectureTopic(
     LectureSection(
       title: 'Türkçenin Ses Özellikleri ve Ses Tabloları',
       type: LectureSectionType.overview,
-      leadText: 'Türk alfabesinde 29 harf vardır (8 ünlü, 21 ünsüz). Sesler akciğerlerden gelen havanın ses tellerinde titreşmesiyle oluşur (turkce1.pdf Sayfa 99).',
+      leadText: 'Türk alfabesinde 29 harf vardır (8 ünlü, 21 ünsüz). Sesler akciğerlerden gelen havanın ses tellerinde titreşmesiyle oluşur.',
       bulletPoints: [
         '▸ 1. Ünlüler (Sesliler - 8 Adet):\n• Kalın Ünlüler: a, ı, o, u\n• İnce Ünlüler: e, i, ö, ü\n• Düz Ünlüler: a, e, ı, i\n• Yuvarlak Ünlüler: o, ö, u, ü\n• Geniş Ünlüler: a, e, o, ö\n• Dar Ünlüler: ı, i, u, ü',
         '▸ 2. Ünsüzler (Sessizler - 21 Adet):\n• Sert Ünsüzler (Fıstıkçı Şahap): f, s, t, k, ç, ş, h, p\n• Yumuşak Ünsüzler: b, c, d, g, ğ, j, l, m, n, r, v, y, z',
@@ -31,7 +31,7 @@ final LectureTopic konu5SesBilgisi = LectureTopic(
     LectureSection(
       title: 'Ünlü Olayları (Düşme, Daralma, Türeme, Aşınma)',
       type: LectureSectionType.ruleList,
-      leadText: 'Ünlülerde gerçekleşen ses değişimleri ve ÖSYM\'nin en sık sorduğu kurallar (turkce1.pdf Sayfa 100-102):',
+      leadText: 'Ünlülerde gerçekleşen ses değişimleri ve ÖSYM\'nin en sık sorduğu kurallar:',
       bulletPoints: [
         '▸ 1. Ünlü Düşmesi (Hece Düşmesi):\n• A. İki Heceli Organ / Vücut / Akıl Adlarında: İkinci hecesinde dar ünlü (ı, i, u, ü) bulunan sözcükler ünlüyle başlayan ek aldığında ikinci hecedeki dar ünlü düşer:\n  • burun + u -> burnu, akıl + ı -> aklı, karın + ı -> karnı, alın + ı -> alnı, göğüs + ü -> göğsü, omuz + u -> omzu, boyun + u -> boynu, gönül + ü -> gönlü, fikir + i -> fikri, resim + i -> resmi, zehir + i -> zehri.\n• B. Türetilirken (Yapım Eki Alırken) Ünlü Düşmesi:\n  • sarı + ar -> sarar-, koku + la -> kokla-, uyu + ku -> uyku, sızı + la -> sızla-, oyun + a -> oyna-, uyu + u -> uyuşuk / uyu-, ileri + le -> ilerle-, devir + il -> devril-, çevir + e -> çevre, ayır + ım -> ayrım, savur + uk -> savruk, kavuş + ak -> kavşak, besle- (besi-le).\n• C. Birleşik Sözcük Oluşurken (Ünlü Aşınması):\n  • cuma + ertesi -> cumartesi, pazar + ertesi -> pazartesi, ne + için -> niçin, ne + asıl -> nasıl, sütlü + aş -> sütlaç, kahve + altı -> kahvaltı, kayın + ana -> kaynana, biri + biri -> birbiri.\n• D. Yardımcı Eylemle Birleşirken:\n  • kayıp + olmak -> kaybolmak, emir + etmek -> emretmek, şükür + etmek -> şükretmek, sabır + etmek -> sabretmek, hapis + olmak -> hapsolmak.',
         '▸ 2. Ünlü Daralması:\n• Türkçede sonu geniş ünlüyle ("a, e") biten fiillere "-yor" eki getirildiğinde, aradaki geniş ünlü daralarak "ı, i, u, ü"ye dönüşür:\n  • başla-yor -> başlıyor, bekle-yor -> bekliyor, anla-yor -> anlıyor, söyle-yor -> söylüyor, kokla-yor -> kokluyor, kutla-yor -> kutluyor, gözle-yor -> gözlüyor.\n• "Y" Kaynaştırma Harfi Kaynaklı Daralma: Yalnızca iki fiilde kalıcı daralma yapar:\n  • de- (demek) -> di-y-en, di-y-ecek, di-y-e, di-y-elim.\n  • ye- (yemek) -> yi-y-en, yi-y-ecek, yi-y-ince, yi-y-in.\n  • *DİKKAT:* Bu fiiller dışındaki sözcüklerde "y" daralma YAPMAZ! "Anla-y-an" yazılır (anliyan YANLIŞTIR), "başla-y-acak" yazılır (başlıyacak YANLIŞTIR).',
@@ -43,7 +43,7 @@ final LectureTopic konu5SesBilgisi = LectureTopic(
     LectureSection(
       title: 'Ünsüz Olayları (Yumuşama, Sertleşme, Türeme, Düşme)',
       type: LectureSectionType.comparison,
-      leadText: 'Ünsüzlerde meydana gelen ve dilin ahengini sağlayan ses değişim kuralları (turkce1.pdf Sayfa 103-107):',
+      leadText: 'Ünsüzlerde meydana gelen ve dilin ahengini sağlayan ses değişim kuralları:',
       bulletPoints: [
         '▸ 1. Ünsüz Yumuşaması (Değişimi):\n• Sonu sert süreksiz ünsüzlerle (p, ç, t, k) biten bir sözcük ünlüyle başlayan bir ek aldığında bu sesler yumuşayarak sırasıyla b, c, d, ğ (g) olur:\n  • kitap + ı -> kitabı, ağaç + a -> ağaca, kanat + ı -> kanadı, sokak + a -> sokağa, renk + i -> rengi.\n• Yumuşama Kuralının İstisnaları:\n  • Tek Heceli Sözcüklerin Bir Kısmı: top-u, ip-i, süt-ü, tek-i, saç-ı, kat-ı, et-i, suç-u, koç-u (yumuşamaz). Fakat bazı tek heceliler yumuşar: çok -> çoğu, kap -> kabı, kurt -> kurdu, cep -> cebi.\n  • Yabancı Kökenli Sözcükler: millet-i, devlet-i, adalet-i, cumhuriyet-i, hukuk-un, evrak-ı, ahlak-ı, tabiat-ı, sanat-ı, merak-ı, dikkat-i (yumuşamaz; "hukuğun", "evrağı" yazmak YAZIM YANLIŞIDIR!).\n  • Özel İsimler: Yazarken yumuşama gösterilmez, kesme işaretiyle ayrılır (Konuşurken yumuşatılabilir): Zonguldak\'a (Zonguldağa YAZILMAZ), Ahmet\'e, Sinop\'a.',
         '▸ 2. Ünsüz Sertleşmesi (Benzeşmesi - Fıstıkçı Şahap):\n• Sonu sert ünsüzlerle (f, s, t, k, ç, ş, h, p) biten bir kelimeye yumuşak ünsüzler olan "c, d, g" ile başlayan bir ek geldiğinde, ekin başındaki ünsüzler sertleşerek "ç, t, k"ye dönüşür:\n  • c -> ç (ağaç + cı -> ağaççı, kitap + cı -> kitapçı)\n  • d -> t (git- + di -> gitti, sınıf + da -> sınıfta, 1923 + de -> 1923\'te)\n  • g -> k (seç- + gin -> seçkin, üret- + genç -> üretken, bit- + gin -> bitkin, ses- + deş -> sesteş)\n• Sertleşme kuralına uymamak doğrudan YAZIM YANLIŞIDIR ("sınıfda", "1923\'de" yazımı yanlıştır).',
@@ -72,7 +72,7 @@ final LectureTopic konu5SesBilgisi = LectureTopic(
     LectureSection(
       title: 'Diğer Ses Olayları (Kaynaştırma, Ulama, Dudak Benzeşmesi)',
       type: LectureSectionType.ruleList,
-      leadText: 'Türkçede telaffuzu kolaylaştıran yardımcı ses olayları (turkce1.pdf Sayfa 106-107):',
+      leadText: 'Türkçede telaffuzu kolaylaştıran yardımcı ses olayları:',
       bulletPoints: [
         '▸ 1. Kaynaştırma Harfleri (YaŞaSıN - y, ş, s, n):\n• İki ünlü harf Türkçede yan yana gelemeyeceğinden araya kaynaştırma ünsüzü girer:\n  • y: masa-y-a, kapı-y-ı, iki-y-e, dinle-y-en, araba-y-la.\n  • ş: Üleştirme sayılarında kullanılır: iki-ş-er, yedi-ş-er (beş-er kelimesinde kaynaştırma yoktur çünkü kök "beş"tir!).\n  • s: 3. şahıs iyelik ekinde kullanılır: anne-s-i, kapı-s-ı, araba-s-ı, su-y-u ("su" kelimesinde istisna olarak "y" kaynaştırması gelir).\n  • n: İlgi ve durum eklerinde zamir n\'si olarak girer: kapı-n-ın kolu, onun ev-i-n-e, o-n-u, bu-n-dan.',
         '▸ 2. Ulama:\n• Ünsüzle biten bir kelimeden sonra ünlüyle başlayan bir kelime geldiğinde iki kelimenin birbirine bağlanarak okunmasıdır:\n  • "Dönülmez akşamın ufkundayız vakit çok geç" -> dönülme-zakşamı-nufkundayız.\n  • ⚠️ UYARI: İki kelime arasında herhangi bir noktalama işareti (özellikle virgül) varsa ULAMA YAPILAMAZ!\n  • *Örnek:* "Çocuk, ekmeği fırından aldı." (Virgül olduğu için "çocuk" ile "ekmeği" arasında ulama yoktur).',
@@ -84,7 +84,7 @@ final LectureTopic konu5SesBilgisi = LectureTopic(
     LectureSection(
       title: 'Ses Bilgisi Çözümlü Uygulamalar ve Soru Tipleri',
       type: LectureSectionType.interactiveQuiz,
-      leadText: 'turkce1.pdf Ünite Değerlendirme Testi (Sayfa 109-111) çıkmış ayarındaki ses bilgisi soruları:',
+      leadText: 'Ünite değerlendirme testlerinden çıkmış ayarındaki ses bilgisi soruları:',
       bulletPoints: const [],
       quizzes: [
         LectureInteractiveQuiz(

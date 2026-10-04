@@ -18,20 +18,20 @@ final LectureTopic konu1SozcukteAnlam = LectureTopic(
     LectureSection(
       title: '1. Sözcükte Anlam Özellikleri (Temel, Yan, Mecaz ve Terim Anlam)',
       type: LectureSectionType.overview,
-      leadText: 'Harflerin bir araya gelmesiyle sözcükler, sözcüklerin bir araya gelmesiyle cümleler oluşur. Cümlenin anlamlı en küçük birimine sözcük (kelime) denir. Sözcük, dilin anlamlı en küçük parçasıdır ve bu parçaları anlamlarına uygun olarak bir araya getirerek iletişim sağlarız (turkce1.pdf s. 11-14).',
+      leadText: 'Harflerin bir araya gelmesiyle sözcükler, sözcüklerin bir araya gelmesiyle cümleler oluşur. Cümlenin anlamlı en küçük birimine sözcük (kelime) denir. Sözcük, dilin anlamlı en küçük parçasıdır ve bu parçaları anlamlarına uygun olarak bir araya getirerek iletişim sağlarız.',
       bulletPoints: [
         '1. Gerçek (Temel / Baş Anlam): Bir sözcüğün akla gelen ilk anlamıdır. Sözlükte bir numarayla gösterilen, herkesçe bilinen yaygın anlamdır.\n  • "Gözüme toz kaçınca gözüm çok acıdı." (Görme organı)\n  • "Çocuğun ateşi kırk dereceye çıktı." (Vücut sıcaklığı)\n  • "Ağır çuvalı tek başına kaldıramadı." (Kütlesi çok olan)\n  • "Annem dün bütün perdeleri yıkadı." (Pencere örtüsü)\n  • "Kuru odunları sobanın içine attı." (Nemli olmayan)\n  • "Yemekten sonra sıcak bir çay içtik." (Isısı yüksek)',
         '2. Yan Anlam: Bir sözcüğün temel (gerçek) anlamından tamamen kopmadan; şekilsel, konumsal ya da işlevsel bir benzerlik sonucunda kazandığı yeni anlamdır.\n  • "Masanın gözünde kitaplarım kaldı." -> Göz insan vücudunda çukurda kalan bir bölümdür. Masanın gözü de çukurda kalan çekmece bölümüdür; şekil benzerliğiyle yan anlam kazanmıştır.\n  • "Köprünün ayağında çatlaklar oluştu." -> İnsanın ayağı gövdeyi taşır; köprünün ayağı da yapıyı taşır; konumsal ve işlevsel benzerlikle yan anlamdır.\n  • "Uçağın kanadı havada arızalandı." -> Kuşun kanadından uçağın kanadına işlev benzerliğiyle aktarılmıştır.\n  • "Kapının kolu, nehrin kolu, çekmecenin gözü, dağın sırtı, geminin burnu, testinin ağzı".',
         '3. Mecaz Anlam: Bir sözcüğün gerçek ve yan anlamlarından tamamen uzaklaşarak kazandığı yeni ve soyut anlamdır. Genellikle benzetmeler ve duygu aktarımları yoluyla doğar.\n  • "Aşkından gözlerine perde indi." -> Perde artık pencere örtüsü değil; gerçeği görememe, basiretsizlik anlamında mecazlaşmıştır.\n  • "Arkadaşımın soğuk tavırları beni çok kırdı." -> Soğuk ısı düşüklüğü değil, ilgisizlik/sevgisizliktir; kırmak parçalamak değil, üzmek incitmektir.\n  • "Bu karanlık işlerden bir an önce uzak durmalısın." -> Karanlık ışıksızlık değil, yasa dışı/gizli işlerdir.\n  • "Müdürün ağır sözleri kalbini çok yaraladı." -> Ağır kütlece fazla değil, incitici/ağırına giden anlamındadır.\n  • "Sınavı kazanamayınca hayalleri suya düştü / söndü."',
         '4. Terim Anlam: Bilim, sanat, spor, meslek veya edebiyat gibi özel bir alana ait kavramları karşılayan sözcüklerdir. Günlük dilde kullanılmaz, mecaz anlam kazanmazlar.\n  • Edebiyat: aruz, kafiye, redif, beyit, dize, teşbih, bent, sone.\n  • Tiyatro: perde, dekor, suflör, kostüm, replik, monolog, diyalog.\n  • Müzik: nota, solfej, porte, akor, koma, diyez, bemol.\n  • Matematik & Geometri: üçgen, açı, kök, teğet, karekök, rasyonel sayı.\n  • Tıp & Biyoloji: narkoz, teşhis, stetoskop, neşter, alyuvar, enzim, DNA.\n  • Coğrafya: meridyen, paralel, vadi, izohips, plato, epirojenez, fay.'
       ],
-      goldenRule: 'BAĞLAM KURALI (turkce1.pdf s. 13): Bir sözcüğün terim, yan veya mecaz olup olmadığı kelimenin geçtiği cümlenin bağlamına göre değişir: "Annem perdeleri yıkadı" (Gerçek) vs "Gözlerine perde indi" (Mecaz) vs "Oyun iki perdelikti" (Tiyatro terimi).',
+      goldenRule: 'BAĞLAM KURALI: Bir sözcüğün terim, yan veya mecaz olup olmadığı kelimenin geçtiği cümlenin bağlamına göre değişir: "Annem perdeleri yıkadı" (Gerçek) vs "Gözlerine perde indi" (Mecaz) vs "Oyun iki perdelikti" (Tiyatro terimi).',
       osymTrap: 'ÖSYM TUZAĞI: Terim anlamlı sözcükler günlük dilde kullanıldığında terim özelliğini yitirir: "Hakem penaltı noktasını gösterdi." (Terim anlam) vs "Bu olay hayatımın dönüm noktası oldu." (Mecaz anlam, terim değildir).'
     ),
     LectureSection(
       title: '2. Sözcükler Arası Anlam İlişkileri (Eş, Zıt, Eş Sesli, Somut-Soyut Anlam)',
       type: LectureSectionType.ruleList,
-      leadText: 'Sözcüklerin birbirleriyle kurdukları anlamsal ilişkiler ve anlam olayları (turkce1.pdf s. 16-22):',
+      leadText: 'Sözcüklerin birbirleriyle kurdukları anlamsal ilişkiler ve anlam olayları:',
       bulletPoints: [
         '1. Eş Anlamlı (Anlamdaş) Sözcükler: Yazılış ve okunuşları farklı, anlamları tamamen aynı olan sözcüklerdir:\n  • al - kırmızı, ak - beyaz, kara - siyah, yaşlı - ihtiyar, muallim - öğretmen, talebe - öğrenci, hekim - doktor, lisan - dil, sözcük - kelime, tümce - cümle, yanıt - cevap, yöntem - metot, kılavuz - rehber, vatan - yurt, uygarlık - medeniyet, görev - vazife.\n  • DİKKAT: Cümlede eş anlamlı iki sözcüğün bir arada kullanılması GEREKSİZ SÖZCÜK KULLANIMI kaynaklı bir ANLATIM BOZUKLUĞUDUR: "Bari hiç olmazsa sen ara." ("bari" ile "hiç olmazsa" aynıdır).',
         '2. Zıt (Karşıt) Anlamlı Sözcükler: Anlamca birbirinin tam tersi olan kavramları karşılayan sözcüklerdir:\n  • iyi - kötü, zengin - fakir, acı - tatlı, taze - bayat, uzak - yakın, sıcak - soğuk, yüksek - alçak, inmek - çıkmak, gelmek - gitmek, dost - düşman.\n  • KESİN KURAL: Bir sözcüğün olumsuzu onun ZITTI DEĞİLDİR! "Gelmek" sözcüğünün zıttı "gitmek"tir; "gelmemek" ise yalnızca olumsuzudur. "Gülmek" sözcüğünün zıttı "ağlamak"tır; "gülmemek" zıttı değildir.',
@@ -45,7 +45,7 @@ final LectureTopic konu1SozcukteAnlam = LectureTopic(
     LectureSection(
       title: '3. Anlam Genişlemeleri: Genel-Özel, Nicel-Nitel, Yansıma ve Ad Aktarması',
       type: LectureSectionType.ruleList,
-      leadText: 'Sözcüklerin kapsam ve nitelik bakımından gösterdiği anlam özellikleri (turkce1.pdf s. 22-26):',
+      leadText: 'Sözcüklerin kapsam ve nitelik bakımından gösterdiği anlam özellikleri:',
       bulletPoints: [
         'Genel ve Özel Anlamlı Sözcükler:\n  • Genel Anlam: Bir türün tamamını, bütününü içine alan sözcüklerdir.\n  • Özel Anlam: Bir türün sadece tek bir bireyini, sınırlı bir parçasını karşılayan sözcüklerdir.\n  • Genelden Özele Sıralama: Varlık -> Canlı -> Hayvan -> Kuş -> Serçe.\n  • Özelden Genele Sıralama: Çam -> Ağaç -> Bitki -> Canlı -> Varlık.\n  • Örnek: "Kitap, insanın en sadık dostudur." (Tüm kitaplar kastedildiği için GENEL anlamlıdır).\n  • Örnek: "Masadaki kitabı çantasına koydu." (Tek bir somut nesne kastedildiği için ÖZEL anlamlıdır).',
         'Nicel ve Nitel Anlamlı Sözcükler:\n  • Nicel Anlam: Varlıkların sayılabilen, ölçülebilen, tartılabilen miktarını, azlığını veya çokluğunu bildiren sözcüklerdir: "Ağır bir bavul" (tartılabilir), "Geniş bir salon" (metrekare ölçülebilir), "Yüksek bir bina" (metre ölçülebilir), "Uzun bir yol" (kilometre ölçülebilir).\n  • Nitel Anlam: Varlıkların sayılamayan, ölçülemeyen, kalitesini, özelliğini ve nasıl olduğunu bildiren sözcüklerdir: "Ağır bir sorumluluk" (ölçülemez), "Geniş bir yürek" (kalite), "Yüksek fikirler" (nitelik), "Tatlı bir tebessüm" (nitelik).',
@@ -57,7 +57,7 @@ final LectureTopic konu1SozcukteAnlam = LectureTopic(
     LectureSection(
       title: '4. Kalıplaşmış Söz Öbekleri: İkilemeler, Deyimler ve Atasözleri',
       type: LectureSectionType.comparison,
-      leadText: 'Türkçenin anlatım zenginliğini oluşturan kalıplaşmış söz öbeklerinin yapısal ve işlevsel analizi (turkce1.pdf s. 26-30):',
+      leadText: 'Türkçenin anlatım zenginliğini oluşturan kalıplaşmış söz öbeklerinin yapısal ve işlevsel analizi:',
       bulletPoints: const [],
       goldenRule: 'DEYİM vs ATASÖZÜ AYRIMI: Söz öbeği tam bir cümle olup ahlaki öğüt ve hayat dersi veriyorsa ATASÖZÜDÜR ("İşleyen demir pas tutmaz"). Eğer öğüt vermeyip sadece bir durumu, duyguyu betimliyor ve çoğunlukla mastarla bitiyorsa DEYİMDİR ("Göz boyamak", "Etekleri tutuşmak").',
       osymTrap: 'ÖSYM TUZAĞI: Deyimlerin kalıbını bozmak ANLATIM BOZUKLUĞUDUR: "Sevincinden etekleri tutuştu" (YANLIŞ -> etekleri zil çaldı olmalı; etekleri tutuşmak telaş ve korku bildirir).',
@@ -80,9 +80,9 @@ final LectureTopic konu1SozcukteAnlam = LectureTopic(
       ]
     ),
     LectureSection(
-      title: '5. Edebi Sanatlar (Söz Sanatları) Atlası (turkce1.pdf Bölüm 19, s. 313-322)',
+      title: '5. Edebi Sanatlar (Söz Sanatları) Atlası',
       type: LectureSectionType.ruleList,
-      leadText: 'Şiirde ve düzyazıda kullanılan sözcüklerin kendine özgü bir dili vardır. Bu dil, günlük dilden farklıdır. Şiirde bu farklılığı sağlayan en önemli unsur imgedir. Edebi sanatlar bu imgesel anlatımın omurgasıdır (turkce1.pdf s. 313-322):',
+      leadText: 'Şiirde ve düzyazıda kullanılan sözcüklerin kendine özgü bir dili vardır. Bu dil, günlük dilden farklıdır. Şiirde bu farklılığı sağlayan en önemli unsur imgedir. Edebi sanatlar bu imgesel anlatımın omurgasıdır:',
       bulletPoints: [
         '1. Benzetme (Teşbih): Aralarında ilgi bulunan iki unsurdan güçsüz olanın güçlü olana benzetildiği söz sanatıdır. Dört unsuru vardır:\n  • Benzeyen (güçsüz unsur): asker\n  • Kendisine Benzetilen (güçlü unsur): aslan\n  • Benzetme Yönü (ortak nitelik): kuvvetli/cesur olmak\n  • Benzetme Edatı: gibi, kadar, sanki, misali\n  • Tam Benzetme Örneği: "Askerlerimiz aslan gibi cesurca savaştı."\n  • Teşbihibeliğ (Güzel Benzetme): Yalnızca benzeyen ve kendisine benzetilenle yapılan benzetmedir: "Gül tenli yarim", "Kömür gözlüm", "Çelik bilekli pehlivan".',
         '2. Kişileştirme (Teşhis): İnsana ait duygu, düşünce ve eylemlerin insan dışındaki varlıklara (hayvanlara, bitkilere, nesnelere, doğa olaylarına) aktarılmasıdır:\n  • "Rüzgâr hüzünlü hüzünlü fısıldıyordu sokaklarda."\n  • "Ağaçlar sonbaharda yaprak dökerek ağlaşıyordu."\n  • "Yorgun deniz sahili usulca dövüyordu."',
@@ -97,7 +97,7 @@ final LectureTopic konu1SozcukteAnlam = LectureTopic(
     LectureSection(
       title: 'İnteraktif Sınav Simülasyonu: Sözcükte Anlam ve Söz Sanatları',
       type: LectureSectionType.interactiveQuiz,
-      leadText: 'turkce1.pdf Ünite Değerlendirme Testi kaynaklı çözümlü pekiştirme sorusu:',
+      leadText: 'Ünite değerlendirme testlerinden çözümlü pekiştirme sorusu:',
       bulletPoints: const [],
       quizzes: [
         LectureInteractiveQuiz(
