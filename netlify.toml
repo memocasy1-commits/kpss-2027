@@ -1,6 +1,6 @@
 [build]
   publish = "build/web"
-  command = "git clone https://github.com/flutter/flutter.git --depth 1 -b stable _flutter && ./_flutter/bin/flutter build web --release && cp update_manifest.json build/web/ && cp -r assets/data build/web/"
+  command = "bash build_web.sh"
 
 [[redirects]]
   from = "/*"
