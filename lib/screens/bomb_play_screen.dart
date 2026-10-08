@@ -158,7 +158,7 @@ class _BombPlayScreenState extends State<BombPlayScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final bgColor = AppColors.background;
         final cardBg = AppColors.card;
         final cardBorder = AppColors.cardBorder;

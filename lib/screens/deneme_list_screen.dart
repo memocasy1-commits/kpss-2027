@@ -27,7 +27,7 @@ class _DenemeListScreenState extends State<DenemeListScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final Color bgColor = AppColors.background;
         final Color textPrimary = AppColors.textPrimary;
 

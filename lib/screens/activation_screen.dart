@@ -135,7 +135,7 @@ class _ActivationScreenState extends State<ActivationScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final cardBg = AppColors.card;
         final borderColor = AppColors.cardBorder;
 

@@ -43,7 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final Color bgColor = AppColors.background;
         final Color cardBg = AppColors.card;
         final Color cardBorder = AppColors.cardBorder;
@@ -519,12 +519,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           decoration: BoxDecoration(
             color: isSelected
                 ? (isDark ? const Color(0xFF4F46E5) : const Color(0xFF4338CA))
-                : (isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9)),
+                : (isDark ? AppColors.surfaceLight : const Color(0xFFF1F5F9)),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: isSelected
                   ? const Color(0xFF818CF8)
-                  : (isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1)),
+                  : AppColors.cardBorder,
               width: isSelected ? 1.5 : 1,
             ),
           ),
@@ -665,15 +665,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9),
+                  color: isDark ? AppColors.surfaceLight : const Color(0xFFF1F5F9),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1)),
+                  border: Border.all(color: cardBorder),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     isExpanded: true,
                     value: selectedExam,
                     dropdownColor: cardBg,
+                    icon: Icon(Icons.arrow_drop_down_rounded, color: textSecondary),
                     items: exams.map((e) {
                       return DropdownMenuItem(
                         value: e,
@@ -740,7 +741,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           side: BorderSide(
                             color: isSel
                                 ? const Color(0xFF818CF8)
-                                : (isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1)),
+                                : cardBorder,
                           ),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
@@ -948,9 +949,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9),
+              color: isDark ? AppColors.surfaceLight : const Color(0xFFF1F5F9),
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1)),
+              border: Border.all(color: cardBorder),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -987,9 +988,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             width: double.infinity,
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                backgroundColor: isDark ? AppColors.surfaceLight : const Color(0xFFE2E8F0),
                 foregroundColor: textPrimary,
                 elevation: 0,
+                side: BorderSide(color: cardBorder),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
@@ -1431,8 +1433,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                              color: isDark ? AppColors.surfaceLight : const Color(0xFFE2E8F0),
                               borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: cardBorder),
                             ),
                             child: Text(
                               'v${UpdateService.currentVersionName} (${UpdateService.currentVersionCode})',

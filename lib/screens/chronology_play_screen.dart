@@ -183,7 +183,7 @@ class _ChronologyPlayScreenState extends State<ChronologyPlayScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final bgColor = AppColors.background;
         final textPrimary = AppColors.textPrimary;
         final textSecondary = AppColors.textSecondary;

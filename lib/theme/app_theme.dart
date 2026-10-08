@@ -8,10 +8,27 @@ enum ThemeModeType {
   system, // 4: Telefona Uyum Sağla (Otomatik)
 }
 
+extension ThemeModeTypeExtension on ThemeModeType {
+  bool get isDark {
+    if (this == ThemeModeType.oled || this == ThemeModeType.dark) return true;
+    if (this == ThemeModeType.system) {
+      return WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
+    }
+    return false;
+  }
+}
+
 class AppColors {
   // Theme state
   static ThemeModeType currentMode = ThemeModeType.dark;
-  static bool get isDarkMode => currentMode == ThemeModeType.dark || currentMode == ThemeModeType.oled;
+  static bool get isDark => isDarkMode;
+  static bool get isDarkMode {
+    if (currentMode == ThemeModeType.oled || currentMode == ThemeModeType.dark) return true;
+    if (currentMode == ThemeModeType.system) {
+      return WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
+    }
+    return false;
+  }
   static bool get isOledMode => currentMode == ThemeModeType.oled;
   static bool get isSepiaMode => currentMode == ThemeModeType.sepia;
 

@@ -150,7 +150,7 @@ class _StarredQuestionsScreenState extends State<StarredQuestionsScreen> with Si
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final Color bgColor = AppColors.background;
         final Color surfaceBg = AppColors.surface;
         final Color borderColor = AppColors.cardBorder;

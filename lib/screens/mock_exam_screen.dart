@@ -430,7 +430,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final currentQ = widget.deneme.questions[_currentIndex];
         final selectedOption = _userAnswers[_currentIndex];
         final isFlagged = _flaggedQuestions.contains(_currentIndex);

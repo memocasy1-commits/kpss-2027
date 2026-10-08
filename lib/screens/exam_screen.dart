@@ -538,7 +538,7 @@ class _ExamScreenState extends State<ExamScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final Question currentQ = widget.questions[_currentIndex];
         final bool hasAnswered = _userAnswers.containsKey(_currentIndex);
         final int? selectedOption = _userAnswers[_currentIndex];

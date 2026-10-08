@@ -750,7 +750,7 @@ class _TestListScreenState extends State<TestListScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: AppBar(

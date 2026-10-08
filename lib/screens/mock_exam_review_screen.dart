@@ -53,7 +53,7 @@ class _MockExamReviewScreenState extends State<MockExamReviewScreen> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final filtered = _filteredIndices;
         if (_currentIndex >= filtered.length && filtered.isNotEmpty) {
           _currentIndex = 0;

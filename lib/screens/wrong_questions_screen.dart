@@ -69,7 +69,7 @@ class _WrongQuestionsScreenState extends State<WrongQuestionsScreen> with Single
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = themeMode.isDark;
         final Color bgColor = AppColors.background;
         final Color cardBg = AppColors.card;
         final Color cardBorder = AppColors.cardBorder;

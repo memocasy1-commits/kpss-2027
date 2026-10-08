@@ -304,7 +304,7 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                           Text(
                             'TEMEL ÇALIŞMA ALANLARI',
                             style: TextStyle(
-                              color: themeMode == ThemeModeType.dark
+                              color: themeMode.isDark
                                   ? const Color(0xFFA5B4FC)
                                   : (themeMode == ThemeModeType.sepia
                                       ? const Color(0xFF92400E)
@@ -380,7 +380,7 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                           Text(
                             'HIZLI DURUM & TELAFİ',
                             style: TextStyle(
-                              color: themeMode == ThemeModeType.dark
+                              color: themeMode.isDark
                                   ? const Color(0xFFA5B4FC)
                                   : (themeMode == ThemeModeType.sepia
                                       ? const Color(0xFF92400E)
