@@ -1,11 +1,11 @@
 {
-  "versionCode": 6,
-  "versionName": "1.0.5",
-  "version": "1.0.5",
-  "build_number": 6,
-  "releaseNotes": "Önemli Düzeltme: Haritada Nokta Atışı haritası ÖSYM KPSS standardı olan saf DİLSİZ HARİTAYA dönüştürüldü (il sınırları kaldırıldı). Ek olarak harita köşesine tek dokunuşla İl Sınırlarını açıp kapatabilen mod düğmesi eklendi.",
+  "versionCode": 7,
+  "versionName": "1.0.6",
+  "version": "1.0.6",
+  "build_number": 7,
+  "releaseNotes": "Dev Harita Güncellemesi: Soru havuzu 86'ya çıkarıldı! Kategori filtreleme çubuğu, 3 Oyun Modu (Klasik, 60sn Zamana Karşı Maraton, Keşif), ÖSYM Sınavı Altın Bilgileri ve Kaçırılanları Tekrar Çöz özelliği eklendi.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-09T00:20:00Z",
+  "questionsUpdatedAt": "2026-10-09T01:00:00Z",
   "mandatory": false
 }

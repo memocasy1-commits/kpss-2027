@@ -3,8 +3,9 @@ import 'package:kpss_soru_bankasi/data/map_point_game_data.dart';
 
 void main() {
   group('MapPointGameData Tests', () {
-    test('Question pool is loaded and contains at least 30 questions', () {
-      expect(MapPointGameData.questions.length, greaterThanOrEqualTo(30));
+    test('Question pool is loaded and contains at least 80 questions across all categories', () {
+      expect(MapPointGameData.questions.length, greaterThanOrEqualTo(80));
+      expect(MapPointGameData.categories.length, greaterThanOrEqualTo(7));
     });
 
     test('All questions have valid coordinates within Turkey bounding box', () {
