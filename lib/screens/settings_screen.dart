@@ -1522,9 +1522,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     padding: const EdgeInsets.symmetric(vertical: 10),
                                   ),
                                   icon: const Icon(Icons.download_rounded, size: 18),
-                                  label: const Text(
-                                    'Yeni APK\'yı İndir (~58 MB)',
-                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+                                  label: Text(
+                                    'Yeni APK\'yı İndir (${updateInfo.apkSize})',
+                                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
                                   ),
                                   onPressed: () => UpdateService.instance.launchApkDownload(updateInfo.apkUrl),
                                 ),

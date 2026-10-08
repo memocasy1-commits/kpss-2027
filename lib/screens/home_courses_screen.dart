@@ -16,6 +16,7 @@ import 'question_search_screen.dart';
 import 'spaced_repetition_screen.dart';
 import 'games_hub_screen.dart';
 import 'lecture_hub_screen.dart';
+import '../services/update_service.dart';
 
 class HomeCoursesScreen extends StatefulWidget {
   const HomeCoursesScreen({super.key});
@@ -29,6 +30,8 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
   Map<String, dynamic> _lastStudied = {};
   Map<String, dynamic> _streakData = {'streak': 0, 'solvedToday': false};
   bool _isLoading = true;
+  bool _isUpdateBannerDismissed = false;
+  static bool _hasShownUpdateDialogInSession = false;
 
   static const List<Map<String, String>> _dailyTips = [
     {
@@ -75,6 +78,38 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
   void initState() {
     super.initState();
     _loadDashboardData();
+    _setupUpdateListener();
+  }
+
+  void _setupUpdateListener() {
+    UpdateService.instance.availableUpdateNotifier.addListener(_onUpdateAvailableChanged);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndPromptUpdate(UpdateService.instance.availableUpdateNotifier.value);
+    });
+  }
+
+  void _onUpdateAvailableChanged() {
+    final info = UpdateService.instance.availableUpdateNotifier.value;
+    _checkAndPromptUpdate(info);
+  }
+
+  void _checkAndPromptUpdate(RemoteVersionInfo? info) {
+    if (!mounted || info == null) return;
+    final bool hasNewApk = info.versionCode > UpdateService.currentVersionCode;
+    if (hasNewApk && !_hasShownUpdateDialogInSession) {
+      _hasShownUpdateDialogInSession = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          UpdateService.showUpdateDialog(context, info);
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    UpdateService.instance.availableUpdateNotifier.removeListener(_onUpdateAvailableChanged);
+    super.dispose();
   }
 
   Future<void> _loadDashboardData() async {
@@ -251,6 +286,37 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                     );
                   },
                 ),
+                // Yeni Güncelleme Rozet Butonu
+                ValueListenableBuilder<RemoteVersionInfo?>(
+                  valueListenable: UpdateService.instance.availableUpdateNotifier,
+                  builder: (context, updateInfo, _) {
+                    final hasUpdate = updateInfo != null &&
+                        updateInfo.versionCode > UpdateService.currentVersionCode;
+                    if (!hasUpdate) return const SizedBox.shrink();
+                    return IconButton(
+                      tooltip: 'Yeni Güncelleme Mevcut: v${updateInfo.versionName} (${updateInfo.apkSize})',
+                      icon: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          const Icon(Icons.system_update_rounded, color: Color(0xFF10B981), size: 22),
+                          Positioned(
+                            right: -2,
+                            top: -2,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF10B981),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () => UpdateService.showUpdateDialog(context, updateInfo),
+                    );
+                  },
+                ),
                 IconButton(
                   tooltip: 'Sistem & Ayarlar',
                   icon: Icon(Icons.settings_outlined, color: textSecondary, size: 21),
@@ -274,6 +340,27 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // 0. BÖLÜM: YENİ GÜNCELLEME BİLDİRİM KARTI
+                          ValueListenableBuilder<RemoteVersionInfo?>(
+                            valueListenable: UpdateService.instance.availableUpdateNotifier,
+                            builder: (context, updateInfo, _) {
+                              final hasUpdate = updateInfo != null &&
+                                  updateInfo.versionCode > UpdateService.currentVersionCode;
+                              if (!hasUpdate || _isUpdateBannerDismissed) {
+                                return const SizedBox.shrink();
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 14.0),
+                                child: _buildUpdateNotificationBanner(
+                                  updateInfo: updateInfo,
+                                  isDark: themeMode.isDark,
+                                  textPrimary: textPrimary,
+                                  textSecondary: textSecondary,
+                                ),
+                              );
+                            },
+                          ),
+
                           // 1. BÖLÜM: 2027 KPSS HEDEF & PERFORMANS KARTI (GÜNÜN HAP BİLGİSİ İLE)
                           _buildCountdownCard(
                             surfaceBg: surfaceBg,
@@ -492,6 +579,153 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
   }
 
   // --- KART YAPILANDIRICILARI ---
+
+  Widget _buildUpdateNotificationBanner({
+    required RemoteVersionInfo updateInfo,
+    required bool isDark,
+    required Color textPrimary,
+    required Color textSecondary,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isDark
+              ? [const Color(0xFF064E3B), const Color(0xFF065F46)]
+              : [const Color(0xFFD1FAE5), const Color(0xFFA7F3D0)],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF10B981).withValues(alpha: 0.7),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF10B981).withValues(alpha: isDark ? 0.3 : 0.15),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF10B981),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF10B981).withValues(alpha: 0.4),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Icon(Icons.rocket_launch_rounded, color: Colors.white, size: 20),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'YENİ GÜNCELLEME MEVCUT! (v${updateInfo.versionName})',
+                      style: TextStyle(
+                        color: isDark ? const Color(0xFF6EE7B7) : const Color(0xFF047857),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Yeni sürüm hazır • Boyut: ${updateInfo.apkSize}',
+                      style: TextStyle(
+                        color: isDark ? Colors.white70 : const Color(0xFF065F46),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.close_rounded,
+                  size: 20,
+                  color: isDark ? Colors.white70 : const Color(0xFF065F46),
+                ),
+                tooltip: 'Bildirimi Gizle',
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: () {
+                  setState(() {
+                    _isUpdateBannerDismissed = true;
+                  });
+                },
+              ),
+            ],
+          ),
+          if (updateInfo.releaseNotes.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              updateInfo.releaseNotes,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 11.5,
+                color: isDark ? Colors.white.withValues(alpha: 0.9) : const Color(0xFF1F2937),
+                height: 1.35,
+              ),
+            ),
+          ],
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF10B981),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                  ),
+                  icon: const Icon(Icons.download_rounded, size: 17),
+                  label: Text(
+                    'APK İndir (${updateInfo.apkSize})',
+                    style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800),
+                  ),
+                  onPressed: () => UpdateService.instance.launchApkDownload(updateInfo.apkUrl),
+                ),
+              ),
+              const SizedBox(width: 8),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: isDark ? Colors.white : const Color(0xFF047857),
+                  side: BorderSide(
+                    color: isDark ? const Color(0xFF34D399) : const Color(0xFF059669),
+                    width: 1.2,
+                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                ),
+                onPressed: () => UpdateService.showUpdateDialog(context, updateInfo),
+                child: const Text(
+                  'Detaylar',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildCountdownCard({
     required Color surfaceBg,

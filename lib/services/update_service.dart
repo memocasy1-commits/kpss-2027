@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,6 +20,7 @@ class RemoteVersionInfo {
   final String webUrl;
   final String questionsUpdatedAt;
   final bool mandatory;
+  final String apkSize;
 
   const RemoteVersionInfo({
     required this.versionCode,
@@ -28,6 +30,7 @@ class RemoteVersionInfo {
     required this.webUrl,
     required this.questionsUpdatedAt,
     required this.mandatory,
+    this.apkSize = '101.9 MB',
   });
 
   factory RemoteVersionInfo.fromJson(Map<String, dynamic> json) {
@@ -38,6 +41,14 @@ class RemoteVersionInfo {
       parsedCode = int.tryParse(json['build_number'].toString()) ?? 1;
     }
 
+    String size = (json['apkSize'] as String?) ??
+        (json['apk_size'] as String?) ??
+        (json['size'] as String?) ??
+        '101.9 MB';
+    if (size.trim().isEmpty) {
+      size = '101.9 MB';
+    }
+
     return RemoteVersionInfo(
       versionCode: parsedCode,
       versionName: json['versionName'] as String? ?? json['version'] as String? ?? '1.0.0',
@@ -46,6 +57,7 @@ class RemoteVersionInfo {
       webUrl: json['webUrl'] as String? ?? 'https://kpss-2027.netlify.app',
       questionsUpdatedAt: json['questionsUpdatedAt'] as String? ?? '',
       mandatory: json['mandatory'] as bool? ?? false,
+      apkSize: size,
     );
   }
 }
@@ -54,8 +66,8 @@ class UpdateService {
   static final UpdateService instance = UpdateService._internal();
   UpdateService._internal();
 
-  static const int currentVersionCode = 9;
-  static const String currentVersionName = '1.0.8';
+  static const int currentVersionCode = 10;
+  static const String currentVersionName = '1.0.9';
 
   // Primary: Netlify public CDN and GitHub raw
   static const List<String> _versionEndpoints = [
@@ -90,13 +102,10 @@ class UpdateService {
       modeNotifier.value = UpdateMode.values[modeIndex.clamp(0, UpdateMode.values.length - 1)];
       lastCheckedTimeNotifier.value = prefs.getString(_keyLastChecked);
 
-      // Otomatik moddaysa arka planda sessizce kontrol et
-      if (currentMode != UpdateMode.manual) {
-        // Uygulama açılışında kısa bir gecikmeyle arka planda kontrol
-        Future.delayed(const Duration(seconds: 4), () {
-          checkForUpdates(silent: true);
-        });
-      }
+      // Uygulama açılışında kısa bir gecikmeyle arka planda kontrol et
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        checkForUpdates(silent: true);
+      });
     } catch (e) {
       debugPrint('UpdateService init error: $e');
     }
@@ -286,5 +295,200 @@ class UpdateService {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
     } catch (_) {}
+  }
+
+  /// Yeni güncelleme diyalogunu göster
+  static Future<void> showUpdateDialog(BuildContext context, RemoteVersionInfo info) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: !info.mandatory,
+      builder: (BuildContext ctx) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        final dialogBg = isDark ? const Color(0xFF1E293B) : Colors.white;
+        final textPrimary = isDark ? Colors.white : const Color(0xFF0F172A);
+        final textSecondary = isDark ? const Color(0xFF94A3B8) : const Color(0xFF475569);
+        final cardBg = isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9);
+
+        return PopScope(
+          canPop: !info.mandatory,
+          child: AlertDialog(
+            backgroundColor: dialogBg,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+            content: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF10B981), Color(0xFF059669)],
+                          ),
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF10B981).withValues(alpha: 0.35),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(Icons.rocket_launch_rounded, color: Colors.white, size: 24),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'YENİ GÜNCELLEME HAZIR!',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFF10B981),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'KPSS 2027 v${info.versionName}',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w800,
+                                color: textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: cardBg,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.inventory_2_outlined, size: 15, color: textSecondary),
+                            const SizedBox(width: 5),
+                            Text(
+                              'Boyut: ${info.apkSize}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF10B981).withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            'v$currentVersionName ➔ v${info.versionName}',
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF10B981),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (info.releaseNotes.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      'Sürüm Yenilikleri:',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      constraints: const BoxConstraints(maxHeight: 140),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: cardBg,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: SingleChildScrollView(
+                        child: Text(
+                          info.releaseNotes,
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 1.45,
+                            color: textPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF10B981),
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+                      ),
+                      icon: const Icon(Icons.download_rounded, size: 20),
+                      label: Text(
+                        'Hemen İndir ve Güncelle (${info.apkSize})',
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+                      ),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                        UpdateService.instance.launchApkDownload(info.apkUrl);
+                      },
+                    ),
+                  ),
+                  if (!info.mandatory) ...[
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: textSecondary,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        onPressed: () => Navigator.of(ctx).pop(),
+                        child: const Text(
+                          'Daha Sonra',
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
