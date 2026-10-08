@@ -59,6 +59,13 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     super.initState();
     _selectedCategory = widget.initialCategory ?? 'all';
 
+    // Allow both portrait and landscape orientations
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -143,8 +150,27 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     _currentScale = 1.0;
   }
 
+  void _toggleOrientation() {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    HapticFeedback.mediumImpact();
+    if (isLandscape) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    } else {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+      ]);
+    }
+  }
+
   @override
   void dispose() {
+    // Reset to default portrait orientation when leaving screen
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     _speedRunTimer?.cancel();
     _pulseController.dispose();
     _transformController.dispose();
@@ -581,43 +607,46 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     final textPrimary = AppColors.textPrimary;
     final textSecondary = AppColors.textSecondary;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
+        toolbarHeight: isLandscape ? 44 : 56,
         shape: Border(bottom: BorderSide(color: cardBorder, width: 1)),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textPrimary, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textPrimary, size: 18),
           onPressed: () => Navigator.pop(context),
         ),
         title: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(7),
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: const Color(0xFF059669).withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(9),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.place_rounded, color: Color(0xFF059669), size: 18),
+              child: const Icon(Icons.place_rounded, color: Color(0xFF059669), size: 16),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'HARİTADA NOKTA ATIŞI',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 0.3),
+                  Text(
+                    isLandscape ? 'KPSS NOKTA ATIŞI' : 'HARİTADA NOKTA ATIŞI',
+                    style: TextStyle(fontSize: isLandscape ? 12 : 13, fontWeight: FontWeight.w900, letterSpacing: 0.3),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     _gameMode == MapGameMode.speedRun
-                        ? '⏳ $_remainingSeconds sn kaldı • #${_currentIndex + 1}'
+                        ? '⏳ $_remainingSeconds sn • #${_currentIndex + 1}'
                         : '${_currentIndex + 1} / ${_questions.length} Soru',
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 10.5,
                       fontWeight: FontWeight.w700,
                       color: _gameMode == MapGameMode.speedRun && _remainingSeconds <= 15
                           ? const Color(0xFFEF4444)
@@ -630,12 +659,34 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           ],
         ),
         actions: [
+          // Ekranı Döndür (Yatay / Dikey Mod Butonu)
+          IconButton(
+            tooltip: isLandscape ? 'Dikey Moda Geç' : 'Yatay Moda Geç',
+            icon: Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: (isLandscape ? const Color(0xFF6366F1) : textSecondary).withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: (isLandscape ? const Color(0xFF6366F1) : cardBorder),
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                isLandscape ? Icons.stay_current_portrait_rounded : Icons.stay_current_landscape_rounded,
+                size: 16,
+                color: isLandscape ? const Color(0xFF6366F1) : textPrimary,
+              ),
+            ),
+            onPressed: _toggleOrientation,
+          ),
+
           // Oyun Modu Değiştir Butonu
           InkWell(
             onTap: _showGameModeBottomSheet,
             borderRadius: BorderRadius.circular(8),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
               decoration: BoxDecoration(
                 color: AppColors.card,
                 borderRadius: BorderRadius.circular(8),
@@ -649,7 +700,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                         : (_gameMode == MapGameMode.practice
                             ? Icons.explore_rounded
                             : Icons.military_tech_rounded),
-                    size: 14,
+                    size: 13,
                     color: const Color(0xFF6366F1),
                   ),
                   const SizedBox(width: 4),
@@ -657,22 +708,22 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                     _gameMode == MapGameMode.speedRun
                         ? '60s'
                         : (_gameMode == MapGameMode.practice ? 'Keşif' : 'Klasik'),
-                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: Color(0xFF6366F1)),
+                    style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: Color(0xFF6366F1)),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
 
           // Puan & Kombo Rozeti
           Padding(
-            padding: const EdgeInsets.only(right: 12),
+            padding: const EdgeInsets.only(right: 10),
             child: Row(
               children: [
                 if (_combo >= 2) ...[
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                     decoration: BoxDecoration(
                       color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(8),
@@ -680,13 +731,13 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                     ),
                     child: Text(
                       '⚡ x${_combo >= 3 ? 2 : 1.5}',
-                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, color: Color(0xFFF59E0B)),
+                      style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: Color(0xFFF59E0B)),
                     ),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 5),
                 ],
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: const Color(0xFF6366F1).withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(10),
@@ -694,12 +745,12 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.star_rounded, color: Color(0xFF6366F1), size: 15),
+                      const Icon(Icons.star_rounded, color: Color(0xFF6366F1), size: 14),
                       const SizedBox(width: 3),
                       Text(
                         '$_totalScore',
                         style: const TextStyle(
-                          fontSize: 12.5,
+                          fontSize: 11.5,
                           fontWeight: FontWeight.w900,
                           color: Color(0xFF6366F1),
                         ),
@@ -733,411 +784,490 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                 minHeight: 3,
               ),
 
-            // Kategori Seçici Çubuğu (Yatay Kaydırılabilir Chips Bar)
-            _buildCategorySelector(),
-
-            // Soru Başlığı & Kategori (Kompakt ve net)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                decoration: BoxDecoration(
-                  color: cardBg,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: cardBorder),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            // YATAY MOD (LANDSCAPE) DÜZENİ
+            if (isLandscape)
+              Expanded(
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF059669).withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            q.categoryTitle.toUpperCase(),
-                            style: const TextStyle(
-                              color: Color(0xFF059669),
-                              fontSize: 9.5,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.4,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF6366F1).withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            q.subCategory,
-                            style: const TextStyle(
-                              color: Color(0xFF6366F1),
-                              fontSize: 9.5,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              _showHint = !_showHint;
-                            });
-                          },
-                          borderRadius: BorderRadius.circular(6),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.lightbulb_outline_rounded,
-                                  size: 14,
-                                  color: _showHint ? const Color(0xFFF59E0B) : textSecondary,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  _showHint ? 'Gizle' : 'İpucu',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: _showHint ? const Color(0xFFF59E0B) : textSecondary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      q.question,
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w800,
-                        color: textPrimary,
-                        height: 1.25,
+                    // Sol Taraf: Geniş İnteraktif Harita Alanı (%65)
+                    Expanded(
+                      flex: 65,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 6, 6, 6),
+                        child: _buildInteractiveMap(isDark: isDark, cardBorder: cardBorder, textSecondary: textSecondary, q: q),
                       ),
                     ),
-                    if (_showHint) ...[
-                      const SizedBox(height: 5),
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF59E0B).withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(7),
-                          border: Border.all(color: const Color(0xFFF59E0B).withValues(alpha: 0.25)),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.info_outline_rounded, size: 13, color: Color(0xFFF59E0B)),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Text(
-                                q.hint,
-                                style: const TextStyle(fontSize: 11, color: Color(0xFFD97706), fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
+
+                    // Sağ Taraf: Soru, Bilgi Kartı ve İşlem Paneli (%35)
+                    Expanded(
+                      flex: 35,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(4, 6, 10, 6),
+                        child: _buildLandscapeSidebar(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              )
+            // DİKEY MOD (PORTRAIT) DÜZENİ
+            else
+              Expanded(
+                child: Column(
+                  children: [
+                    // Kategori Seçici Çubuğu
+                    _buildCategorySelector(),
+
+                    // Soru Başlığı & Kategori
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
+                      child: _buildQuestionCard(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary),
+                    ),
+
+                    // Harita Alanı
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                        child: _buildInteractiveMap(isDark: isDark, cardBorder: cardBorder, textSecondary: textSecondary, q: q),
+                      ),
+                    ),
+
+                    // Alt Alan: Sonuç Kartı veya Onay Butonu
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 2, 14, 10),
+                      child: _hasConfirmed ? _buildFeedbackSection(q) : _buildActionSection(),
+                    ),
                   ],
                 ),
               ),
-            ),
-
-            // İnteraktif Harita Alanı (Zoom, Pan, İl Sınırları, Taşma Korumalı)
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final double containerW = constraints.maxWidth;
-                    final double containerH = constraints.maxHeight;
-
-                    // Harita en/boy oranı: 1800 / 657 = 2.7397
-                    const double mapAspect = 1800 / 657;
-
-                    // Pinlerin harita sınırları dışına taşmasını engelleyen iç paylar
-                    const double padX = 14.0;
-                    const double padY = 24.0;
-
-                    double mapW = containerW - (padX * 2);
-                    double mapH = mapW / mapAspect;
-
-                    if (mapH > (containerH - (padY * 2))) {
-                      mapH = containerH - (padY * 2);
-                      mapW = mapH * mapAspect;
-                    }
-
-                    final double canvasW = mapW + (padX * 2);
-                    final double canvasH = mapH + (padY * 2);
-
-                    return Stack(
-                      children: [
-                        // Harita Konteynırı
-                        Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF0A101D) : const Color(0xFFE0F2FE),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: isDark ? const Color(0xFF1E293B) : const Color(0xFFBAE6FD),
-                              width: 1.2,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.05),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: InteractiveViewer(
-                              transformationController: _transformController,
-                              minScale: 1.0,
-                              maxScale: 3.5,
-                              boundaryMargin: const EdgeInsets.all(50),
-                              child: Center(
-                                child: SizedBox(
-                                  width: canvasW,
-                                  height: canvasH,
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: [
-                                      // 1. DİLSİZ TÜRKİYE HARİTASI (ÖSYM KPSS Standardı: İl sınırları olmaksızın, kıyı ve göller)
-                                      Positioned(
-                                        left: padX,
-                                        top: padY,
-                                        width: mapW,
-                                        height: mapH,
-                                        child: Image.asset(
-                                          _showCityBorders
-                                              ? (isDark
-                                                  ? 'assets/images/maps/turkiye_siyasi_harita_dark.png'
-                                                  : 'assets/images/maps/turkiye_siyasi_harita_light.png')
-                                              : (isDark
-                                                  ? 'assets/images/maps/turkiye_dilsiz_harita_dark.png'
-                                                  : 'assets/images/maps/turkiye_dilsiz_harita_light.png'),
-                                          fit: BoxFit.fill,
-                                          filterQuality: FilterQuality.high,
-                                        ),
-                                      ),
-
-                                      // 2. Çizgi Katmanı (Kullanıcı Dokunuşu ile Gerçek Hedef Arası Kesikli Çizgi)
-                                      if (_hasConfirmed && _userTapNorm != null)
-                                        CustomPaint(
-                                          size: Size(canvasW, canvasH),
-                                          painter: DistanceLinePainter(
-                                            start: Offset(
-                                              padX + _userTapNorm!.dx * mapW,
-                                              padY + _userTapNorm!.dy * mapH,
-                                            ),
-                                            end: Offset(
-                                              padX + q.normX * mapW,
-                                              padY + q.normY * mapH,
-                                            ),
-                                            lineColor: _lastFeedbackColor,
-                                          ),
-                                        ),
-
-                                      // 3. Gerçek Hedef Pini (Onaylandıktan sonra açılır, yukarı taşma korumalı)
-                                      if (_hasConfirmed)
-                                        Positioned(
-                                          left: padX + q.normX * mapW - 14,
-                                          top: q.normY < 0.22
-                                              ? (padY + q.normY * mapH - 10)
-                                              : (padY + q.normY * mapH - 34),
-                                          child: _buildTargetPin(q.targetName, showBelow: q.normY < 0.22),
-                                        ),
-
-                                      // 4. Kullanıcı Pini
-                                      if (_userTapNorm != null)
-                                        Positioned(
-                                          left: padX + _userTapNorm!.dx * mapW - 14,
-                                          top: _userTapNorm!.dy < 0.22
-                                              ? (padY + _userTapNorm!.dy * mapH - 10)
-                                              : (padY + _userTapNorm!.dy * mapH - 30),
-                                          child: _buildUserPin(
-                                            _hasConfirmed ? _lastFeedbackColor : const Color(0xFF6366F1),
-                                            showBelow: _userTapNorm!.dy < 0.22,
-                                          ),
-                                        ),
-
-                                      // 5. Dokunma Algılayıcı (GestureDetector - Tam harita koordinatına kilitli)
-                                      Positioned(
-                                        left: padX,
-                                        top: padY,
-                                        width: mapW,
-                                        height: mapH,
-                                        child: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTapUp: (details) {
-                                            final normX = details.localPosition.dx / mapW;
-                                            final normY = details.localPosition.dy / mapH;
-                                            _onMapTapped(Offset(normX.clamp(0.0, 1.0), normY.clamp(0.0, 1.0)));
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        // Sol Üst: Harita Modu Rozeti / Değiştirici (Dilsiz Harita vs. İl Sınırları)
-                        Positioned(
-                          top: 8,
-                          left: 8,
-                          child: InkWell(
-                            onTap: () {
-                              HapticFeedback.selectionClick();
-                              setState(() {
-                                _showCityBorders = !_showCityBorders;
-                              });
-                            },
-                            borderRadius: BorderRadius.circular(8),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
-                              decoration: BoxDecoration(
-                                color: _showCityBorders
-                                    ? const Color(0xFF6366F1).withValues(alpha: 0.9)
-                                    : (isDark ? Colors.black : Colors.white).withValues(alpha: 0.78),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: _showCityBorders ? const Color(0xFF6366F1) : cardBorder,
-                                  width: 0.8,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    _showCityBorders ? Icons.map_rounded : Icons.map_outlined,
-                                    size: 11,
-                                    color: _showCityBorders ? Colors.white : textSecondary,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    _showCityBorders ? 'İl Sınırları: Açık' : 'Dilsiz Harita',
-                                    style: TextStyle(
-                                      fontSize: 9.5,
-                                      fontWeight: FontWeight.w700,
-                                      color: _showCityBorders ? Colors.white : textSecondary,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        // Sağ Üst Bilgi Rozeti
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
-                            decoration: BoxDecoration(
-                              color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.78),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: cardBorder, width: 0.8),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.pinch_rounded, size: 11, color: textSecondary),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Pinch Yakınlaştır',
-                                  style: TextStyle(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w600,
-                                    color: textSecondary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // Sol Alt: Yakınlaştırmayı Sıfırla Butonu
-                        if (_currentScale > 1.08)
-                          Positioned(
-                            bottom: 8,
-                            left: 8,
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _resetZoom();
-                                });
-                              },
-                              borderRadius: BorderRadius.circular(8),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.8),
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.white24),
-                                ),
-                                child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.zoom_out_map_rounded, color: Colors.white, size: 13),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '1x Sıfırla',
-                                      style: TextStyle(color: Colors.white, fontSize: 10.5, fontWeight: FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            // Alt Alan: Sonuç Kartı veya Onay Butonu
-            Padding(
-              padding: const EdgeInsets.fromLTRB(14, 2, 14, 10),
-              child: _hasConfirmed ? _buildFeedbackSection(q) : _buildActionSection(),
-            ),
           ],
         ),
       ),
     );
   }
 
-  // Kategori Seçici Barı (Yatay Chip Listesi)
-  Widget _buildCategorySelector() {
+  // Yatay Mod Sağ Paneli
+  Widget _buildLandscapeSidebar({
+    required MapPointQuestion q,
+    required Color cardBg,
+    required Color cardBorder,
+    required Color textPrimary,
+    required Color textSecondary,
+  }) {
+    return Column(
+      children: [
+        // Kompakt Kategori Seçici
+        _buildCategorySelector(compact: true),
+        const SizedBox(height: 6),
+
+        // Soru Alanı
+        _buildQuestionCard(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary, compact: true),
+        const SizedBox(height: 6),
+
+        // Alt Panel (Aksiyon veya Feedback)
+        Expanded(
+          child: _hasConfirmed
+              ? _buildFeedbackSection(q, isLandscape: true)
+              : Center(child: _buildActionSection(isLandscape: true)),
+        ),
+      ],
+    );
+  }
+
+  // Soru Kartı
+  Widget _buildQuestionCard({
+    required MapPointQuestion q,
+    required Color cardBg,
+    required Color cardBorder,
+    required Color textPrimary,
+    required Color textSecondary,
+    bool compact = false,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 14, vertical: compact ? 6 : 8),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: cardBorder),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF059669).withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  q.categoryTitle.toUpperCase(),
+                  style: const TextStyle(
+                    color: Color(0xFF059669),
+                    fontSize: 9,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.3,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  q.subCategory,
+                  style: const TextStyle(
+                    color: Color(0xFF6366F1),
+                    fontSize: 9,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _showHint = !_showHint;
+                  });
+                },
+                borderRadius: BorderRadius.circular(6),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.lightbulb_outline_rounded,
+                        size: 13,
+                        color: _showHint ? const Color(0xFFF59E0B) : textSecondary,
+                      ),
+                      const SizedBox(width: 3),
+                      Text(
+                        _showHint ? 'Gizle' : 'İpucu',
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          color: _showHint ? const Color(0xFFF59E0B) : textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            q.question,
+            style: TextStyle(
+              fontSize: compact ? 11.5 : 12.5,
+              fontWeight: FontWeight.w800,
+              color: textPrimary,
+              height: 1.25,
+            ),
+          ),
+          if (_showHint) ...[
+            const SizedBox(height: 4),
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF59E0B).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: const Color(0xFFF59E0B).withValues(alpha: 0.25)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline_rounded, size: 12, color: Color(0xFFF59E0B)),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: Text(
+                      q.hint,
+                      style: const TextStyle(fontSize: 10.5, color: Color(0xFFD97706), fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  // İnteraktif Harita Widget'ı
+  Widget _buildInteractiveMap({
+    required bool isDark,
+    required Color cardBorder,
+    required Color textSecondary,
+    required MapPointQuestion q,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double containerW = constraints.maxWidth;
+        final double containerH = constraints.maxHeight;
+
+        const double mapAspect = 1800 / 657; // ~2.7397
+        const double padX = 12.0;
+        const double padY = 18.0;
+
+        double mapW = containerW - (padX * 2);
+        double mapH = mapW / mapAspect;
+
+        if (mapH > (containerH - (padY * 2))) {
+          mapH = containerH - (padY * 2);
+          mapW = mapH * mapAspect;
+        }
+
+        final double canvasW = mapW + (padX * 2);
+        final double canvasH = mapH + (padY * 2);
+
+        return Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF0A101D) : const Color(0xFFE0F2FE),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFBAE6FD),
+                  width: 1.2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: InteractiveViewer(
+                  transformationController: _transformController,
+                  minScale: 1.0,
+                  maxScale: 3.5,
+                  boundaryMargin: const EdgeInsets.all(50),
+                  child: Center(
+                    child: SizedBox(
+                      width: canvasW,
+                      height: canvasH,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          // 1. DİLSİZ TÜRKİYE HARİTASI (SAF, 0 İÇ İL SINIRI İZİ)
+                          Positioned(
+                            left: padX,
+                            top: padY,
+                            width: mapW,
+                            height: mapH,
+                            child: Image.asset(
+                              _showCityBorders
+                                  ? (isDark
+                                      ? 'assets/images/maps/turkiye_siyasi_harita_dark.png'
+                                      : 'assets/images/maps/turkiye_siyasi_harita_light.png')
+                                  : (isDark
+                                      ? 'assets/images/maps/turkiye_dilsiz_harita_dark.png'
+                                      : 'assets/images/maps/turkiye_dilsiz_harita_light.png'),
+                              fit: BoxFit.fill,
+                              filterQuality: FilterQuality.high,
+                            ),
+                          ),
+
+                          // 2. Çizgi Katmanı
+                          if (_hasConfirmed && _userTapNorm != null)
+                            CustomPaint(
+                              size: Size(canvasW, canvasH),
+                              painter: DistanceLinePainter(
+                                start: Offset(
+                                  padX + _userTapNorm!.dx * mapW,
+                                  padY + _userTapNorm!.dy * mapH,
+                                ),
+                                end: Offset(
+                                  padX + q.normX * mapW,
+                                  padY + q.normY * mapH,
+                                ),
+                                lineColor: _lastFeedbackColor,
+                              ),
+                            ),
+
+                          // 3. Gerçek Hedef Pini
+                          if (_hasConfirmed)
+                            Positioned(
+                              left: padX + q.normX * mapW - 14,
+                              top: q.normY < 0.22
+                                  ? (padY + q.normY * mapH - 10)
+                                  : (padY + q.normY * mapH - 34),
+                              child: _buildTargetPin(q.targetName, showBelow: q.normY < 0.22),
+                            ),
+
+                          // 4. Kullanıcı Pini
+                          if (_userTapNorm != null)
+                            Positioned(
+                              left: padX + _userTapNorm!.dx * mapW - 14,
+                              top: _userTapNorm!.dy < 0.22
+                                  ? (padY + _userTapNorm!.dy * mapH - 10)
+                                  : (padY + _userTapNorm!.dy * mapH - 30),
+                              child: _buildUserPin(
+                                _hasConfirmed ? _lastFeedbackColor : const Color(0xFF6366F1),
+                                showBelow: _userTapNorm!.dy < 0.22,
+                              ),
+                            ),
+
+                          // 5. Dokunma Algılayıcı
+                          Positioned(
+                            left: padX,
+                            top: padY,
+                            width: mapW,
+                            height: mapH,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTapUp: (details) {
+                                final normX = details.localPosition.dx / mapW;
+                                final normY = details.localPosition.dy / mapH;
+                                _onMapTapped(Offset(normX.clamp(0.0, 1.0), normY.clamp(0.0, 1.0)));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // Sol Üst: Harita Modu (Dilsiz Harita vs. İl Sınırları)
+            Positioned(
+              top: 8,
+              left: 8,
+              child: InkWell(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    _showCityBorders = !_showCityBorders;
+                  });
+                },
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
+                  decoration: BoxDecoration(
+                    color: _showCityBorders
+                        ? const Color(0xFF6366F1).withValues(alpha: 0.9)
+                        : (isDark ? Colors.black : Colors.white).withValues(alpha: 0.78),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: _showCityBorders ? const Color(0xFF6366F1) : cardBorder,
+                      width: 0.8,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        _showCityBorders ? Icons.map_rounded : Icons.map_outlined,
+                        size: 11,
+                        color: _showCityBorders ? Colors.white : textSecondary,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        _showCityBorders ? 'İl Sınırları: Açık' : 'Dilsiz Harita',
+                        style: TextStyle(
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w700,
+                          color: _showCityBorders ? Colors.white : textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Sağ Üst Bilgi Rozeti
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
+                decoration: BoxDecoration(
+                  color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.78),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: cardBorder, width: 0.8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.pinch_rounded, size: 11, color: textSecondary),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Pinch Yakınlaştır',
+                      style: TextStyle(
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w600,
+                        color: textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Sol Alt: Yakınlaştırmayı Sıfırla
+            if (_currentScale > 1.08)
+              Positioned(
+                bottom: 8,
+                left: 8,
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      _resetZoom();
+                    });
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.8),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.white24),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.zoom_out_map_rounded, color: Colors.white, size: 13),
+                        SizedBox(width: 4),
+                        Text(
+                          '1x Sıfırla',
+                          style: TextStyle(color: Colors.white, fontSize: 10.5, fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Kategori Seçici Barı
+  Widget _buildCategorySelector({bool compact = false}) {
     return SizedBox(
-      height: 38,
+      height: compact ? 32 : 38,
       child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: compact ? 0 : 14, vertical: compact ? 2 : 4),
         scrollDirection: Axis.horizontal,
         itemCount: MapPointGameData.categories.length,
         separatorBuilder: (_, __) => const SizedBox(width: 6),
@@ -1145,7 +1275,6 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           final cat = MapPointGameData.categories[index];
           final isSelected = _selectedCategory == cat.id;
 
-          // Soru sayısı hesapla
           final count = cat.id == 'all'
               ? MapPointGameData.questions.length
               : MapPointGameData.questions.where((q) => q.category == cat.id).length;
@@ -1163,7 +1292,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
             borderRadius: BorderRadius.circular(20),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: compact ? 8 : 10, vertical: compact ? 2 : 4),
               decoration: BoxDecoration(
                 color: isSelected ? const Color(0xFF059669) : AppColors.card,
                 borderRadius: BorderRadius.circular(20),
@@ -1175,12 +1304,12 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(cat.icon, style: const TextStyle(fontSize: 12)),
-                  const SizedBox(width: 5),
+                  Text(cat.icon, style: TextStyle(fontSize: compact ? 11 : 12)),
+                  const SizedBox(width: 4),
                   Text(
                     cat.title,
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: compact ? 10 : 11,
                       fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
                       color: isSelected ? Colors.white : AppColors.textPrimary,
                     ),
@@ -1197,7 +1326,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                     child: Text(
                       '$count',
                       style: TextStyle(
-                        fontSize: 9,
+                        fontSize: 8.5,
                         fontWeight: FontWeight.w700,
                         color: isSelected ? Colors.white : AppColors.textSecondary,
                       ),
@@ -1315,9 +1444,65 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     );
   }
 
-  // Alt Alan: Henüz Onaylanmadıysa
-  Widget _buildActionSection() {
+  // Henüz Onaylanmadıysa Aksiyon Butonu
+  Widget _buildActionSection({bool isLandscape = false}) {
     final bool canConfirm = _userTapNorm != null;
+
+    if (isLandscape) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.card,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.cardBorder),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  canConfirm ? Icons.touch_app_rounded : Icons.info_outline_rounded,
+                  size: 15,
+                  color: canConfirm ? const Color(0xFF6366F1) : AppColors.textSecondary,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    canConfirm
+                        ? 'Noktayı belirledin! Onayla.'
+                        : 'Haritada tahmin ettiğin noktaya dokun.',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: canConfirm ? AppColors.textPrimary : AppColors.textSecondary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            height: 38,
+            child: ElevatedButton.icon(
+              onPressed: canConfirm ? _confirmGuess : null,
+              icon: const Icon(Icons.check_circle_rounded, size: 16),
+              label: const Text('Tahmin Et', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF059669),
+                foregroundColor: Colors.white,
+                disabledBackgroundColor: AppColors.cardBorder,
+                disabledForegroundColor: AppColors.textSecondary,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                elevation: 0,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
 
     return Row(
       children: [
@@ -1377,10 +1562,10 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     );
   }
 
-  // Alt Alan: Onaylandıktan Sonra (Zenginleştirilmiş KPSS Bilgi Kartı)
-  Widget _buildFeedbackSection(MapPointQuestion q) {
+  // Onaylandıktan Sonra Bilgi ve Feedback Kartı
+  Widget _buildFeedbackSection(MapPointQuestion q, {bool isLandscape = false}) {
     return Container(
-      constraints: const BoxConstraints(maxHeight: 180),
+      constraints: BoxConstraints(maxHeight: isLandscape ? double.infinity : 180),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColors.card,
@@ -1398,7 +1583,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Mesafe & Puan & ÖSYM Frekans Şeridi
+          // Mesafe, Puan, Rozet
           Row(
             children: [
               Container(
@@ -1418,7 +1603,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
               ),
               const SizedBox(width: 6),
               Text(
-                'Fark: ${_lastDistanceKm?.round()} km',
+                '${_lastDistanceKm?.round()} km',
                 style: TextStyle(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w700,
@@ -1435,7 +1620,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                 child: Text(
                   q.osymFrequency,
                   style: const TextStyle(
-                    fontSize: 9.5,
+                    fontSize: 9,
                     fontWeight: FontWeight.w800,
                     color: Color(0xFFD97706),
                   ),
@@ -1449,7 +1634,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  '+$_lastScore Puan',
+                  '+$_lastScore P',
                   style: const TextStyle(
                     fontSize: 11.5,
                     fontWeight: FontWeight.w900,
@@ -1461,8 +1646,9 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           ),
           const SizedBox(height: 6),
 
-          // Doğru Konum ve Açıklama (Kaydırılabilir İçerik)
-          Flexible(
+          // Doğru Konum ve Açıklama
+          Expanded(
+            flex: isLandscape ? 1 : 0,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1470,7 +1656,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                   Text(
                     '📍 Doğru Konum: ${q.targetName}',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 11.5,
                       fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
                     ),
@@ -1479,7 +1665,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                   Text(
                     q.explanation,
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 10.5,
                       color: AppColors.textSecondary,
                       height: 1.3,
                     ),
@@ -1503,7 +1689,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                               Text(
                                 'KPSS Altın Bilgiler:',
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 9.5,
                                   fontWeight: FontWeight.w800,
                                   color: Color(0xFF059669),
                                 ),
@@ -1516,12 +1702,12 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text('• ', style: TextStyle(fontSize: 10, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
+                                    const Text('• ', style: TextStyle(fontSize: 9.5, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
                                     Expanded(
                                       child: Text(
                                         fact,
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 9.5,
                                           color: AppColors.textPrimary,
                                           height: 1.25,
                                         ),

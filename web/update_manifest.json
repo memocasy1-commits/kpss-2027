@@ -1,11 +1,11 @@
 {
-  "versionCode": 7,
-  "versionName": "1.0.6",
-  "version": "1.0.6",
-  "build_number": 7,
-  "releaseNotes": "Dev Harita Güncellemesi: Soru havuzu 86'ya çıkarıldı! Kategori filtreleme çubuğu, 3 Oyun Modu (Klasik, 60sn Zamana Karşı Maraton, Keşif), ÖSYM Sınavı Altın Bilgileri ve Kaçırılanları Tekrar Çöz özelliği eklendi.",
+  "versionCode": 8,
+  "versionName": "1.0.7",
+  "version": "1.0.7",
+  "build_number": 8,
+  "releaseNotes": "Yatay Mod & Saf Dilsiz Harita Güncellemesi: Haritada Nokta Atışı oyununa tam Yatay (Landscape) mod desteği ve tek dokunuşla döndürme butonu eklendi. Dilsiz haritada siyasi haritadan kalan tüm iç il sınır izleri %100 temizlendi, kıyılar ve göller korunarak pürüzsüz saf dilsiz harita üretildi.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-09T01:00:00Z",
+  "questionsUpdatedAt": "2026-10-09T01:15:00Z",
   "mandatory": false
 }
