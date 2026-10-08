@@ -54,14 +54,14 @@ class UpdateService {
   static final UpdateService instance = UpdateService._internal();
   UpdateService._internal();
 
-  static const int currentVersionCode = 4;
-  static const String currentVersionName = '1.0.3';
+  static const int currentVersionCode = 5;
+  static const String currentVersionName = '1.0.4';
 
-  // Primary: Netlify public CDN (CORS free, public)
-  // Fallbacks: update_manifest.json, version.json, GitHub raw
+  // Primary: Netlify public CDN and GitHub raw
   static const List<String> _versionEndpoints = [
-    'https://kpss-2027.netlify.app/update_manifest.json',
+    'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/version.json',
     'https://kpss-2027.netlify.app/version.json',
+    'https://kpss-2027.netlify.app/update_manifest.json',
     'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/update_manifest.json',
   ];
 

@@ -1,9 +1,11 @@
 {
-  "versionCode": 4,
-  "versionName": "1.0.3",
-  "releaseNotes": "Saf Siyah OLED Modu, IPS/LCD Gece Modu, Dinamik Cihaz Teması Uyumu, Soru Hata Bildirimi ve Hukuk & Vatandaşlık soru bütünlüğü optimizasyonu.",
+  "versionCode": 5,
+  "versionName": "1.0.4",
+  "version": "1.0.4",
+  "build_number": 5,
+  "releaseNotes": "Önemli Güncelleme: Saf Siyah OLED modu, LCD Gece modu ve telefona tam dinamik uyum sağlayan sistem teması eklendi. Gece modundaki beyaz zemin kutucukları düzeltildi. Soru Hata Bildirimi özelliği eklendi.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/download/v1.0.0/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-08T18:40:00Z",
+  "questionsUpdatedAt": "2026-10-08T19:15:00Z",
   "mandatory": false
 }
