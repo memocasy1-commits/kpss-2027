@@ -29,6 +29,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
   String _lastFeedback = '';
   Color _lastFeedbackColor = const Color(0xFF10B981);
   bool _showHint = false;
+  bool _showCityBorders = false; // Varsayılan: Dilsiz Harita (İl sınırları kapalı, ÖSYM KPSS standardı)
 
   late AnimationController _pulseController;
   final TransformationController _transformController = TransformationController();
@@ -597,16 +598,20 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                                   child: Stack(
                                     fit: StackFit.expand,
                                     children: [
-                                      // 1. 81 İL SINIRLARI & GÖLLER BULUNAN YÜKSEK KONTRASTLI HARİTA
+                                      // 1. DİLSİZ TÜRKİYE HARİTASI (ÖSYM KPSS Standardı: İl sınırları olmaksızın, kıyı ve göller)
                                       Positioned(
                                         left: padX,
                                         top: padY,
                                         width: mapW,
                                         height: mapH,
                                         child: Image.asset(
-                                          isDark
-                                              ? 'assets/images/maps/turkiye_haritasi_dark.png'
-                                              : 'assets/images/maps/turkiye_haritasi_light.png',
+                                          _showCityBorders
+                                              ? (isDark
+                                                  ? 'assets/images/maps/turkiye_siyasi_harita_dark.png'
+                                                  : 'assets/images/maps/turkiye_siyasi_harita_light.png')
+                                              : (isDark
+                                                  ? 'assets/images/maps/turkiye_dilsiz_harita_dark.png'
+                                                  : 'assets/images/maps/turkiye_dilsiz_harita_light.png'),
                                           fit: BoxFit.fill,
                                           filterQuality: FilterQuality.high,
                                         ),
@@ -670,6 +675,53 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                                     ],
                                   ),
                                 ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // Sol Üst: Harita Modu Rozeti / Değiştirici (Dilsiz Harita vs. İl Sınırları)
+                        Positioned(
+                          top: 10,
+                          left: 10,
+                          child: InkWell(
+                            onTap: () {
+                              HapticFeedback.selectionClick();
+                              setState(() {
+                                _showCityBorders = !_showCityBorders;
+                              });
+                            },
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: _showCityBorders
+                                    ? const Color(0xFF6366F1).withValues(alpha: 0.9)
+                                    : (isDark ? Colors.black : Colors.white).withValues(alpha: 0.78),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: _showCityBorders ? const Color(0xFF6366F1) : cardBorder,
+                                  width: 0.8,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    _showCityBorders ? Icons.map_rounded : Icons.map_outlined,
+                                    size: 12,
+                                    color: _showCityBorders ? Colors.white : textSecondary,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    _showCityBorders ? 'İl Sınırları: Açık' : 'Dilsiz Harita',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: _showCityBorders ? Colors.white : textSecondary,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
