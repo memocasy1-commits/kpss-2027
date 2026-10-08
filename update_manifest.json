@@ -1,11 +1,11 @@
 {
-  "versionCode": 8,
-  "versionName": "1.0.7",
-  "version": "1.0.7",
-  "build_number": 8,
-  "releaseNotes": "Yatay Mod & Saf Dilsiz Harita Güncellemesi: Haritada Nokta Atışı oyununa tam Yatay (Landscape) mod desteği ve tek dokunuşla döndürme butonu eklendi. Dilsiz haritada siyasi haritadan kalan tüm iç il sınır izleri %100 temizlendi, kıyılar ve göller korunarak pürüzsüz saf dilsiz harita üretildi.",
+  "versionCode": 9,
+  "versionName": "1.0.8",
+  "version": "1.0.8",
+  "build_number": 9,
+  "releaseNotes": "Yatay Mod Kusursuzlaştırması: Yatay (Landscape) modda harita ekranın tamamını kaplayacak şekilde tam ekran (fullscreen immersive) yapıldı. Soru ve kontrol paneli sağ tarafa şık ve katlanabilir (floating glassmorphic HUD) olarak yerleştirildi, taşma ve daralma sorunları tamamen giderildi.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-09T01:15:00Z",
+  "questionsUpdatedAt": "2026-10-09T01:30:00Z",
   "mandatory": false
 }

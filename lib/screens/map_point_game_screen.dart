@@ -40,6 +40,9 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
   Timer? _speedRunTimer;
   int _remainingSeconds = 60;
 
+  // Landscape floating card collapse state
+  bool _isLandscapeCardMinimized = false;
+
   // State for current question
   Offset? _userTapNorm; // (normX, normY) in 0.0..1.0
   bool _hasConfirmed = false;
@@ -104,10 +107,9 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     if (_gameMode == MapGameMode.classic) {
       _questions = shuffled.take(math.min(10, shuffled.length)).toList();
     } else if (_gameMode == MapGameMode.speedRun) {
-      _questions = shuffled; // All available for 60s
+      _questions = shuffled;
       _startSpeedRunTimer();
     } else {
-      // practice
       _questions = shuffled;
     }
 
@@ -167,7 +169,6 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
 
   @override
   void dispose() {
-    // Reset to default portrait orientation when leaving screen
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -240,7 +241,6 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
 
     if (_combo > _maxCombo) _maxCombo = _combo;
 
-    // Combo multiplier bonus
     int multiplier = _combo >= 3 ? 2 : 1;
     final finalScore = score * multiplier;
 
@@ -614,7 +614,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
-        toolbarHeight: isLandscape ? 44 : 56,
+        toolbarHeight: isLandscape ? 40 : 54,
         shape: Border(bottom: BorderSide(color: cardBorder, width: 1)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: textPrimary, size: 18),
@@ -623,30 +623,30 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
         title: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: const Color(0xFF059669).withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(7),
               ),
-              child: const Icon(Icons.place_rounded, color: Color(0xFF059669), size: 16),
+              child: const Icon(Icons.place_rounded, color: Color(0xFF059669), size: 15),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 7),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    isLandscape ? 'KPSS NOKTA ATIŞI' : 'HARİTADA NOKTA ATIŞI',
+                    isLandscape ? 'KPSS HARİTADA NOKTA ATIŞI' : 'HARİTADA NOKTA ATIŞI',
                     style: TextStyle(fontSize: isLandscape ? 12 : 13, fontWeight: FontWeight.w900, letterSpacing: 0.3),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     _gameMode == MapGameMode.speedRun
-                        ? '⏳ $_remainingSeconds sn • #${_currentIndex + 1}'
+                        ? '⏳ $_remainingSeconds sn kaldı • #${_currentIndex + 1}'
                         : '${_currentIndex + 1} / ${_questions.length} Soru',
                     style: TextStyle(
-                      fontSize: 10.5,
+                      fontSize: 10,
                       fontWeight: FontWeight.w700,
                       color: _gameMode == MapGameMode.speedRun && _remainingSeconds <= 15
                           ? const Color(0xFFEF4444)
@@ -663,18 +663,18 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           IconButton(
             tooltip: isLandscape ? 'Dikey Moda Geç' : 'Yatay Moda Geç',
             icon: Container(
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(4.5),
               decoration: BoxDecoration(
                 color: (isLandscape ? const Color(0xFF6366F1) : textSecondary).withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(7),
                 border: Border.all(
                   color: (isLandscape ? const Color(0xFF6366F1) : cardBorder),
-                  width: 1,
+                  width: 0.8,
                 ),
               ),
               child: Icon(
                 isLandscape ? Icons.stay_current_portrait_rounded : Icons.stay_current_landscape_rounded,
-                size: 16,
+                size: 15,
                 color: isLandscape ? const Color(0xFF6366F1) : textPrimary,
               ),
             ),
@@ -708,7 +708,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                     _gameMode == MapGameMode.speedRun
                         ? '60s'
                         : (_gameMode == MapGameMode.practice ? 'Keşif' : 'Klasik'),
-                    style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: Color(0xFF6366F1)),
+                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Color(0xFF6366F1)),
                   ),
                 ],
               ),
@@ -726,21 +726,21 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                     decoration: BoxDecoration(
                       color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(7),
                       border: Border.all(color: const Color(0xFFF59E0B)),
                     ),
                     child: Text(
                       '⚡ x${_combo >= 3 ? 2 : 1.5}',
-                      style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: Color(0xFFF59E0B)),
+                      style: const TextStyle(fontSize: 9.5, fontWeight: FontWeight.w900, color: Color(0xFFF59E0B)),
                     ),
                   ),
                   const SizedBox(width: 5),
                 ],
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
                   decoration: BoxDecoration(
                     color: const Color(0xFF6366F1).withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.3)),
                   ),
                   child: Row(
@@ -750,7 +750,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                       Text(
                         '$_totalScore',
                         style: const TextStyle(
-                          fontSize: 11.5,
+                          fontSize: 11,
                           fontWeight: FontWeight.w900,
                           color: Color(0xFF6366F1),
                         ),
@@ -784,54 +784,76 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                 minHeight: 3,
               ),
 
-            // YATAY MOD (LANDSCAPE) DÜZENİ
+            // ==========================================================
+            // YATAY MOD (LANDSCAPE) - TAM EKRAN HARİTA + YÜZEN HUD KARTI
+            // ==========================================================
             if (isLandscape)
               Expanded(
-                child: Row(
+                child: Stack(
+                  fit: StackFit.expand,
                   children: [
-                    // Sol Taraf: Geniş İnteraktif Harita Alanı (%65)
-                    Expanded(
-                      flex: 65,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 6, 6, 6),
-                        child: _buildInteractiveMap(isDark: isDark, cardBorder: cardBorder, textSecondary: textSecondary, q: q),
+                    // 1. TAM EKRAN İNTERAKTİF HARİTA (Ekranın tüm genişliğini ve yüksekliğini doldurur)
+                    Positioned.fill(
+                      child: _buildInteractiveMap(
+                        isDark: isDark,
+                        cardBorder: cardBorder,
+                        textSecondary: textSecondary,
+                        q: q,
+                        isLandscape: true,
                       ),
                     ),
 
-                    // Sağ Taraf: Soru, Bilgi Kartı ve İşlem Paneli (%35)
-                    Expanded(
-                      flex: 35,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(4, 6, 10, 6),
-                        child: _buildLandscapeSidebar(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary),
+                    // 2. SAĞ TARAFTA YÜZEN SORU & BİLGİ HUD KARTI (Floating Glassmorphic Card)
+                    Positioned(
+                      top: 10,
+                      right: 12,
+                      bottom: 10,
+                      width: _isLandscapeCardMinimized ? 150 : 320,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeInOut,
+                        decoration: BoxDecoration(
+                          color: cardBg.withValues(alpha: isDark ? 0.92 : 0.95),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: cardBorder, width: 1.2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.15),
+                              blurRadius: 14,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: _isLandscapeCardMinimized
+                              ? _buildLandscapeMinimizedHUD(q: q, textPrimary: textPrimary)
+                              : _buildLandscapeExpandedHUD(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary),
+                        ),
                       ),
                     ),
                   ],
                 ),
               )
-            // DİKEY MOD (PORTRAIT) DÜZENİ
+
+            // ==========================================================
+            // DİKEY MOD (PORTRAIT)
+            // ==========================================================
             else
               Expanded(
                 child: Column(
                   children: [
-                    // Kategori Seçici Çubuğu
                     _buildCategorySelector(),
-
-                    // Soru Başlığı & Kategori
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
                       child: _buildQuestionCard(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary),
                     ),
-
-                    // Harita Alanı
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-                        child: _buildInteractiveMap(isDark: isDark, cardBorder: cardBorder, textSecondary: textSecondary, q: q),
+                        child: _buildInteractiveMap(isDark: isDark, cardBorder: cardBorder, textSecondary: textSecondary, q: q, isLandscape: false),
                       ),
                     ),
-
-                    // Alt Alan: Sonuç Kartı veya Onay Butonu
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14, 2, 14, 10),
                       child: _hasConfirmed ? _buildFeedbackSection(q) : _buildActionSection(),
@@ -845,46 +867,149 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     );
   }
 
-  // Yatay Mod Sağ Paneli
-  Widget _buildLandscapeSidebar({
+  // Yatay Mod Minimizasyon Durumu
+  Widget _buildLandscapeMinimizedHUD({required MapPointQuestion q, required Color textPrimary}) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.open_in_full_rounded, color: Color(0xFF6366F1), size: 20),
+            onPressed: () {
+              setState(() {
+                _isLandscapeCardMinimized = false;
+              });
+            },
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Soruyu Aç',
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: Color(0xFF6366F1)),
+          ),
+          const SizedBox(height: 8),
+          if (!_hasConfirmed && _userTapNorm != null)
+            ElevatedButton(
+              onPressed: _confirmGuess,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF059669),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('Onayla', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800)),
+            ),
+        ],
+      ),
+    );
+  }
+
+  // Yatay Mod Açık Durum HUD Kartı
+  Widget _buildLandscapeExpandedHUD({
     required MapPointQuestion q,
     required Color cardBg,
     required Color cardBorder,
     required Color textPrimary,
     required Color textSecondary,
   }) {
-    return Column(
-      children: [
-        // Kompakt Kategori Seçici
-        _buildCategorySelector(compact: true),
-        const SizedBox(height: 6),
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Kart Üst Başlık & Katlama İkonu
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF059669).withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  q.categoryTitle.toUpperCase(),
+                  style: const TextStyle(color: Color(0xFF059669), fontSize: 9, fontWeight: FontWeight.w800),
+                ),
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  q.subCategory,
+                  style: const TextStyle(color: Color(0xFF6366F1), fontSize: 9.5, fontWeight: FontWeight.w700),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _isLandscapeCardMinimized = true;
+                  });
+                },
+                borderRadius: BorderRadius.circular(6),
+                child: const Padding(
+                  padding: EdgeInsets.all(3),
+                  child: Icon(Icons.close_fullscreen_rounded, size: 15, color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
 
-        // Soru Alanı
-        _buildQuestionCard(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary, compact: true),
-        const SizedBox(height: 6),
+          // Soru Metni
+          Text(
+            q.question,
+            style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, color: textPrimary, height: 1.25),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 4),
 
-        // Alt Panel (Aksiyon veya Feedback)
-        Expanded(
-          child: _hasConfirmed
-              ? _buildFeedbackSection(q, isLandscape: true)
-              : Center(child: _buildActionSection(isLandscape: true)),
-        ),
-      ],
+          // İpucu Satırı
+          InkWell(
+            onTap: () {
+              setState(() {
+                _showHint = !_showHint;
+              });
+            },
+            child: Row(
+              children: [
+                Icon(Icons.lightbulb_outline_rounded, size: 12, color: _showHint ? const Color(0xFFF59E0B) : textSecondary),
+                const SizedBox(width: 4),
+                Text(
+                  _showHint ? q.hint : 'İpucu Gör',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: _showHint ? const Color(0xFFD97706) : textSecondary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 12),
+
+          // Alt Dinamik Bölüm: Onaylanmadıysa Buton, Onaylandıysa KPSS Bilgisi
+          Expanded(
+            child: _hasConfirmed
+                ? _buildFeedbackSection(q, isLandscape: true)
+                : Center(child: _buildActionSection(isLandscape: true)),
+          ),
+        ],
+      ),
     );
   }
 
-  // Soru Kartı
+  // Soru Kartı (Dikey Mod)
   Widget _buildQuestionCard({
     required MapPointQuestion q,
     required Color cardBg,
     required Color cardBorder,
     required Color textPrimary,
     required Color textSecondary,
-    bool compact = false,
   }) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 14, vertical: compact ? 6 : 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
         color: cardBg,
         borderRadius: BorderRadius.circular(12),
@@ -970,7 +1095,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           Text(
             q.question,
             style: TextStyle(
-              fontSize: compact ? 11.5 : 12.5,
+              fontSize: 12.5,
               fontWeight: FontWeight.w800,
               color: textPrimary,
               height: 1.25,
@@ -1004,12 +1129,13 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     );
   }
 
-  // İnteraktif Harita Widget'ı
+  // İnteraktif Harita Widget'ı (Dikeyde ve Yatayda kusursuz ölçekleme)
   Widget _buildInteractiveMap({
     required bool isDark,
     required Color cardBorder,
     required Color textSecondary,
     required MapPointQuestion q,
+    required bool isLandscape,
   }) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -1017,8 +1143,8 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
         final double containerH = constraints.maxHeight;
 
         const double mapAspect = 1800 / 657; // ~2.7397
-        const double padX = 12.0;
-        const double padY = 18.0;
+        final double padX = isLandscape ? 8.0 : 12.0;
+        final double padY = isLandscape ? 8.0 : 16.0;
 
         double mapW = containerW - (padX * 2);
         double mapH = mapW / mapAspect;
@@ -1038,26 +1164,21 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
               height: double.infinity,
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF0A101D) : const Color(0xFFE0F2FE),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFBAE6FD),
-                  width: 1.2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+                borderRadius: BorderRadius.circular(isLandscape ? 0 : 16),
+                border: isLandscape
+                    ? null
+                    : Border.all(
+                        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFBAE6FD),
+                        width: 1.2,
+                      ),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(isLandscape ? 0 : 16),
                 child: InteractiveViewer(
                   transformationController: _transformController,
                   minScale: 1.0,
-                  maxScale: 3.5,
-                  boundaryMargin: const EdgeInsets.all(50),
+                  maxScale: 4.0,
+                  boundaryMargin: const EdgeInsets.all(60),
                   child: Center(
                     child: SizedBox(
                       width: canvasW,
@@ -1164,7 +1285,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                   decoration: BoxDecoration(
                     color: _showCityBorders
                         ? const Color(0xFF6366F1).withValues(alpha: 0.9)
-                        : (isDark ? Colors.black : Colors.white).withValues(alpha: 0.78),
+                        : (isDark ? Colors.black : Colors.white).withValues(alpha: 0.8),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: _showCityBorders ? const Color(0xFF6366F1) : cardBorder,
@@ -1190,35 +1311,6 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                       ),
                     ],
                   ),
-                ),
-              ),
-            ),
-
-            // Sağ Üst Bilgi Rozeti
-            Positioned(
-              top: 8,
-              right: 8,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
-                decoration: BoxDecoration(
-                  color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.78),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: cardBorder, width: 0.8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.pinch_rounded, size: 11, color: textSecondary),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Pinch Yakınlaştır',
-                      style: TextStyle(
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.w600,
-                        color: textSecondary,
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
@@ -1263,11 +1355,11 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
   }
 
   // Kategori Seçici Barı
-  Widget _buildCategorySelector({bool compact = false}) {
+  Widget _buildCategorySelector() {
     return SizedBox(
-      height: compact ? 32 : 38,
+      height: 38,
       child: ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: compact ? 0 : 14, vertical: compact ? 2 : 4),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
         scrollDirection: Axis.horizontal,
         itemCount: MapPointGameData.categories.length,
         separatorBuilder: (_, __) => const SizedBox(width: 6),
@@ -1292,7 +1384,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
             borderRadius: BorderRadius.circular(20),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              padding: EdgeInsets.symmetric(horizontal: compact ? 8 : 10, vertical: compact ? 2 : 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: isSelected ? const Color(0xFF059669) : AppColors.card,
                 borderRadius: BorderRadius.circular(20),
@@ -1304,12 +1396,12 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(cat.icon, style: TextStyle(fontSize: compact ? 11 : 12)),
+                  Text(cat.icon, style: const TextStyle(fontSize: 12)),
                   const SizedBox(width: 4),
                   Text(
                     cat.title,
                     style: TextStyle(
-                      fontSize: compact ? 10 : 11,
+                      fontSize: 11,
                       fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
                       color: isSelected ? Colors.white : AppColors.textPrimary,
                     ),
@@ -1453,30 +1545,24 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.card,
-              borderRadius: BorderRadius.circular(10),
+              color: AppColors.background,
+              borderRadius: BorderRadius.circular(8),
               border: Border.all(color: AppColors.cardBorder),
             ),
             child: Row(
               children: [
                 Icon(
                   canConfirm ? Icons.touch_app_rounded : Icons.info_outline_rounded,
-                  size: 15,
+                  size: 14,
                   color: canConfirm ? const Color(0xFF6366F1) : AppColors.textSecondary,
                 ),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    canConfirm
-                        ? 'Noktayı belirledin! Onayla.'
-                        : 'Haritada tahmin ettiğin noktaya dokun.',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: canConfirm ? AppColors.textPrimary : AppColors.textSecondary,
-                    ),
+                    canConfirm ? 'Nokta seçildi! Şimdi onayla.' : 'Haritaya dokunarak tahmin yap.',
+                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, color: canConfirm ? AppColors.textPrimary : AppColors.textSecondary),
                   ),
                 ),
               ],
@@ -1485,17 +1571,17 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           const SizedBox(height: 8),
           SizedBox(
             width: double.infinity,
-            height: 38,
+            height: 36,
             child: ElevatedButton.icon(
               onPressed: canConfirm ? _confirmGuess : null,
-              icon: const Icon(Icons.check_circle_rounded, size: 16),
-              label: const Text('Tahmin Et', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800)),
+              icon: const Icon(Icons.check_circle_rounded, size: 15),
+              label: const Text('Tahmin Et', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF059669),
                 foregroundColor: Colors.white,
                 disabledBackgroundColor: AppColors.cardBorder,
                 disabledForegroundColor: AppColors.textSecondary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
                 elevation: 0,
               ),
             ),
@@ -1566,69 +1652,45 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
   Widget _buildFeedbackSection(MapPointQuestion q, {bool isLandscape = false}) {
     return Container(
       constraints: BoxConstraints(maxHeight: isLandscape ? double.infinity : 180),
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(isLandscape ? 8 : 10),
       decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _lastFeedbackColor.withValues(alpha: 0.4), width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: _lastFeedbackColor.withValues(alpha: 0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        color: isLandscape ? Colors.transparent : AppColors.card,
+        borderRadius: BorderRadius.circular(14),
+        border: isLandscape ? null : Border.all(color: _lastFeedbackColor.withValues(alpha: 0.4), width: 1.5),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Mesafe, Puan, Rozet
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
                 decoration: BoxDecoration(
                   color: _lastFeedbackColor.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(7),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   _lastFeedback,
                   style: TextStyle(
                     color: _lastFeedbackColor,
-                    fontSize: 11,
+                    fontSize: 10.5,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: 5),
               Text(
                 '${_lastDistanceKm?.round()} km',
                 style: TextStyle(
-                  fontSize: 11.5,
+                  fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(width: 6),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF59E0B).withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  q.osymFrequency,
-                  style: const TextStyle(
-                    fontSize: 9,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFFD97706),
-                  ),
-                ),
-              ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: const Color(0xFF6366F1).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
@@ -1636,7 +1698,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                 child: Text(
                   '+$_lastScore P',
                   style: const TextStyle(
-                    fontSize: 11.5,
+                    fontSize: 11,
                     fontWeight: FontWeight.w900,
                     color: Color(0xFF6366F1),
                   ),
@@ -1644,9 +1706,8 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 5),
 
-          // Doğru Konum ve Açıklama
           Expanded(
             flex: isLandscape ? 1 : 0,
             child: SingleChildScrollView(
@@ -1654,63 +1715,36 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '📍 Doğru Konum: ${q.targetName}',
-                    style: TextStyle(
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
+                    '📍 Doğru: ${q.targetName}',
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     q.explanation,
-                    style: TextStyle(
-                      fontSize: 10.5,
-                      color: AppColors.textSecondary,
-                      height: 1.3,
-                    ),
+                    style: TextStyle(fontSize: 10, color: AppColors.textSecondary, height: 1.25),
                   ),
                   if (q.keyFacts.isNotEmpty) ...[
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 4),
                     Container(
-                      padding: const EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         color: const Color(0xFF059669).withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: const Color(0xFF059669).withValues(alpha: 0.2)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Row(
-                            children: [
-                              Icon(Icons.workspace_premium_rounded, size: 12, color: Color(0xFF059669)),
-                              SizedBox(width: 4),
-                              Text(
-                                'KPSS Altın Bilgiler:',
-                                style: TextStyle(
-                                  fontSize: 9.5,
-                                  fontWeight: FontWeight.w800,
-                                  color: Color(0xFF059669),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 3),
                           ...q.keyFacts.take(2).map((fact) => Padding(
                                 padding: const EdgeInsets.only(bottom: 2),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text('• ', style: TextStyle(fontSize: 9.5, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
+                                    const Text('• ', style: TextStyle(fontSize: 9, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
                                     Expanded(
                                       child: Text(
                                         fact,
-                                        style: TextStyle(
-                                          fontSize: 9.5,
-                                          color: AppColors.textPrimary,
-                                          height: 1.25,
-                                        ),
+                                        style: TextStyle(fontSize: 9.5, color: AppColors.textPrimary, height: 1.2),
                                       ),
                                     ),
                                   ],
@@ -1726,21 +1760,20 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           ),
           const SizedBox(height: 6),
 
-          // Sonraki Soru Butonu
           SizedBox(
             width: double.infinity,
-            height: 34,
+            height: 32,
             child: ElevatedButton.icon(
               onPressed: _nextQuestion,
-              icon: const Icon(Icons.arrow_forward_rounded, size: 15),
+              icon: const Icon(Icons.arrow_forward_rounded, size: 14),
               label: Text(
                 _currentIndex + 1 < _questions.length ? 'Sonraki Konum' : 'Sonuçları Gör',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
+                style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF059669),
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 elevation: 0,
               ),
             ),
