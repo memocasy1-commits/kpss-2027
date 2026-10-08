@@ -24,7 +24,7 @@ class AppDrawer extends StatelessWidget {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = AppColors.isDarkMode;
         final Color drawerBg = AppColors.background;
         final Color headerBg = AppColors.surface;
         final Color borderColor = AppColors.cardBorder;
@@ -452,17 +452,21 @@ class AppDrawer extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      tooltip: themeMode == ThemeModeType.dark
-                          ? 'Gündüz Modu'
-                          : (themeMode == ThemeModeType.light
-                              ? 'Sepya / Kâğıt Modu'
-                              : 'Karanlık Mod'),
+                      tooltip: switch (themeMode) {
+                        ThemeModeType.oled => 'Açık Gündüz Modu',
+                        ThemeModeType.dark => 'OLED / AMOLED Siyahı',
+                        ThemeModeType.light => 'Sepya / Kâğıt Modu',
+                        ThemeModeType.sepia => 'Telefona Uyum Sağla',
+                        ThemeModeType.system => 'Koyu Gece Modu',
+                      },
                       icon: Icon(
-                        themeMode == ThemeModeType.dark
-                            ? Icons.light_mode_outlined
-                            : (themeMode == ThemeModeType.light
-                                ? Icons.auto_stories_outlined
-                                : Icons.dark_mode_outlined),
+                        switch (themeMode) {
+                          ThemeModeType.oled => Icons.dark_mode_rounded,
+                          ThemeModeType.dark => Icons.nightlight_round,
+                          ThemeModeType.light => Icons.light_mode_outlined,
+                          ThemeModeType.sepia => Icons.auto_stories_outlined,
+                          ThemeModeType.system => Icons.brightness_auto_outlined,
+                        },
                         color: textSecondary,
                         size: 20,
                       ),

@@ -45,22 +45,25 @@ class SolutionCard extends StatelessWidget {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final isDark = themeMode == ThemeModeType.dark;
+        final isDark = AppColors.isDarkMode;
+        final isOled = AppColors.isOledMode;
         final cardBg = AppColors.card;
         final cardBorder = isDark
             ? const Color(0xFFF59E0B).withValues(alpha: 0.35)
             : const Color(0xFFF59E0B).withValues(alpha: 0.45);
-        final cardShadow = isDark
-            ? BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              )
-            : BoxShadow(
-                color: const Color(0xFF0F172A).withValues(alpha: 0.07),
-                blurRadius: 14,
-                offset: const Offset(0, 4),
-              );
+        final cardShadow = isOled
+            ? const BoxShadow(color: Colors.transparent)
+            : (isDark
+                ? BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.25),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  )
+                : BoxShadow(
+                    color: const Color(0xFF0F172A).withValues(alpha: 0.07),
+                    blurRadius: 14,
+                    offset: const Offset(0, 4),
+                  ));
 
         final answerColor = isDark ? AppColors.warning : const Color(0xFFB45309);
         final answerBg = isDark

@@ -1,9 +1,9 @@
 {
-  "versionCode": 2,
-  "versionName": "1.0.1",
-  "releaseNotes": "Konu anlatımlarındaki atıflar temizlendi. Canlı soru çekme ve web depolama optimizasyonları yapıldı.",
-  "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/download/v1.0.1/KPSS_2027_v1.0.1.apk",
+  "versionCode": 4,
+  "versionName": "1.0.3",
+  "releaseNotes": "Saf Siyah OLED Modu, IPS/LCD Gece Modu, Dinamik Cihaz Teması Uyumu, Soru Hata Bildirimi ve Hukuk & Vatandaşlık soru bütünlüğü optimizasyonu.",
+  "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/download/v1.0.0/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-04T15:00:00Z",
+  "questionsUpdatedAt": "2026-10-08T18:40:00Z",
   "mandatory": false
 }

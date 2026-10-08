@@ -470,9 +470,9 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                             textSecondary: textSecondary,
                             accentColor: const Color(0xFF6D28D9),
                             icon: Icons.extension_outlined,
-                            badge: '4 ZİHİN EGZERSİZİ • 5.000+ KART',
+                            badge: '5 ZİHİN EGZERSİZİ • 5.000+ KART',
                             title: 'Hafıza & Pratik Atölyesi',
-                            subtitle: 'Kronoloji, 3 ipuçlu gizemli bilgi, kavram eşleştirme ve 60 sn refleks egzersizleri.',
+                            subtitle: 'Dilsiz harita nokta atışı, kronoloji, 3 ipuçlu bilgi, kavram eşleştirme ve 60 sn bomba.',
                             onTap: () {
                               Navigator.push(
                                 context,

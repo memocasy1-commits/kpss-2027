@@ -60,7 +60,7 @@ class MathExpressionWidget extends StatelessWidget {
       r'(?:\(([^()\/]+)\)\s*\/\s*\(([^()\/]+)\))' // (a + b) / (c + d)
       r'|(?:\(([^()\/]+)\)\s*\/\s*([a-zA-Z0-9·\s]+))' // (a + b) / c
       r'|(?:([a-zA-Z0-9·\s]+)\s*\/\s*\(([^()\/]+)\))' // a / (b + c)
-      r'|(?<![' + _turkishChars + r'\/])(-?(?:\d+[a-zA-Z]*|[a-zA-Z]{1,2}))\s*\/\s*((?:\d+[a-zA-Z]*|[a-zA-Z]{1,2}))(?![' + _turkishChars + r'\/])', // 3/4, 2x/3, a/b
+      '|(?<![$_turkishChars\\/])(-?(?:\\d+[a-zA-Z]*|[a-zA-Z]{1,2}))\\s*\\/\\s*((?:\\d+[a-zA-Z]*|[a-zA-Z]{1,2}))(?![$_turkishChars\\/])', // 3/4, 2x/3, a/b
     );
 
     if (!fracRegex.hasMatch(rawText)) {

@@ -81,7 +81,7 @@ class _DrawingCanvasOverlayState extends State<DrawingCanvasOverlay> {
   StrokeLine? _currentStroke;
 
   Color _selectedColor = const Color(0xFFEF4444); // Default red
-  double _selectedWidth = 3.5;
+  final double _selectedWidth = 3.5;
   bool _isHighlighter = false;
   bool _isEraser = false;
 

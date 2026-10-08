@@ -52,12 +52,9 @@ class _ChronologyPlayScreenState extends State<ChronologyPlayScreen> {
     return true;
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
+  void _onReorderItem(int oldIndex, int newIndex) {
     if (_isSubmitted) return; // Locked after submitting
     setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
       final item = _currentList.removeAt(oldIndex);
       _currentList.insert(newIndex, item);
       _moves++;
@@ -289,7 +286,7 @@ class _ChronologyPlayScreenState extends State<ChronologyPlayScreen> {
                   child: ReorderableListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     itemCount: _currentList.length,
-                    onReorder: _onReorder,
+                    onReorderItem: _onReorderItem,
                     itemBuilder: (context, index) {
                       final item = _currentList[index];
                       final bool isCorrectPosition = _isSubmitted && item.id == widget.level.items[index].id;

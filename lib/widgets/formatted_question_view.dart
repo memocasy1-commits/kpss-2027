@@ -33,13 +33,16 @@ class FormattedQuestionView extends StatelessWidget {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = AppColors.isDarkMode;
+        final bool isOled = AppColors.isOledMode;
         final bool isSepia = themeMode == ThemeModeType.sepia;
 
         final Color cardBg = AppColors.card;
-        final Color readingBoxBg = isDark
-            ? const Color(0xFF1E293B)
-            : (isSepia ? const Color(0xFFF3EBD8) : const Color(0xFFF1F5F9));
+        final Color readingBoxBg = isOled
+            ? const Color(0xFF000000)
+            : (isDark
+                ? const Color(0xFF1E293B)
+                : (isSepia ? const Color(0xFFF3EBD8) : const Color(0xFFF1F5F9)));
 
         return SelectionArea(
           child: Container(

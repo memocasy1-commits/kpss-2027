@@ -30,10 +30,14 @@ class KpssSoruBankasiApp extends StatelessWidget {
       builder: (context, mode, _) {
         ThemeData activeTheme;
         Color containerBg;
-        if (mode == ThemeModeType.dark) {
+        final effectiveMode = ThemeService.instance.effectiveMode;
+        if (effectiveMode == ThemeModeType.oled) {
+          activeTheme = AppTheme.oledTheme;
+          containerBg = const Color(0xFF000000);
+        } else if (effectiveMode == ThemeModeType.dark) {
           activeTheme = AppTheme.darkTheme;
           containerBg = const Color(0xFF080C14);
-        } else if (mode == ThemeModeType.sepia) {
+        } else if (effectiveMode == ThemeModeType.sepia) {
           activeTheme = AppTheme.sepiaTheme;
           containerBg = const Color(0xFFEFE8DB);
         } else {

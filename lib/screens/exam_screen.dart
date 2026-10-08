@@ -11,6 +11,7 @@ import '../widgets/drawing_canvas_overlay.dart';
 import '../services/haptic_service.dart';
 import '../services/leitner_service.dart';
 import '../services/notes_service.dart';
+import '../widgets/question_report_dialog.dart';
 
 class ExamScreen extends StatefulWidget {
   final String title;
@@ -158,8 +159,8 @@ class _ExamScreenState extends State<ExamScreen> {
             TextButton(
               onPressed: () async {
                 await NotesService.instance.deleteNote(q.id);
+                if (ctx.mounted) Navigator.pop(ctx);
                 if (mounted) {
-                  Navigator.pop(ctx);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Not silindi'), duration: Duration(seconds: 1)),
                   );
@@ -174,8 +175,8 @@ class _ExamScreenState extends State<ExamScreen> {
           ElevatedButton(
             onPressed: () async {
               await NotesService.instance.saveNote(q.id, controller.text);
+              if (ctx.mounted) Navigator.pop(ctx);
               if (mounted) {
-                Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Not kaydedildi 📝'), duration: Duration(seconds: 1)),
                 );
@@ -634,6 +635,8 @@ class _ExamScreenState extends State<ExamScreen> {
                     });
                   } else if (val == 'note') {
                     _showAddNoteDialog();
+                  } else if (val == 'report') {
+                    QuestionReportDialog.show(context, question: currentQ);
                   } else if (val == 'font') {
                     setState(() {
                       _fontSize = _fontSize >= 19.0 ? 14.0 : _fontSize + 1.5;
@@ -664,6 +667,16 @@ class _ExamScreenState extends State<ExamScreen> {
                         Icon(Icons.edit_note_rounded, size: 19, color: Color(0xFF2563EB)),
                         SizedBox(width: 10),
                         Text('Soruya Not Ekle'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'report',
+                    child: Row(
+                      children: [
+                        Icon(Icons.flag_outlined, size: 19, color: Color(0xFFEF4444)),
+                        SizedBox(width: 10),
+                        Text('Soru Hata Bildir'),
                       ],
                     ),
                   ),

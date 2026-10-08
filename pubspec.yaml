@@ -1,7 +1,7 @@
 name: kpss_soru_bankasi
 description: "KPSS Çözümlü Soru Bankası - Modern ve Akıcı Mobil Sınav Uygulaması"
 publish_to: 'none'
-version: 1.0.1+2
+version: 1.0.3+4
 
 environment:
   sdk: ^3.5.0
@@ -40,11 +40,8 @@ flutter:
     - assets/data/sayisal_mantik_questions.json
     - assets/images/geometry/
     - assets/images/geometry/custom_examples/
-    - assets/images/geometri/
     - assets/images/matematik/
-    - assets/images/charts/
     - assets/images/cografya/
-    - assets/images/cografya/q_maps/
     - assets/images/cografyaharita/
     - assets/images/maps/
     - assets/images/tarih/

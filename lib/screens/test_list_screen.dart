@@ -1054,7 +1054,7 @@ class _TestListScreenState extends State<TestListScreen> {
             // Defense-in-depth lisans ve kripto imza kontrolü
             final canAccess = await SecurityService.instance.canAccessTest(test.testNum);
             if (!canAccess) {
-              if (context.mounted) {
+              if (mounted) {
                 SecurityService.instance.showLicenseLockDialog(
                   context: context,
                   featureTitle: '${widget.courseTitle} - Test ${test.testNum}',
@@ -1073,7 +1073,7 @@ class _TestListScreenState extends State<TestListScreen> {
               widget.courseId,
               test.testNum,
             );
-            if (context.mounted) {
+            if (mounted) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -1146,7 +1146,7 @@ class _TestListScreenState extends State<TestListScreen> {
                   onPressed: () async {
                     final canPdf = await SecurityService.instance.canExportPdf();
                     if (!canPdf) {
-                      if (context.mounted) {
+                      if (mounted) {
                         SecurityService.instance.showLicenseLockDialog(
                           context: context,
                           featureTitle: 'A4 PDF Kitapçık Çıktısı',
@@ -1158,7 +1158,7 @@ class _TestListScreenState extends State<TestListScreen> {
                       widget.courseId,
                       test.testNum,
                     );
-                    if (context.mounted) {
+                    if (mounted) {
                       PdfService.instance.exportQuestionsAsPdf(
                         context: context,
                         title: '${widget.courseTitle} - Test ${test.testNum}',

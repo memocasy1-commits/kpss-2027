@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kpss_soru_bankasi/widgets/solution_card.dart';
 import 'package:kpss_soru_bankasi/services/theme_service.dart';
+import 'package:kpss_soru_bankasi/theme/app_theme.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +55,33 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('DOĞRU CEVAP: A'), findsOneWidget);
     expect(find.text('ZOR'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('SolutionCard renders properly in OLED Mode', (tester) async {
+    ThemeService.instance.isDarkNotifier.value = true;
+    AppColors.currentMode = ThemeModeType.oled;
+    ThemeService.instance.modeNotifier.value = ThemeModeType.oled;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.oledTheme,
+        home: const Scaffold(
+          body: SingleChildScrollView(
+            child: SolutionCard(
+              correctAnswer: 'C',
+              subtopicTitle: 'Test 2: İslamiyet Öncesi Türk Devletleri',
+              solutionText: '💡 ALTIN BİLGİ:\nUygurlar yerleşik hayata geçen ilk Türk devletidir.\n\n🪜 ADIM ADIM ÇÖZÜM:\nDoğru cevap C seçeneğidir.',
+              difficulty: 'kolay',
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    expect(find.text('DOĞRU CEVAP: C'), findsOneWidget);
+    expect(find.text('KOLAY'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

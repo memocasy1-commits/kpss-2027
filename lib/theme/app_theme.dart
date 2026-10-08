@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
-enum ThemeModeType { dark, light, sepia }
+enum ThemeModeType {
+  dark, // 0: Koyu Gece Modu (LCD Uyumlu)
+  light, // 1: Aydınlık Gündüz Modu
+  sepia, // 2: Sepya (Kâğıt Dokusu)
+  oled, // 3: Saf Siyah (AMOLED / OLED)
+  system, // 4: Telefona Uyum Sağla (Otomatik)
+}
 
 class AppColors {
   // Theme state
   static ThemeModeType currentMode = ThemeModeType.dark;
-  static bool get isDarkMode => currentMode == ThemeModeType.dark;
+  static bool get isDarkMode => currentMode == ThemeModeType.dark || currentMode == ThemeModeType.oled;
+  static bool get isOledMode => currentMode == ThemeModeType.oled;
   static bool get isSepiaMode => currentMode == ThemeModeType.sepia;
 
   // Backward compatibility setter
@@ -15,26 +22,31 @@ class AppColors {
 
   // Adaptive background & surface
   static Color get background {
+    if (currentMode == ThemeModeType.oled) return const Color(0xFF000000);
     if (currentMode == ThemeModeType.sepia) return const Color(0xFFFAF5E8);
     return isDarkMode ? const Color(0xFF0B1120) : const Color(0xFFF8FAFC);
   }
 
   static Color get surface {
+    if (currentMode == ThemeModeType.oled) return const Color(0xFF000000);
     if (currentMode == ThemeModeType.sepia) return const Color(0xFFF3EBD8);
     return isDarkMode ? const Color(0xFF1E293B) : const Color(0xFFFFFFFF);
   }
 
   static Color get surfaceLight {
+    if (currentMode == ThemeModeType.oled) return const Color(0xFF141414);
     if (currentMode == ThemeModeType.sepia) return const Color(0xFFEAE0D0);
     return isDarkMode ? const Color(0xFF334155) : const Color(0xFFF1F5F9);
   }
 
   static Color get card {
+    if (currentMode == ThemeModeType.oled) return const Color(0xFF000000);
     if (currentMode == ThemeModeType.sepia) return const Color(0xFFFFFDF8);
     return isDarkMode ? const Color(0xFF182234) : const Color(0xFFFFFFFF);
   }
 
   static Color get cardBorder {
+    if (currentMode == ThemeModeType.oled) return const Color(0xFF222222);
     if (currentMode == ThemeModeType.sepia) return const Color(0xFFDDD2BC);
     return isDarkMode ? const Color(0xFF3B4D66) : const Color(0xFFCBD5E1);
   }
@@ -83,11 +95,13 @@ class AppColors {
   }
 
   static Color get textSecondary {
+    if (currentMode == ThemeModeType.oled) return const Color(0xFFE5E7EB);
     if (currentMode == ThemeModeType.sepia) return const Color(0xFF5A4833);
     return isDarkMode ? const Color(0xFFE2E8F0) : const Color(0xFF475569);
   }
 
   static Color get textMuted {
+    if (currentMode == ThemeModeType.oled) return const Color(0xFF9CA3AF);
     if (currentMode == ThemeModeType.sepia) return const Color(0xFF7A6852);
     return isDarkMode ? const Color(0xFFCBD5E1) : const Color(0xFF64748B);
   }
@@ -109,6 +123,13 @@ class AppColors {
   }
 
   static LinearGradient get cardGradient {
+    if (currentMode == ThemeModeType.oled) {
+      return const LinearGradient(
+        colors: [Color(0xFF050505), Color(0xFF000000)],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      );
+    }
     if (currentMode == ThemeModeType.sepia) {
       return const LinearGradient(
         colors: [Color(0xFFFAF6EB), Color(0xFFF4ECE0)],
@@ -137,6 +158,47 @@ class AppColors {
 }
 
 class AppTheme {
+  static ThemeData get oledTheme {
+    return ThemeData(
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: const Color(0xFF000000),
+      primaryColor: const Color(0xFF6366F1),
+      fontFamily: 'Roboto',
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color(0xFF000000),
+        elevation: 0,
+        centerTitle: false,
+        titleTextStyle: TextStyle(
+          color: Color(0xFFFFFFFF),
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.3,
+        ),
+        iconTheme: IconThemeData(color: Color(0xFFFFFFFF)),
+      ),
+      cardTheme: CardThemeData(
+        color: const Color(0xFF000000),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: Color(0xFF222222), width: 1.2),
+        ),
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Color(0xFF000000),
+        selectedItemColor: Color(0xFF818CF8),
+        unselectedItemColor: Color(0xFF94A3B8),
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
+      ),
+      dividerTheme: const DividerThemeData(
+        color: Color(0xFF1F1F1F),
+        thickness: 1,
+      ),
+    );
+  }
   static ThemeData get darkTheme {
     return ThemeData(
       brightness: Brightness.dark,

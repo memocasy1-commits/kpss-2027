@@ -38,7 +38,7 @@ class ExitConfirmationDialog extends StatelessWidget {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final bool isDark = themeMode == ThemeModeType.dark;
+        final bool isDark = AppColors.isDarkMode;
         final Color surfaceBg = AppColors.surface;
         final Color borderColor = AppColors.cardBorder;
         final Color textPrimary = AppColors.textPrimary;

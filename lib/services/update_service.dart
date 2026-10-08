@@ -54,8 +54,8 @@ class UpdateService {
   static final UpdateService instance = UpdateService._internal();
   UpdateService._internal();
 
-  static const int currentVersionCode = 2;
-  static const String currentVersionName = '1.0.1';
+  static const int currentVersionCode = 4;
+  static const String currentVersionName = '1.0.3';
 
   // Primary: Netlify public CDN (CORS free, public)
   // Fallbacks: update_manifest.json, version.json, GitHub raw
@@ -169,7 +169,7 @@ class UpdateService {
   }
 
   /// Soruları internet üzerinden canlı senkronize et (APK indirmeden)
-  Future<bool> syncQuestionsOnline(RemoteVersionInfo info) async {
+  Future<bool> syncQuestionsOnline([RemoteVersionInfo? info]) async {
     if (isSyncingNotifier.value) {
       // Halihazırda senkronizasyon çalışıyorsa tamamlanmasını bekle
       while (isSyncingNotifier.value) {
@@ -236,10 +236,13 @@ class UpdateService {
       }
 
       if (successCount > 0) {
-        await prefs.setString(_keyQuestionsTimestamp, info.questionsUpdatedAt);
+        final qTimestamp = (info != null && info.questionsUpdatedAt.isNotEmpty)
+            ? info.questionsUpdatedAt
+            : DateTime.now().toIso8601String();
+        await prefs.setString(_keyQuestionsTimestamp, qTimestamp);
         // QuestionService'deki soruları yeniden yükle
         await QuestionService.instance.reloadFromCacheOrAssets();
-        syncStatusMessageNotifier.value = 'Tüm sorular başarıyla güncellendi ($successCount dosya)!';
+        syncStatusMessageNotifier.value = 'Tüm sorular başarıyla güncellendi ($successCount ders)!';
         return true;
       } else {
         syncStatusMessageNotifier.value = 'Güncelleme sunucusuna erişilemedi.';
@@ -255,7 +258,7 @@ class UpdateService {
   /// Yeni APK indirme bağlantısını aç
   Future<void> launchApkDownload(String? customUrl) async {
     final targetUrl = customUrl ?? availableUpdateNotifier.value?.apkUrl;
-    final fallbackUrl = 'https://github.com/memocasy1-commits/kpss-2027/releases/tag/v1.0.0';
+    final fallbackUrl = 'https://github.com/memocasy1-commits/kpss-2027/releases/download/v1.0.0/app-release.apk';
     final urlToOpen = (targetUrl != null && targetUrl.isNotEmpty) ? targetUrl : fallbackUrl;
 
     try {

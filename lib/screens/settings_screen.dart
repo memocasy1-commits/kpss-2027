@@ -228,7 +228,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'v1.0.0',
+                      'v${UpdateService.currentVersionName}',
                       style: TextStyle(
                         fontSize: 12,
                         color: textSecondary,
@@ -261,7 +261,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       child: Column(
         children: [
-          // Tema Modu Seçici (Gece, Gündüz, Sepya)
+          // Tema Modu Seçici (OLED, Gece/LCD, Gündüz, Sepya, Telefona Uyum Sağla)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             child: Column(
@@ -270,11 +270,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Row(
                   children: [
                     Icon(
-                      themeMode == ThemeModeType.dark
-                          ? Icons.dark_mode_rounded
-                          : (themeMode == ThemeModeType.sepia ? Icons.auto_stories_rounded : Icons.light_mode_rounded),
+                      switch (themeMode) {
+                        ThemeModeType.oled => Icons.dark_mode_rounded,
+                        ThemeModeType.dark => Icons.nightlight_round,
+                        ThemeModeType.light => Icons.light_mode_rounded,
+                        ThemeModeType.sepia => Icons.auto_stories_rounded,
+                        ThemeModeType.system => Icons.brightness_auto_rounded,
+                      },
                       size: 22,
-                      color: isDark ? const Color(0xFFFBBF24) : AppColors.primary,
+                      color: themeMode == ThemeModeType.oled
+                          ? const Color(0xFF60A5FA)
+                          : (isDark ? const Color(0xFFFBBF24) : AppColors.primary),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -286,11 +292,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: textPrimary),
                           ),
                           Text(
-                            themeMode == ThemeModeType.dark
-                                ? 'Derin siyah gece modu aktif'
-                                : (themeMode == ThemeModeType.sepia
-                                    ? 'Doğal kitap kâğıdı sepya modu aktif'
-                                    : 'Aydınlık gündüz modu aktif'),
+                            switch (themeMode) {
+                              ThemeModeType.oled => 'AMOLED / OLED Saf Siyah (#000000) aktif (0% pil tüketimi)',
+                              ThemeModeType.dark => 'LCD uyumlu derin gece modu aktif',
+                              ThemeModeType.light => 'Aydınlık gündüz modu aktif',
+                              ThemeModeType.sepia => 'Doğal kitap kâğıdı sepya modu aktif',
+                              ThemeModeType.system => 'Telefona uyum sağla (Sistem modu) aktif',
+                            },
                             style: TextStyle(fontSize: 12, color: textSecondary),
                           ),
                         ],
@@ -301,12 +309,81 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    _buildThemeChip('🌙 Gece', ThemeModeType.dark, themeMode),
+                    _buildThemeChip('⬛ OLED (Saf Siyah)', ThemeModeType.oled, themeMode),
+                    const SizedBox(width: 8),
+                    _buildThemeChip('🌙 Gece (LCD)', ThemeModeType.dark, themeMode),
                     const SizedBox(width: 8),
                     _buildThemeChip('☀️ Gündüz', ThemeModeType.light, themeMode),
-                    const SizedBox(width: 8),
-                    _buildThemeChip('📖 Sepya (Kâğıt)', ThemeModeType.sepia, themeMode),
                   ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _buildThemeChip('📖 Sepya (Kâğıt)', ThemeModeType.sepia, themeMode),
+                    const SizedBox(width: 8),
+                    _buildThemeChip('📱 Telefona Uyum Sağla', ThemeModeType.system, themeMode),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 12),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: themeMode == ThemeModeType.oled
+                        ? const Color(0xFF10B981).withValues(alpha: 0.12)
+                        : (themeMode == ThemeModeType.dark
+                            ? const Color(0xFF38BDF8).withValues(alpha: 0.12)
+                            : (themeMode == ThemeModeType.system
+                                ? const Color(0xFF818CF8).withValues(alpha: 0.12)
+                                : AppColors.surfaceLight)),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: themeMode == ThemeModeType.oled
+                          ? const Color(0xFF10B981).withValues(alpha: 0.3)
+                          : (themeMode == ThemeModeType.dark
+                              ? const Color(0xFF38BDF8).withValues(alpha: 0.3)
+                              : (themeMode == ThemeModeType.system
+                                  ? const Color(0xFF818CF8).withValues(alpha: 0.3)
+                                  : cardBorder)),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        themeMode == ThemeModeType.oled
+                            ? Icons.battery_charging_full_rounded
+                            : (themeMode == ThemeModeType.dark
+                                ? Icons.laptop_chromebook_rounded
+                                : (themeMode == ThemeModeType.system
+                                    ? Icons.smartphone_rounded
+                                    : Icons.info_outline_rounded)),
+                        size: 18,
+                        color: themeMode == ThemeModeType.oled
+                            ? const Color(0xFF10B981)
+                            : (themeMode == ThemeModeType.dark
+                                ? const Color(0xFF38BDF8)
+                                : (themeMode == ThemeModeType.system
+                                    ? const Color(0xFF818CF8)
+                                    : textSecondary)),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          switch (themeMode) {
+                            ThemeModeType.oled => 'AMOLED/OLED panellerde pikselleri tamamen kapatır (#000000), sonsuz kontrast ve maksimum batarya tasarrufu sunar.',
+                            ThemeModeType.dark => 'IPS & LCD panellerde ışık sızmasını ve göz yorgunluğunu önleyen yumuşak koyu gece tasarımı.',
+                            ThemeModeType.system => 'Telefonunuzun sistem karanlık/aydınlık ayarını ve ekran uyumunu otomatik olarak takip eder.',
+                            ThemeModeType.light => 'Gündüz ve aydınlık ortamlarda yüksek kontrast ve ferah okuma sunar.',
+                            ThemeModeType.sepia => 'Mavi ışığı filtreleyerek basılı kitap sıcaklığında gözü dinlendiren kâğıt tonu.',
+                          },
+                          style: TextStyle(
+                            fontSize: 11.5,
+                            color: textPrimary,
+                            height: 1.35,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -403,7 +480,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onTap: () => ThemeService.instance.setMode(mode),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isSelected ? AppColors.primary : AppColors.surfaceLight,
@@ -413,12 +490,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               width: isSelected ? 1.5 : 1.0,
             ),
           ),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 11.5,
-              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-              color: isSelected ? Colors.white : AppColors.textPrimary,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: 11.5,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                color: isSelected ? Colors.white : AppColors.textPrimary,
+              ),
             ),
           ),
         ),
@@ -1119,16 +1200,169 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Color textSecondary,
     Color textMuted,
   ) {
-    return ValueListenableBuilder<UpdateMode>(
-      valueListenable: UpdateService.instance.modeNotifier,
-      builder: (context, currentMode, _) {
-        return ValueListenableBuilder<bool>(
+    return Column(
+      children: [
+        // 1. SEÇENEK: SORULARI ÇEK (CANLI SENKRONİZASYON)
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: cardBg,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: cardBorder),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.cloud_download_rounded,
+                      size: 20,
+                      color: Color(0xFF6366F1),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Soruları Çek',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Uygulamayı yeniden indirmeden yeni soruları internetten çeker.',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: textMuted,
+                            height: 1.3,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+
+              // Canlı Senkronizasyon Durum Mesajı
+              ValueListenableBuilder<String?>(
+                valueListenable: UpdateService.instance.syncStatusMessageNotifier,
+                builder: (context, msg, _) {
+                  if (msg == null || msg.isEmpty) return const SizedBox.shrink();
+                  final isSuccess = msg.contains('başarıyla');
+                  final isError = msg.contains('Hata') || msg.contains('erişilemedi');
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: isSuccess
+                          ? const Color(0xFF10B981).withValues(alpha: 0.1)
+                          : (isError
+                              ? Colors.red.withValues(alpha: 0.1)
+                              : const Color(0xFF6366F1).withValues(alpha: 0.1)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          isSuccess
+                              ? Icons.check_circle_rounded
+                              : (isError ? Icons.error_outline_rounded : Icons.sync_rounded),
+                          size: 16,
+                          color: isSuccess
+                              ? const Color(0xFF10B981)
+                              : (isError ? Colors.red : const Color(0xFF6366F1)),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            msg,
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: isSuccess
+                                  ? const Color(0xFF10B981)
+                                  : (isError ? Colors.red : textPrimary),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              // Soruları Çek Butonu
+              ValueListenableBuilder<bool>(
+                valueListenable: UpdateService.instance.isSyncingNotifier,
+                builder: (context, isSyncing, _) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF6366F1),
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      icon: isSyncing
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                            )
+                          : const Icon(Icons.sync_rounded, size: 18),
+                      label: Text(
+                        isSyncing ? 'Sorular İndiriliyor...' : 'Soruları Çek',
+                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+                      ),
+                      onPressed: isSyncing
+                          ? null
+                          : () async {
+                              final ok = await UpdateService.instance.syncQuestionsOnline();
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(ok
+                                        ? 'Tüm sorular başarıyla güncellendi!'
+                                        : 'Güncelleme sunucusuna erişilemedi.'),
+                                    backgroundColor: ok ? const Color(0xFF10B981) : Colors.red,
+                                  ),
+                                );
+                              }
+                            },
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        // 2. SEÇENEK: APK SÜRÜMÜ KONTROL ET / İNDİR
+        ValueListenableBuilder<bool>(
           valueListenable: UpdateService.instance.isCheckingNotifier,
           builder: (context, isChecking, _) {
             return ValueListenableBuilder<RemoteVersionInfo?>(
               valueListenable: UpdateService.instance.availableUpdateNotifier,
               builder: (context, updateInfo, _) {
-                final bool hasUpdate = updateInfo != null;
+                final bool hasNewApk = updateInfo != null &&
+                    updateInfo.versionCode > UpdateService.currentVersionCode;
 
                 return Container(
                   padding: const EdgeInsets.all(16),
@@ -1136,8 +1370,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: cardBg,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: hasUpdate ? const Color(0xFF10B981) : cardBorder,
-                      width: hasUpdate ? 1.5 : 1.0,
+                      color: hasNewApk ? const Color(0xFF10B981) : cardBorder,
+                      width: hasNewApk ? 1.5 : 1.0,
                     ),
                   ),
                   child: Column(
@@ -1148,13 +1382,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                              color: const Color(0xFF10B981).withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(
-                              Icons.cloud_sync_rounded,
+                              Icons.android_rounded,
                               size: 20,
-                              color: Color(0xFF6366F1),
+                              color: Color(0xFF10B981),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -1163,7 +1397,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Güncelleme Tercihi',
+                                  'APK Sürümü Kontrol Et / İndir',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
@@ -1172,10 +1406,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'Soruların ve uygulamanın nasıl güncelleneceğini seçin',
+                                  'Uygulama sürümünü kontrol edin ve yeni APK\'yı indirin.',
                                   style: TextStyle(
                                     fontSize: 11,
                                     color: textMuted,
+                                    height: 1.3,
                                   ),
                                 ),
                               ],
@@ -1183,49 +1418,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
-
-                      // Mod Seçenekleri
-                      _buildUpdateModeTile(
-                        title: '⚡ Canlı Soru Senkronizasyonu (Önerilen)',
-                        subtitle: 'APK indirmeden yeni soruları ve konu özetlerini internetten otomatik çeker.',
-                        mode: UpdateMode.liveSync,
-                        selectedMode: currentMode,
-                        isDark: isDark,
-                        textPrimary: textPrimary,
-                        textMuted: textMuted,
-                      ),
-                      const SizedBox(height: 8),
-                      _buildUpdateModeTile(
-                        title: '📦 Tam APK Güncellemesi',
-                        subtitle: 'Yeni bir uygulama sürümü çıktığında tam APK indirme bağlantısı sunar.',
-                        mode: UpdateMode.fullApk,
-                        selectedMode: currentMode,
-                        isDark: isDark,
-                        textPrimary: textPrimary,
-                        textMuted: textMuted,
-                      ),
-                      const SizedBox(height: 8),
-                      _buildUpdateModeTile(
-                        title: '🔍 Manuel Kontrol',
-                        subtitle: 'Yalnızca siz "Güncellemeleri Denetle" butonuna bastığınızda kontrol eder.',
-                        mode: UpdateMode.manual,
-                        selectedMode: currentMode,
-                        isDark: isDark,
-                        textPrimary: textPrimary,
-                        textMuted: textMuted,
-                      ),
-
-                      const SizedBox(height: 16),
-                      Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
                       const SizedBox(height: 14),
 
-                      // Durum Bilgileri
+                      // Sürüm ve Tarih Bilgisi
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Mevcut Sürüm:',
+                            'Yüklü APK Sürümü:',
                             style: TextStyle(fontSize: 12, color: textSecondary),
                           ),
                           Container(
@@ -1245,7 +1445,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       ValueListenableBuilder<String?>(
                         valueListenable: UpdateService.instance.lastCheckedTimeNotifier,
                         builder: (context, lastChecked, _) {
@@ -1269,8 +1469,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
 
-                      if (hasUpdate) ...[
-                        const SizedBox(height: 14),
+                      // Yeni APK Mevcut Bildirim Alanı
+                      if (hasNewApk) ...[
+                        const SizedBox(height: 12),
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
@@ -1286,7 +1487,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   const Icon(Icons.stars_rounded, color: Color(0xFF10B981), size: 18),
                                   const SizedBox(width: 6),
                                   Text(
-                                    'Yeni Güncelleme Mevcut (v${updateInfo.versionName})',
+                                    'Yeni APK Mevcut (v${updateInfo.versionName})',
                                     style: const TextStyle(
                                       color: Color(0xFF10B981),
                                       fontWeight: FontWeight.w700,
@@ -1307,127 +1508,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                               ],
                               const SizedBox(height: 10),
-                              ValueListenableBuilder<bool>(
-                                valueListenable: UpdateService.instance.isSyncingNotifier,
-                                builder: (context, isSyncing, _) {
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton.icon(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: const Color(0xFF10B981),
-                                                foregroundColor: Colors.white,
-                                                elevation: 0,
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                              ),
-                                              icon: const Icon(Icons.download_rounded, size: 16),
-                                              label: const Text('APK İndir', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-                                              onPressed: isSyncing
-                                                  ? null
-                                                  : () => UpdateService.instance.launchApkDownload(updateInfo.apkUrl),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: OutlinedButton.icon(
-                                              style: OutlinedButton.styleFrom(
-                                                foregroundColor: const Color(0xFF10B981),
-                                                side: const BorderSide(color: Color(0xFF10B981)),
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                              ),
-                                              icon: isSyncing
-                                                  ? const SizedBox(
-                                                      width: 14,
-                                                      height: 14,
-                                                      child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF10B981)),
-                                                    )
-                                                  : const Icon(Icons.sync_rounded, size: 16),
-                                              label: Text(
-                                                isSyncing ? 'İndiriliyor...' : 'Soruları Çek',
-                                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                                              ),
-                                              onPressed: isSyncing
-                                                  ? null
-                                                  : () async {
-                                                      final ok = await UpdateService.instance.syncQuestionsOnline(updateInfo);
-                                                      if (context.mounted) {
-                                                        ScaffoldMessenger.of(context).showSnackBar(
-                                                          SnackBar(
-                                                            content: Text(ok ? 'Tüm sorular başarıyla güncellendi!' : 'Güncelleme sunucusuna erişilemedi.'),
-                                                            backgroundColor: ok ? const Color(0xFF10B981) : Colors.red,
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      ValueListenableBuilder<String?>(
-                                        valueListenable: UpdateService.instance.syncStatusMessageNotifier,
-                                        builder: (context, msg, _) {
-                                          if (msg == null || msg.isEmpty) return const SizedBox.shrink();
-                                          return Padding(
-                                            padding: const EdgeInsets.only(top: 8),
-                                            child: Text(
-                                              msg,
-                                              style: const TextStyle(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF10B981),
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF10B981),
+                                    foregroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
+                                  ),
+                                  icon: const Icon(Icons.download_rounded, size: 18),
+                                  label: const Text(
+                                    'Yeni APK\'yı İndir (~58 MB)',
+                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+                                  ),
+                                  onPressed: () => UpdateService.instance.launchApkDownload(updateInfo.apkUrl),
+                                ),
                               ),
                             ],
                           ),
                         ),
                       ],
 
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 12),
 
-                      // Güncellemeleri Denetle Butonu
+                      // Kontrol Et Butonu
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: isDark ? const Color(0xFF4F46E5) : const Color(0xFF4338CA),
-                            foregroundColor: Colors.white,
+                        child: OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: textPrimary,
+                            side: BorderSide(
+                              color: isDark ? const Color(0xFF475569) : const Color(0xFFCBD5E1),
+                            ),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 11),
                           ),
                           icon: isChecking
                               ? const SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                  width: 14,
+                                  height: 14,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
                                 )
-                              : const Icon(Icons.refresh_rounded, size: 18),
+                              : const Icon(Icons.refresh_rounded, size: 16),
                           label: Text(
-                            isChecking ? 'Denetleniyor...' : 'Güncellemeleri Şimdi Denetle',
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                            isChecking
+                                ? 'Kontrol Ediliyor...'
+                                : (hasNewApk ? 'Yeniden Kontrol Et' : 'APK Sürümü Kontrol Et'),
+                            style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600),
                           ),
                           onPressed: isChecking
                               ? null
                               : () async {
                                   final info = await UpdateService.instance.checkForUpdates();
                                   if (context.mounted) {
-                                    if (info == null || (info.versionCode <= UpdateService.currentVersionCode && info.questionsUpdatedAt.isEmpty)) {
+                                    if (info == null || info.versionCode <= UpdateService.currentVersionCode) {
                                       ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Tebrikler! Uygulamanız ve sorularınız en güncel sürümde.'),
-                                          backgroundColor: Color(0xFF10B981),
+                                        SnackBar(
+                                          content: Text('Tebrikler! Uygulamanız en güncel sürümde (v${UpdateService.currentVersionName}).'),
+                                          backgroundColor: const Color(0xFF10B981),
                                         ),
                                       );
                                     }
@@ -1441,74 +1581,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             );
           },
-        );
-      },
-    );
-  }
-
-  Widget _buildUpdateModeTile({
-    required String title,
-    required String subtitle,
-    required UpdateMode mode,
-    required UpdateMode selectedMode,
-    required bool isDark,
-    required Color textPrimary,
-    required Color textMuted,
-  }) {
-    final bool isSelected = mode == selectedMode;
-
-    return InkWell(
-      onTap: () => UpdateService.instance.setUpdateMode(mode),
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? (isDark ? const Color(0xFF6366F1).withValues(alpha: 0.15) : const Color(0xFFEEF2FF))
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: isSelected
-                ? const Color(0xFF6366F1)
-                : (isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
-          ),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              isSelected ? Icons.radio_button_checked_rounded : Icons.radio_button_off_rounded,
-              size: 18,
-              color: isSelected ? const Color(0xFF6366F1) : textMuted,
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                      color: isSelected ? const Color(0xFF6366F1) : textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: textMuted,
-                      height: 1.35,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

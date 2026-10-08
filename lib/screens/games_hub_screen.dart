@@ -6,6 +6,7 @@ import 'bomb_play_screen.dart';
 import 'chronology_play_screen.dart';
 import 'clue_play_screen.dart';
 import 'matching_play_screen.dart';
+import 'map_point_game_screen.dart';
 
 class GamesHubScreen extends StatefulWidget {
   const GamesHubScreen({super.key});
@@ -247,6 +248,31 @@ class _GamesHubScreenState extends State<GamesHubScreen> {
                   buttonLabel: 'Seviye Seç ve Sırala',
                   onTap: () => _openChronologyLevelPicker(context, cardBg, borderColor, textPrimary, textSecondary),
                 ),
+                const SizedBox(height: 16),
+
+                // MODÜL 5: HARİTADA NOKTA ATIŞI (KPSS GEOGUESSR)
+                _buildExerciseCard(
+                  context: context,
+                  cardBg: cardBg,
+                  borderColor: borderColor,
+                  textPrimary: textPrimary,
+                  textSecondary: textSecondary,
+                  accentColor: const Color(0xFF0D9488), // Teal
+                  icon: Icons.place_rounded,
+                  tag: 'HARİTA & MEKÂNSAL HAFIZA',
+                  title: 'Haritada Nokta Atışı',
+                  description: 'Dilsiz Türkiye haritası üzerinde madenleri, ovaları, deltaları, barajları ve sanayi merkezlerini parmağınızla nokta atışı bularak en yüksek puanı toplayın.',
+                  highlights: const ['Dilsiz Harita', 'Km Mesafe Ölçer', '30+ KPSS Noktası', 'GeoGuessr Modu'],
+                  buttonLabel: 'Haritada Keşfe Başla',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const MapPointGameScreen(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -309,7 +335,7 @@ class _GamesHubScreenState extends State<GamesHubScreen> {
               ),
               const Spacer(),
               Text(
-                '4 Pratik Modülü',
+                '5 Pratik Modülü',
                 style: TextStyle(
                   color: textSecondary,
                   fontSize: 11,
@@ -330,7 +356,7 @@ class _GamesHubScreenState extends State<GamesHubScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            'Soru çözümlerinden sonra bilgilerin zihinde oturmasını sağlayan dinamik pratikler. Hızlı düşünme, çağrışım ve kronolojik kavrayışı pekiştirin.',
+            'Soru çözümlerinden sonra bilgilerin zihinde oturmasını sağlayan dinamik pratikler. Hızlı düşünme, mekânsal harita hafızası ve kronolojik kavrayışı pekiştirin.',
             style: TextStyle(
               color: textSecondary,
               fontSize: 12.5,
@@ -343,6 +369,7 @@ class _GamesHubScreenState extends State<GamesHubScreen> {
             spacing: 8,
             runSpacing: 6,
             children: [
+              _buildMiniChip(Icons.place_rounded, 'Dilsiz Harita', textSecondary, borderColor),
               _buildMiniChip(Icons.bolt_rounded, 'Refleks & Hız', textSecondary, borderColor),
               _buildMiniChip(Icons.psychology_outlined, 'Tümdengelim', textSecondary, borderColor),
               _buildMiniChip(Icons.hub_outlined, 'Kavram Ağları', textSecondary, borderColor),

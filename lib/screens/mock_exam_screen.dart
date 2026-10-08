@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../services/theme_service.dart';
 import '../widgets/formatted_question_view.dart';
 import '../widgets/source_page_view.dart';
+import '../widgets/question_report_dialog.dart';
 import 'mock_exam_result_screen.dart';
 
 class MockExamScreen extends StatefulWidget {
@@ -434,10 +435,11 @@ class _MockExamScreenState extends State<MockExamScreen> {
         final selectedOption = _userAnswers[_currentIndex];
         final isFlagged = _flaggedQuestions.contains(_currentIndex);
 
-        return WillPopScope(
-          onWillPop: () async {
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) return;
             _showFinishConfirmationDialog();
-            return false;
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
@@ -544,6 +546,15 @@ class _MockExamScreenState extends State<MockExamScreen> {
                   _fontSize = _fontSize >= 19.0 ? 14.0 : _fontSize + 1.5;
                 });
               },
+            ),
+
+            // Soru Hata Bildir
+            IconButton(
+              tooltip: 'Soru Hata Bildir',
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+              icon: const Icon(Icons.flag_outlined, color: Color(0xFFEF4444), size: 20),
+              onPressed: () => QuestionReportDialog.show(context, question: currentQ),
             ),
             const SizedBox(width: 6),
           ],

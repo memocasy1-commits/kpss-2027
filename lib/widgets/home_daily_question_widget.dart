@@ -111,7 +111,7 @@ class _HomeDailyQuestionWidgetState extends State<HomeDailyQuestionWidget> {
     return ValueListenableBuilder<ThemeModeType>(
       valueListenable: ThemeService.instance.modeNotifier,
       builder: (context, themeMode, _) {
-        final isDark = themeMode == ThemeModeType.dark;
+        final isDark = AppColors.isDarkMode;
         final isSepia = themeMode == ThemeModeType.sepia;
         final cardBg = AppColors.card;
         final cardBorder = AppColors.cardBorder;

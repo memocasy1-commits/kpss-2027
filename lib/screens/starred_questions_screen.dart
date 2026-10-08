@@ -79,8 +79,8 @@ class _StarredQuestionsScreenState extends State<StarredQuestionsScreen> with Si
           ElevatedButton(
             onPressed: () async {
               await NotesService.instance.saveNote(q.id, controller.text);
-              if (mounted) Navigator.pop(ctx);
-              _loadData();
+              if (ctx.mounted) Navigator.pop(ctx);
+              if (mounted) _loadData();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF2563EB),
