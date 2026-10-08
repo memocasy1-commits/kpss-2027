@@ -258,16 +258,23 @@ class UpdateService {
   /// Yeni APK indirme bağlantısını aç
   Future<void> launchApkDownload(String? customUrl) async {
     final targetUrl = customUrl ?? availableUpdateNotifier.value?.apkUrl;
-    final fallbackUrl = 'https://github.com/memocasy1-commits/kpss-2027/releases/download/v1.0.0/app-release.apk';
+    final fallbackUrl = 'https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk';
     final urlToOpen = (targetUrl != null && targetUrl.isNotEmpty) ? targetUrl : fallbackUrl;
 
     try {
       final uri = Uri.parse(urlToOpen);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      // Android 11+ ve sonraki sürümlerde canLaunchUrl false dönse dahi doğrudan açmayı dene
+      final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+      if (!launched) {
+        await launchUrl(uri, mode: LaunchMode.platformDefault);
       }
     } catch (e) {
       debugPrint('Launch APK download error: $e');
+      // Son çare: platform varsayılanı ile dene
+      try {
+        final uri = Uri.parse(urlToOpen);
+        await launchUrl(uri, mode: LaunchMode.platformDefault);
+      } catch (_) {}
     }
   }
 
