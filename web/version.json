@@ -1,12 +1,12 @@
 {
-  "versionCode": 10,
-  "versionName": "1.0.9",
-  "version": "1.0.9",
-  "build_number": 10,
-  "apkSize": "101.9 MB",
-  "releaseNotes": "Ana Ekran Güncelleme Bildirimi & Gerçek Boyut Gösterimi: Yeni güncelleme yayınlandığında ana ekranda otomatik uyarı kartı ve diyalog bildirimi gösterilmesi sağlandı. Güncelleme panelindeki sabit 58 MB ibaresi düzeltilerek gerçek dosya boyutu (101.9 MB) dinamik hale getirildi.",
+  "versionCode": 11,
+  "versionName": "1.0.10",
+  "version": "1.0.10",
+  "build_number": 11,
+  "apkSize": "102.0 MB",
+  "releaseNotes": "Yatay Mod Yan Yana Kusursuz Tasarım: Yatay modda soru paneli sol tarafa, harita paneli ise sağ tarafa alındı. İki panel birbirinin alanını kesinlikle kesmeyecek ve tüm ekranı kaplayacak şekilde bölünmüş (side-by-side) yapıya kavuşturuldu.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-09T01:38:00Z",
+  "questionsUpdatedAt": "2026-10-09T01:56:00Z",
   "mandatory": false
 }

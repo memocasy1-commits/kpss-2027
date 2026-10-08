@@ -40,8 +40,6 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
   Timer? _speedRunTimer;
   int _remainingSeconds = 60;
 
-  // Landscape floating card collapse state
-  bool _isLandscapeCardMinimized = false;
 
   // State for current question
   Offset? _userTapNorm; // (normX, normY) in 0.0..1.0
@@ -785,54 +783,50 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
               ),
 
             // ==========================================================
-            // YATAY MOD (LANDSCAPE) - TAM EKRAN HARİTA + YÜZEN HUD KARTI
+            // YATAY MOD (LANDSCAPE) - SOLDA SORU PANELİ, SAĞDA TAM EKRAN HARİTA
+            // (Soru ve Harita birbirinin alanını kesinlikle KESMEZ)
             // ==========================================================
             if (isLandscape)
               Expanded(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    // 1. TAM EKRAN İNTERAKTİF HARİTA (Ekranın tüm genişliğini ve yüksekliğini doldurur)
-                    Positioned.fill(
-                      child: _buildInteractiveMap(
-                        isDark: isDark,
-                        cardBorder: cardBorder,
-                        textSecondary: textSecondary,
-                        q: q,
-                        isLandscape: true,
-                      ),
-                    ),
-
-                    // 2. SAĞ TARAFTA YÜZEN SORU & BİLGİ HUD KARTI (Floating Glassmorphic Card)
-                    Positioned(
-                      top: 10,
-                      right: 12,
-                      bottom: 10,
-                      width: _isLandscapeCardMinimized ? 150 : 320,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeInOut,
-                        decoration: BoxDecoration(
-                          color: cardBg.withValues(alpha: isDark ? 0.92 : 0.95),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: cardBorder, width: 1.2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.15),
-                              blurRadius: 14,
-                              offset: const Offset(0, 4),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final double leftPanelWidth = (constraints.maxWidth * 0.36).clamp(280.0, 320.0);
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // 1. SOL TARAF: SORU & KONTROL PANELİ
+                        SizedBox(
+                          width: leftPanelWidth,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: cardBg,
+                              border: Border(
+                                right: BorderSide(color: cardBorder, width: 1.5),
+                              ),
                             ),
-                          ],
+                            child: _buildLandscapeQuestionPanel(
+                              q: q,
+                              cardBg: cardBg,
+                              cardBorder: cardBorder,
+                              textPrimary: textPrimary,
+                              textSecondary: textSecondary,
+                            ),
+                          ),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: _isLandscapeCardMinimized
-                              ? _buildLandscapeMinimizedHUD(q: q, textPrimary: textPrimary)
-                              : _buildLandscapeExpandedHUD(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary),
+
+                        // 2. SAĞ TARAF: HARİTA PANELİ (Tüm kalan ekranı kaplar)
+                        Expanded(
+                          child: _buildInteractiveMap(
+                            isDark: isDark,
+                            cardBorder: cardBorder,
+                            textSecondary: textSecondary,
+                            q: q,
+                            isLandscape: true,
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                      ],
+                    );
+                  },
                 ),
               )
 
@@ -867,44 +861,8 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     );
   }
 
-  // Yatay Mod Minimizasyon Durumu
-  Widget _buildLandscapeMinimizedHUD({required MapPointQuestion q, required Color textPrimary}) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.open_in_full_rounded, color: Color(0xFF6366F1), size: 20),
-            onPressed: () {
-              setState(() {
-                _isLandscapeCardMinimized = false;
-              });
-            },
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'Soruyu Aç',
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: Color(0xFF6366F1)),
-          ),
-          const SizedBox(height: 8),
-          if (!_hasConfirmed && _userTapNorm != null)
-            ElevatedButton(
-              onPressed: _confirmGuess,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF059669),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-              child: const Text('Onayla', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800)),
-            ),
-        ],
-      ),
-    );
-  }
-
-  // Yatay Mod Açık Durum HUD Kartı
-  Widget _buildLandscapeExpandedHUD({
+  // Yatay Mod Soru & Kontrol Paneli (Sol Tarafta, Haritayı KESMEZ)
+  Widget _buildLandscapeQuestionPanel({
     required MapPointQuestion q,
     required Color cardBg,
     required Color cardBorder,
@@ -912,88 +870,276 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     required Color textSecondary,
   }) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Kart Üst Başlık & Katlama İkonu
+          // 1. Kategori & Alt Kategori Rozetleri
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                 decoration: BoxDecoration(
                   color: const Color(0xFF059669).withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   q.categoryTitle.toUpperCase(),
-                  style: const TextStyle(color: Color(0xFF059669), fontSize: 9, fontWeight: FontWeight.w800),
+                  style: const TextStyle(
+                    color: Color(0xFF059669),
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.3,
+                  ),
                 ),
               ),
-              const SizedBox(width: 5),
+              const SizedBox(width: 6),
               Expanded(
-                child: Text(
-                  q.subCategory,
-                  style: const TextStyle(color: Color(0xFF6366F1), fontSize: 9.5, fontWeight: FontWeight.w700),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _isLandscapeCardMinimized = true;
-                  });
-                },
-                borderRadius: BorderRadius.circular(6),
-                child: const Padding(
-                  padding: EdgeInsets.all(3),
-                  child: Icon(Icons.close_fullscreen_rounded, size: 15, color: Colors.grey),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    q.subCategory,
+                    style: const TextStyle(
+                      color: Color(0xFF6366F1),
+                      fontSize: 9.5,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
 
-          // Soru Metni
-          Text(
-            q.question,
-            style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, color: textPrimary, height: 1.25),
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-
-          // İpucu Satırı
-          InkWell(
-            onTap: () {
-              setState(() {
-                _showHint = !_showHint;
-              });
-            },
-            child: Row(
-              children: [
-                Icon(Icons.lightbulb_outline_rounded, size: 12, color: _showHint ? const Color(0xFFF59E0B) : textSecondary),
-                const SizedBox(width: 4),
-                Text(
-                  _showHint ? q.hint : 'İpucu Gör',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: _showHint ? const Color(0xFFD97706) : textSecondary,
+          // 2. Soru ve İpucu Alanı (Kaydırılabilir - Uzun sorularda asla taşma yapmaz)
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    q.question,
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w800,
+                      color: textPrimary,
+                      height: 1.3,
+                    ),
                   ),
-                  overflow: TextOverflow.ellipsis,
+                  const SizedBox(height: 6),
+
+                  // İpucu Satırı
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _showHint = !_showHint;
+                      });
+                    },
+                    borderRadius: BorderRadius.circular(6),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.lightbulb_outline_rounded,
+                            size: 13,
+                            color: _showHint ? const Color(0xFFF59E0B) : textSecondary,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              _showHint ? q.hint : 'İpucu Gör',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: _showHint ? const Color(0xFFD97706) : textSecondary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Eğer onaylandıysa: Doğru Konum, Açıklama ve Altın Bilgiler
+                  if (_hasConfirmed) ...[
+                    const SizedBox(height: 8),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: _lastFeedbackColor.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: _lastFeedbackColor.withValues(alpha: 0.3)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '📍 Doğru Konum: ${q.targetName}',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              color: textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            q.explanation,
+                            style: TextStyle(
+                              fontSize: 10.5,
+                              color: textSecondary,
+                              height: 1.3,
+                            ),
+                          ),
+                          if (q.keyFacts.isNotEmpty) ...[
+                            const SizedBox(height: 6),
+                            ...q.keyFacts.map((fact) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 2),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('• ', style: TextStyle(fontSize: 10, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
+                                      Expanded(
+                                        child: Text(
+                                          fact,
+                                          style: TextStyle(fontSize: 10, color: textPrimary, height: 1.25),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+
+          const Divider(height: 10),
+
+          // 3. Alt İşlem Alanı
+          if (!_hasConfirmed) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: cardBorder),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    _userTapNorm != null ? Icons.touch_app_rounded : Icons.info_outline_rounded,
+                    size: 14,
+                    color: _userTapNorm != null ? const Color(0xFF6366F1) : textSecondary,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      _userTapNorm != null ? 'Nokta seçildi! Şimdi onayla.' : 'Haritaya dokunarak tahmin yap.',
+                      style: TextStyle(
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w600,
+                        color: _userTapNorm != null ? textPrimary : textSecondary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 6),
+            SizedBox(
+              width: double.infinity,
+              height: 38,
+              child: ElevatedButton.icon(
+                onPressed: _userTapNorm != null ? _confirmGuess : null,
+                icon: const Icon(Icons.check_circle_rounded, size: 16),
+                label: const Text('Tahmin Et', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF059669),
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: cardBorder,
+                  disabledForegroundColor: textSecondary,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+                  elevation: 0,
+                ),
+              ),
+            ),
+          ] else ...[
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: _lastFeedbackColor.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    _lastFeedback,
+                    style: TextStyle(
+                      color: _lastFeedbackColor,
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  '${_lastDistanceKm?.round()} km',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary,
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    '+$_lastScore P',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF6366F1),
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          const Divider(height: 12),
-
-          // Alt Dinamik Bölüm: Onaylanmadıysa Buton, Onaylandıysa KPSS Bilgisi
-          Expanded(
-            child: _hasConfirmed
-                ? _buildFeedbackSection(q, isLandscape: true)
-                : Center(child: _buildActionSection(isLandscape: true)),
-          ),
+            const SizedBox(height: 6),
+            SizedBox(
+              width: double.infinity,
+              height: 38,
+              child: ElevatedButton.icon(
+                onPressed: _nextQuestion,
+                icon: const Icon(Icons.arrow_forward_rounded, size: 16),
+                label: Text(
+                  _currentIndex + 1 < _questions.length ? 'Sonraki Konum' : 'Sonuçları Gör',
+                  style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF059669),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+                  elevation: 0,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -1143,8 +1289,8 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
         final double containerH = constraints.maxHeight;
 
         const double mapAspect = 1800 / 657; // ~2.7397
-        final double padX = isLandscape ? 8.0 : 12.0;
-        final double padY = isLandscape ? 8.0 : 16.0;
+        final double padX = isLandscape ? 4.0 : 12.0;
+        final double padY = isLandscape ? 4.0 : 16.0;
 
         double mapW = containerW - (padX * 2);
         double mapH = mapW / mapAspect;
