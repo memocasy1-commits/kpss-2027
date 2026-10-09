@@ -3,8 +3,8 @@ import 'package:kpss_soru_bankasi/data/map_point_game_data.dart';
 
 void main() {
   group('MapPointGameData Tests', () {
-    test('Question pool is loaded and contains at least 80 questions across all categories', () {
-      expect(MapPointGameData.questions.length, greaterThanOrEqualTo(80));
+    test('Question pool is loaded and contains 200 questions across all categories', () {
+      expect(MapPointGameData.questions.length, equals(200));
       expect(MapPointGameData.categories.length, greaterThanOrEqualTo(7));
     });
 
