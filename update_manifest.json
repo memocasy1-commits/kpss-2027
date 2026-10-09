@@ -1,12 +1,12 @@
 {
-  "versionCode": 12,
-  "versionName": "1.0.11",
-  "version": "1.0.11",
-  "build_number": 12,
+  "versionCode": 13,
+  "versionName": "1.0.12",
+  "version": "1.0.12",
+  "build_number": 13,
   "apkSize": "102.0 MB",
-  "releaseNotes": "Haritada Nokta Atışı Dikey Mod Standardı ve Yüksek Hızlı Senkronizasyon: Yatay mod kaldırıldı, stabil dikey deneyim korundu. Soru ve sürüm güncellemeleri sınırsız CDN altyapısına bağlandı.",
+  "releaseNotes": "Coğrafi Gerçeklik ve Harita İyileştirmesi: Marmara Denizi, İstanbul Boğazı ve Çanakkale Boğazı aslına uygun olarak açıldı; Van, Tuz ve diğer göller belirginleştirildi, il sınır izleri sıfırlandı.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-09T02:40:00Z",
+  "questionsUpdatedAt": "2026-10-09T07:27:00Z",
   "mandatory": false
 }
