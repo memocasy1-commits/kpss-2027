@@ -66,15 +66,15 @@ class UpdateService {
   static final UpdateService instance = UpdateService._internal();
   UpdateService._internal();
 
-  static const int currentVersionCode = 11;
-  static const String currentVersionName = '1.0.10';
+  static const int currentVersionCode = 12;
+  static const String currentVersionName = '1.0.11';
 
-  // Primary: Netlify public CDN and GitHub raw
+  // Primary: GitHub Raw & jsDelivr CDN (Sınırsız trafik, Netlify kotasını tüketmez)
   static const List<String> _versionEndpoints = [
     'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/version.json',
-    'https://kpss-2027.netlify.app/version.json',
-    'https://kpss-2027.netlify.app/update_manifest.json',
+    'https://cdn.jsdelivr.net/gh/memocasy1-commits/kpss-2027@main/version.json',
     'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/update_manifest.json',
+    'https://kpss-2027.netlify.app/version.json',
   ];
 
   // SharedPreferences keys
@@ -214,10 +214,11 @@ class UpdateService {
             'Sorular indiriliyor (${i + 1}/${courses.length}): ${course.toUpperCase()}';
 
         final filename = course == 'denemeler' ? 'denemeler.json' : '${course}_questions.json';
+        // Netlify bant genişliğini korumak için doğrudan GitHub Raw ve jsDelivr CDN kullanılıyor
         final urls = [
-          'https://kpss-2027.netlify.app/data/$filename',
-          'https://kpss-2027.netlify.app/assets/assets/data/$filename',
           'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/assets/data/$filename',
+          'https://cdn.jsdelivr.net/gh/memocasy1-commits/kpss-2027@main/assets/data/$filename',
+          'https://kpss-2027.netlify.app/data/$filename',
         ];
 
         for (final url in urls) {

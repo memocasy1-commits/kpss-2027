@@ -60,11 +60,9 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     super.initState();
     _selectedCategory = widget.initialCategory ?? 'all';
 
-    // Allow both portrait and landscape orientations
+    // Sadece dikey mod (portrait)
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
     ]);
 
     _pulseController = AnimationController(
@@ -148,21 +146,6 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
   void _resetZoom() {
     _transformController.value = Matrix4.identity();
     _currentScale = 1.0;
-  }
-
-  void _toggleOrientation() {
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-    HapticFeedback.mediumImpact();
-    if (isLandscape) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-      ]);
-    } else {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.landscapeLeft,
-      ]);
-    }
   }
 
   @override
@@ -605,14 +588,12 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     final textPrimary = AppColors.textPrimary;
     final textSecondary = AppColors.textSecondary;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
-        toolbarHeight: isLandscape ? 40 : 54,
+        toolbarHeight: 54,
         shape: Border(bottom: BorderSide(color: cardBorder, width: 1)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: textPrimary, size: 18),
@@ -634,9 +615,9 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    isLandscape ? 'KPSS HARİTADA NOKTA ATIŞI' : 'HARİTADA NOKTA ATIŞI',
-                    style: TextStyle(fontSize: isLandscape ? 12 : 13, fontWeight: FontWeight.w900, letterSpacing: 0.3),
+                  const Text(
+                    'HARİTADA NOKTA ATIŞI',
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 0.3),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
@@ -657,28 +638,6 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           ],
         ),
         actions: [
-          // Ekranı Döndür (Yatay / Dikey Mod Butonu)
-          IconButton(
-            tooltip: isLandscape ? 'Dikey Moda Geç' : 'Yatay Moda Geç',
-            icon: Container(
-              padding: const EdgeInsets.all(4.5),
-              decoration: BoxDecoration(
-                color: (isLandscape ? const Color(0xFF6366F1) : textSecondary).withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(7),
-                border: Border.all(
-                  color: (isLandscape ? const Color(0xFF6366F1) : cardBorder),
-                  width: 0.8,
-                ),
-              ),
-              child: Icon(
-                isLandscape ? Icons.stay_current_portrait_rounded : Icons.stay_current_landscape_rounded,
-                size: 15,
-                color: isLandscape ? const Color(0xFF6366F1) : textPrimary,
-              ),
-            ),
-            onPressed: _toggleOrientation,
-          ),
-
           // Oyun Modu Değiştir Butonu
           InkWell(
             onTap: _showGameModeBottomSheet,
@@ -783,364 +742,30 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
               ),
 
             // ==========================================================
-            // YATAY MOD (LANDSCAPE) - SOLDA SORU PANELİ, SAĞDA TAM EKRAN HARİTA
-            // (Soru ve Harita birbirinin alanını kesinlikle KESMEZ)
-            // ==========================================================
-            if (isLandscape)
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final double leftPanelWidth = (constraints.maxWidth * 0.36).clamp(280.0, 320.0);
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // 1. SOL TARAF: SORU & KONTROL PANELİ
-                        SizedBox(
-                          width: leftPanelWidth,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: cardBg,
-                              border: Border(
-                                right: BorderSide(color: cardBorder, width: 1.5),
-                              ),
-                            ),
-                            child: _buildLandscapeQuestionPanel(
-                              q: q,
-                              cardBg: cardBg,
-                              cardBorder: cardBorder,
-                              textPrimary: textPrimary,
-                              textSecondary: textSecondary,
-                            ),
-                          ),
-                        ),
-
-                        // 2. SAĞ TARAF: HARİTA PANELİ (Tüm kalan ekranı kaplar)
-                        Expanded(
-                          child: _buildInteractiveMap(
-                            isDark: isDark,
-                            cardBorder: cardBorder,
-                            textSecondary: textSecondary,
-                            q: q,
-                            isLandscape: true,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              )
-
-            // ==========================================================
             // DİKEY MOD (PORTRAIT)
-            // ==========================================================
-            else
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildCategorySelector(),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
-                      child: _buildQuestionCard(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary),
+            Expanded(
+              child: Column(
+                children: [
+                  _buildCategorySelector(),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
+                    child: _buildQuestionCard(q: q, cardBg: cardBg, cardBorder: cardBorder, textPrimary: textPrimary, textSecondary: textSecondary),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                      child: _buildInteractiveMap(isDark: isDark, cardBorder: cardBorder, textSecondary: textSecondary, q: q),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-                        child: _buildInteractiveMap(isDark: isDark, cardBorder: cardBorder, textSecondary: textSecondary, q: q, isLandscape: false),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 2, 14, 10),
-                      child: _hasConfirmed ? _buildFeedbackSection(q) : _buildActionSection(),
-                    ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 2, 14, 10),
+                    child: _hasConfirmed ? _buildFeedbackSection(q) : _buildActionSection(),
+                  ),
+                ],
               ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  // Yatay Mod Soru & Kontrol Paneli (Sol Tarafta, Haritayı KESMEZ)
-  Widget _buildLandscapeQuestionPanel({
-    required MapPointQuestion q,
-    required Color cardBg,
-    required Color cardBorder,
-    required Color textPrimary,
-    required Color textSecondary,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 1. Kategori & Alt Kategori Rozetleri
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF059669).withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  q.categoryTitle.toUpperCase(),
-                  style: const TextStyle(
-                    color: Color(0xFF059669),
-                    fontSize: 9.5,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF6366F1).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    q.subCategory,
-                    style: const TextStyle(
-                      color: Color(0xFF6366F1),
-                      fontSize: 9.5,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-
-          // 2. Soru ve İpucu Alanı (Kaydırılabilir - Uzun sorularda asla taşma yapmaz)
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    q.question,
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w800,
-                      color: textPrimary,
-                      height: 1.3,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-
-                  // İpucu Satırı
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        _showHint = !_showHint;
-                      });
-                    },
-                    borderRadius: BorderRadius.circular(6),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.lightbulb_outline_rounded,
-                            size: 13,
-                            color: _showHint ? const Color(0xFFF59E0B) : textSecondary,
-                          ),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              _showHint ? q.hint : 'İpucu Gör',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: _showHint ? const Color(0xFFD97706) : textSecondary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Eğer onaylandıysa: Doğru Konum, Açıklama ve Altın Bilgiler
-                  if (_hasConfirmed) ...[
-                    const SizedBox(height: 8),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: _lastFeedbackColor.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: _lastFeedbackColor.withValues(alpha: 0.3)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '📍 Doğru Konum: ${q.targetName}',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              color: textPrimary,
-                            ),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            q.explanation,
-                            style: TextStyle(
-                              fontSize: 10.5,
-                              color: textSecondary,
-                              height: 1.3,
-                            ),
-                          ),
-                          if (q.keyFacts.isNotEmpty) ...[
-                            const SizedBox(height: 6),
-                            ...q.keyFacts.map((fact) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 2),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('• ', style: TextStyle(fontSize: 10, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
-                                      Expanded(
-                                        child: Text(
-                                          fact,
-                                          style: TextStyle(fontSize: 10, color: textPrimary, height: 1.25),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-
-          const Divider(height: 10),
-
-          // 3. Alt İşlem Alanı
-          if (!_hasConfirmed) ...[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-              decoration: BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: cardBorder),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    _userTapNorm != null ? Icons.touch_app_rounded : Icons.info_outline_rounded,
-                    size: 14,
-                    color: _userTapNorm != null ? const Color(0xFF6366F1) : textSecondary,
-                  ),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      _userTapNorm != null ? 'Nokta seçildi! Şimdi onayla.' : 'Haritaya dokunarak tahmin yap.',
-                      style: TextStyle(
-                        fontSize: 10.5,
-                        fontWeight: FontWeight.w600,
-                        color: _userTapNorm != null ? textPrimary : textSecondary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 6),
-            SizedBox(
-              width: double.infinity,
-              height: 38,
-              child: ElevatedButton.icon(
-                onPressed: _userTapNorm != null ? _confirmGuess : null,
-                icon: const Icon(Icons.check_circle_rounded, size: 16),
-                label: const Text('Tahmin Et', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF059669),
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: cardBorder,
-                  disabledForegroundColor: textSecondary,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-                  elevation: 0,
-                ),
-              ),
-            ),
-          ] else ...[
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: _lastFeedbackColor.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    _lastFeedback,
-                    style: TextStyle(
-                      color: _lastFeedbackColor,
-                      fontSize: 10.5,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  '${_lastDistanceKm?.round()} km',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: textPrimary,
-                  ),
-                ),
-                const Spacer(),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF6366F1).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    '+$_lastScore P',
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF6366F1),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            SizedBox(
-              width: double.infinity,
-              height: 38,
-              child: ElevatedButton.icon(
-                onPressed: _nextQuestion,
-                icon: const Icon(Icons.arrow_forward_rounded, size: 16),
-                label: Text(
-                  _currentIndex + 1 < _questions.length ? 'Sonraki Konum' : 'Sonuçları Gör',
-                  style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF059669),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-                  elevation: 0,
-                ),
-              ),
-            ),
-          ],
-        ],
       ),
     );
   }
@@ -1275,13 +900,12 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
     );
   }
 
-  // İnteraktif Harita Widget'ı (Dikeyde ve Yatayda kusursuz ölçekleme)
+  // İnteraktif Harita Widget'ı (Dikey Mod)
   Widget _buildInteractiveMap({
     required bool isDark,
     required Color cardBorder,
     required Color textSecondary,
     required MapPointQuestion q,
-    required bool isLandscape,
   }) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -1289,8 +913,8 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
         final double containerH = constraints.maxHeight;
 
         const double mapAspect = 1800 / 657; // ~2.7397
-        final double padX = isLandscape ? 4.0 : 12.0;
-        final double padY = isLandscape ? 4.0 : 16.0;
+        const double padX = 12.0;
+        const double padY = 16.0;
 
         double mapW = containerW - (padX * 2);
         double mapH = mapW / mapAspect;
@@ -1310,16 +934,14 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
               height: double.infinity,
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF0A101D) : const Color(0xFFE0F2FE),
-                borderRadius: BorderRadius.circular(isLandscape ? 0 : 16),
-                border: isLandscape
-                    ? null
-                    : Border.all(
-                        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFBAE6FD),
-                        width: 1.2,
-                      ),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFBAE6FD),
+                  width: 1.2,
+                ),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(isLandscape ? 0 : 16),
+                borderRadius: BorderRadius.circular(16),
                 child: InteractiveViewer(
                   transformationController: _transformController,
                   minScale: 1.0,
@@ -1683,58 +1305,8 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
   }
 
   // Henüz Onaylanmadıysa Aksiyon Butonu
-  Widget _buildActionSection({bool isLandscape = false}) {
+  Widget _buildActionSection() {
     final bool canConfirm = _userTapNorm != null;
-
-    if (isLandscape) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.background,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.cardBorder),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  canConfirm ? Icons.touch_app_rounded : Icons.info_outline_rounded,
-                  size: 14,
-                  color: canConfirm ? const Color(0xFF6366F1) : AppColors.textSecondary,
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    canConfirm ? 'Nokta seçildi! Şimdi onayla.' : 'Haritaya dokunarak tahmin yap.',
-                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, color: canConfirm ? AppColors.textPrimary : AppColors.textSecondary),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            height: 36,
-            child: ElevatedButton.icon(
-              onPressed: canConfirm ? _confirmGuess : null,
-              icon: const Icon(Icons.check_circle_rounded, size: 15),
-              label: const Text('Tahmin Et', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF059669),
-                foregroundColor: Colors.white,
-                disabledBackgroundColor: AppColors.cardBorder,
-                disabledForegroundColor: AppColors.textSecondary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-                elevation: 0,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
 
     return Row(
       children: [
@@ -1795,14 +1367,14 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
   }
 
   // Onaylandıktan Sonra Bilgi ve Feedback Kartı
-  Widget _buildFeedbackSection(MapPointQuestion q, {bool isLandscape = false}) {
+  Widget _buildFeedbackSection(MapPointQuestion q) {
     return Container(
-      constraints: BoxConstraints(maxHeight: isLandscape ? double.infinity : 180),
-      padding: EdgeInsets.all(isLandscape ? 8 : 10),
+      constraints: const BoxConstraints(maxHeight: 180),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: isLandscape ? Colors.transparent : AppColors.card,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(14),
-        border: isLandscape ? null : Border.all(color: _lastFeedbackColor.withValues(alpha: 0.4), width: 1.5),
+        border: Border.all(color: _lastFeedbackColor.withValues(alpha: 0.4), width: 1.5),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -1854,8 +1426,7 @@ class _MapPointGameScreenState extends State<MapPointGameScreen> with SingleTick
           ),
           const SizedBox(height: 5),
 
-          Expanded(
-            flex: isLandscape ? 1 : 0,
+          Flexible(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
