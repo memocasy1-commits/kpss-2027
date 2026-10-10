@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T15:54:57.561554Z",
+  "updatedAt": "2026-10-10T15:55:02.639029Z",
   "reports": [
     {
       "id": "rep_1791647527237_6013",
@@ -18,7 +18,7 @@
       "userNote": "",
       "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
       "createdAt": "2026-10-10T18:52:07.238",
-      "status": "pending"
+      "status": "resolved"
     },
     {
       "id": "rep_1791645566452_3710",
