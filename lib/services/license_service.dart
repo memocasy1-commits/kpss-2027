@@ -114,7 +114,7 @@ class LicenseService {
     var deviceId = prefs.getString(_keyDeviceId);
 
     if (deviceId == null || deviceId.trim().isEmpty) {
-      deviceId = _generateNewDeviceId();
+      deviceId = await _generateNewDeviceId();
       await prefs.setString(_keyDeviceId, deviceId);
     }
 
@@ -124,18 +124,45 @@ class LicenseService {
 
   String getDeviceIdSyncFallback() => _cachedDeviceId ?? '';
 
-  /// 12 karakterlik okunması kolay cihaz kodu üretir
-  String _generateNewDeviceId() {
+  Future<String> _getDeviceSlug() async {
+    try {
+      final res = await _platformChannel.invokeMethod<Map>('getDeviceInfo');
+      if (res != null) {
+        String mfg = (res['manufacturer'] ?? '').toString().toUpperCase().trim();
+        String model = (res['model'] ?? '').toString().toUpperCase().trim();
+
+        mfg = mfg.replaceAll(RegExp(r'[^A-Z0-9]'), '');
+        model = model.replaceAll(RegExp(r'[^A-Z0-9]'), '');
+
+        if (mfg.isNotEmpty && model.startsWith(mfg) && model.length > mfg.length) {
+          model = model.substring(mfg.length);
+        }
+
+        if (mfg.length > 7) mfg = mfg.substring(0, 7);
+        if (model.length > 8) model = model.substring(0, 8);
+
+        if (mfg.isNotEmpty && model.isNotEmpty) {
+          return '$mfg-$model';
+        } else if (mfg.isNotEmpty) {
+          return mfg;
+        }
+      }
+    } catch (_) {}
+    return 'MOB';
+  }
+
+  /// Cihaz modelini içeren ve okunması kolay tekil cihaz kodu üretir
+  /// Örn: KPSS-SAMSUNG-S23-8X42-9B1K veya KPSS-XIAOMI-NOTE12-7A9B-3C4D
+  Future<String> _generateNewDeviceId() async {
+    final slug = await _getDeviceSlug();
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 0/O ve 1/I hariç
     final rand = Random.secure();
-    final buffer = StringBuffer('KPSS-');
 
-    for (int i = 0; i < 12; i++) {
-      if (i > 0 && i % 4 == 0) buffer.write('-');
-      buffer.write(chars[rand.nextInt(chars.length)]);
+    String randPart(int len) {
+      return List.generate(len, (_) => chars[rand.nextInt(chars.length)]).join();
     }
 
-    return buffer.toString();
+    return 'KPSS-$slug-${randPart(4)}-${randPart(4)}';
   }
 
   /// Kodları normalize eder (Tire, boşluk temizler, büyük harfe çevirir)

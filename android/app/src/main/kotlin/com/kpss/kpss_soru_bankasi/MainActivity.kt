@@ -37,6 +37,15 @@ class MainActivity : FlutterActivity() {
                     }
                     result.success(true)
                 }
+                "getDeviceInfo" -> {
+                    val info = mapOf(
+                        "manufacturer" to (Build.MANUFACTURER ?: "UNKNOWN"),
+                        "model" to (Build.MODEL ?: "DEVICE"),
+                        "brand" to (Build.BRAND ?: "UNKNOWN"),
+                        "device" to (Build.DEVICE ?: "")
+                    )
+                    result.success(info)
+                }
                 else -> result.notImplemented()
             }
         }
