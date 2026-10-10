@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T15:52:07.836273Z",
+  "updatedAt": "2026-10-10T15:54:56.309322Z",
   "reports": [
     {
       "id": "rep_1791647527237_6013",
@@ -37,7 +37,7 @@
       "userNote": "denemee",
       "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
       "createdAt": "2026-10-10T18:19:26.452207",
-      "status": "pending"
+      "status": "resolved"
     }
   ]
 }
