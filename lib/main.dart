@@ -104,6 +104,8 @@ class _SplashScreenState extends State<SplashScreen> {
         setState(() => _statusText = '${QuestionService.formatNumber(total)} soru hazırlandı, başlatılıyor...');
       }
 
+      // Uzaktan lisans iptali kontrolü yap
+      await LicenseService.instance.checkRevocation();
       final isActivated = await LicenseService.instance.isActivated();
       await LicenseService.instance.applyScreenSecurity();
 

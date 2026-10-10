@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:cryptography/cryptography.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Lisans Durumu ve Süre Bilgisi Modeli
@@ -314,9 +316,82 @@ class LicenseService {
     }
   }
 
+  final ValueNotifier<bool> licenseRevokedNotifier = ValueNotifier<bool>(false);
+
+  /// Lisans bilgilerini tamamen temizler (İptal durumunda veya sıfırlamada)
+  Future<void> clearLicense() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_keyActivationSignature);
+    await prefs.remove(_keyLicenseType);
+    await prefs.remove(_keyActivatedAt);
+    await prefs.remove(_keyExpiresAt);
+    await prefs.remove(_keyLastVerifiedAt);
+    await applyScreenSecurity();
+  }
+
+  /// GitHub üzerinden uzaktan lisans iptal listesini kontrol eder.
+  /// Eğer bu cihaz veya aktif lisans anahtarı iptal listesindeyse,
+  /// yerel lisansı siler ve [licenseRevokedNotifier] değerini true yapar.
+  Future<bool> checkRevocation() async {
+    try {
+      final uri = Uri.parse(
+        'https://raw.githubusercontent.com/memocasy1-commits/kpss-2027/main/revoked_licenses.json?t=${DateTime.now().millisecondsSinceEpoch}',
+      );
+      final res = await http.get(uri).timeout(const Duration(seconds: 8));
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body) as Map<String, dynamic>;
+        final revokedDevices = data['revokedDevices'] as List<dynamic>? ?? [];
+        final revokedKeys = data['revokedKeys'] as List<dynamic>? ?? [];
+
+        final myDeviceId = cleanCode(await getDeviceId());
+        final prefs = await SharedPreferences.getInstance();
+        final mySignature = prefs.getString(_keyActivationSignature) ?? '';
+
+        bool isRevoked = false;
+
+        for (var item in revokedDevices) {
+          if (item is Map) {
+            final devId = cleanCode(item['deviceId']?.toString() ?? '');
+            if (devId.isNotEmpty && devId == myDeviceId) {
+              isRevoked = true;
+              break;
+            }
+          } else if (item is String) {
+            if (cleanCode(item) == myDeviceId) {
+              isRevoked = true;
+              break;
+            }
+          }
+        }
+
+        if (!isRevoked && mySignature.isNotEmpty) {
+          for (var k in revokedKeys) {
+            if (k.toString().trim() == mySignature.trim()) {
+              isRevoked = true;
+              break;
+            }
+          }
+        }
+
+        if (isRevoked) {
+          await clearLicense();
+          licenseRevokedNotifier.value = true;
+          return true;
+        }
+      }
+    } catch (_) {
+      // Çevrimdışı durum veya ağ zaman aşımı
+    }
+    return false;
+  }
+
   /// Uygulamanın aktif lisanslı olup olmadığını doğrular
   Future<bool> isActivated() async {
     final info = await getLicenseInfo();
+    if (info.isValid) {
+      // Arka planda uzaktan iptal durumunu sessizce doğrula
+      checkRevocation();
+    }
     return info.isValid;
   }
 
@@ -370,6 +445,7 @@ class LicenseService {
 
         // Ekran güvenliğini uygula (Deneme sürümüyse SS engelle, sınırsızsa izin ver)
         await applyScreenSecurity();
+        licenseRevokedNotifier.value = false;
 
         return true;
       }

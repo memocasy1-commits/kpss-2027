@@ -49,6 +49,9 @@ class _QuestionReportDialogState extends State<QuestionReportDialog> {
     await QuestionReportService.instance.submitReport(
       questionId: widget.question.id,
       courseId: widget.question.courseId,
+      questionText: widget.question.question,
+      correctAnswer: widget.question.correctAnswer,
+      options: widget.question.options,
       reason: _selectedReason,
       userNote: _noteController.text,
     );
