@@ -1,5 +1,13 @@
 {
-  "updatedAt": "2026-10-10T17:45:00Z",
-  "revokedDevices": [],
+  "updatedAt": "2026-10-10T15:51:17.582080Z",
+  "revokedDevices": [
+    {
+      "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
+      "recipientName": "ADMİN",
+      "deviceModel": "SAMSUNG SM-A566B",
+      "reason": "Yönetici iptali",
+      "revokedAt": "2026-10-10T18:51:17.582052"
+    }
+  ],
   "revokedKeys": []
 }
