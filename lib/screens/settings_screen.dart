@@ -1938,40 +1938,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         ),
                                       );
                                     } else if (info.versionCode <= UpdateService.currentVersionCode) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text('Tebrikler! Uygulamanız en güncel sürümde (v${UpdateService.currentVersionName}).'),
-                                          backgroundColor: const Color(0xFF10B981),
-                                        ),
-                                      );
+                                      UpdateService.showUpToDateDialog(context);
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text('Yeni sürüm bulundu: v${info.versionName}! Aşağıdaki yeşil butondan indirebilirsiniz.'),
-                                          backgroundColor: const Color(0xFF10B981),
-                                        ),
-                                      );
+                                      UpdateService.showUpdateDialog(context, info);
                                     }
                                   }
                                 },
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: double.infinity,
-                        child: TextButton.icon(
-                          icon: const Icon(Icons.open_in_new_rounded, size: 15),
-                          label: Text(
-                            'GitHub Sürümler Sayfasını Aç (Releases)',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: isDark ? const Color(0xFF818CF8) : const Color(0xFF4F46E5),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onPressed: () => UpdateService.instance.launchApkDownload(
-                            'https://github.com/memocasy1-commits/kpss-2027/releases/latest',
-                          ),
                         ),
                       ),
                     ],
