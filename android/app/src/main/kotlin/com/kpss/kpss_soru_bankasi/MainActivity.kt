@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.view.WindowManager
 import androidx.core.app.NotificationCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -23,6 +24,17 @@ class MainActivity : FlutterActivity() {
                     val body = call.argument<String>("body") ?: "Bugünün çalışma planı seni bekliyor!"
                     val id = call.argument<Int>("id") ?: 100
                     showSystemNotification(title, body, id)
+                    result.success(true)
+                }
+                "setSecureScreen" -> {
+                    val enabled = call.argument<Boolean>("enabled") ?: false
+                    runOnUiThread {
+                        if (enabled) {
+                            window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                        } else {
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                        }
+                    }
                     result.success(true)
                 }
                 else -> result.notImplemented()

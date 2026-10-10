@@ -96,16 +96,22 @@ class _ActivationScreenState extends State<ActivationScreen> {
     if (!mounted) return;
 
     if (success) {
+      final info = await LicenseService.instance.getLicenseInfo();
+      if (!mounted) return;
+      final msg = info.isTrial
+          ? 'Tebrikler! ${info.typeLabel} başarıyla aktif edildi.\nKalan Süre: ${info.remainingFormatted}'
+          : 'Tebrikler! Cihazınız başarıyla VIP Tam Sürüm (Sınırsız) olarak lisanslandı.';
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
-            children: const [
-              Icon(Icons.verified_rounded, color: Colors.white, size: 22),
-              SizedBox(width: 10),
+            children: [
+              const Icon(Icons.verified_rounded, color: Colors.white, size: 24),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Tebrikler! Cihazınız başarıyla lisanslandı.',
-                  style: TextStyle(fontWeight: FontWeight.w700),
+                  msg,
+                  style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
               ),
             ],
@@ -113,7 +119,7 @@ class _ActivationScreenState extends State<ActivationScreen> {
           backgroundColor: AppColors.success,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          duration: const Duration(seconds: 2),
+          duration: const Duration(seconds: 3),
         ),
       );
 

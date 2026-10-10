@@ -20,6 +20,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   String _deviceId = 'Yükleniyor...';
   bool _isLicensed = false;
+  LicenseInfo? _licenseInfo;
   final Set<String> _expandedSections = <String>{};
 
   @override
@@ -31,10 +32,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _loadDeviceAndLicenseInfo() async {
     final devId = await LicenseService.instance.getDeviceId();
     final lic = await LicenseService.instance.isActivated();
+    final info = await LicenseService.instance.getLicenseInfo();
+    await LicenseService.instance.applyScreenSecurity();
     if (mounted) {
       setState(() {
         _deviceId = devId;
         _isLicensed = lic;
+        _licenseInfo = info;
       });
     }
   }
@@ -196,15 +200,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: 'Lisans & Cihaz Güvenliği',
                 icon: Icons.verified_user_rounded,
                 iconColor: const Color(0xFF10B981),
-                summary: _isLicensed ? 'VIP Tam Sürüm Aktif' : 'Aktivasyon & Cihaz Kimliği',
+                summary: _isLicensed
+                    ? (_licenseInfo?.isTrial == true
+                        ? '${_licenseInfo?.typeLabel} (${_licenseInfo?.remainingFormatted})'
+                        : 'VIP Tam Sürüm Aktif (Sınırsız)')
+                    : 'Aktivasyon & Cihaz Kimliği',
                 trailingBadge: _isLicensed
                     ? Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF10B981).withValues(alpha: 0.15),
+                          color: (_licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981))
+                              .withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Text('VIP', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF10B981))),
+                        child: Text(
+                          _licenseInfo?.isTrial == true ? (_licenseInfo?.type ?? 'DENEME') : 'VIP',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: _licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981),
+                          ),
+                        ),
                       )
                     : null,
                 content: _buildLicenseSection(isDark, Colors.transparent, Colors.transparent, textPrimary, textSecondary),
@@ -484,12 +500,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
                         color: _isLicensed
-                            ? const Color(0xFF10B981).withValues(alpha: 0.15)
+                            ? (_licenseInfo?.isTrial == true
+                                ? const Color(0xFF3B82F6).withValues(alpha: 0.15)
+                                : const Color(0xFF10B981).withValues(alpha: 0.15))
                             : const Color(0xFFF59E0B).withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: _isLicensed
-                              ? const Color(0xFF10B981).withValues(alpha: 0.4)
+                              ? (_licenseInfo?.isTrial == true
+                                  ? const Color(0xFF3B82F6).withValues(alpha: 0.4)
+                                  : const Color(0xFF10B981).withValues(alpha: 0.4))
                               : const Color(0xFFF59E0B).withValues(alpha: 0.4),
                         ),
                       ),
@@ -497,17 +517,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            _isLicensed ? Icons.check_circle_rounded : Icons.star_rounded,
+                            _isLicensed
+                                ? (_licenseInfo?.isTrial == true ? Icons.timer_outlined : Icons.check_circle_rounded)
+                                : Icons.star_rounded,
                             size: 13,
-                            color: _isLicensed ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
+                            color: _isLicensed
+                                ? (_licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981))
+                                : const Color(0xFFF59E0B),
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            _isLicensed ? 'VIP Tam Sürüm' : 'Ücretsiz Deneme Sürümü',
+                            _isLicensed
+                                ? (_licenseInfo?.isTrial == true
+                                    ? 'Deneme (${_licenseInfo?.remainingFormatted})'
+                                    : 'VIP Tam Sürüm')
+                                : 'Ücretsiz Deneme Sürümü',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: _isLicensed ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
+                              color: _isLicensed
+                                  ? (_licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981))
+                                  : const Color(0xFFF59E0B),
                             ),
                           ),
                         ],
@@ -1212,21 +1242,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Row(
             children: [
               Icon(
-                _isLicensed ? Icons.verified_rounded : Icons.shield_outlined,
-                color: _isLicensed ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
+                _isLicensed
+                    ? (_licenseInfo?.isTrial == true ? Icons.timer_outlined : Icons.verified_rounded)
+                    : Icons.shield_outlined,
+                color: _isLicensed
+                    ? (_licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981))
+                    : const Color(0xFFF59E0B),
                 size: 20,
               ),
               const SizedBox(width: 8),
-              Text(
-                _isLicensed ? 'VIP Lisans Doğrulandı' : 'Lisans Bekleniyor',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: _isLicensed ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
+              Expanded(
+                child: Text(
+                  _isLicensed
+                      ? (_licenseInfo?.isTrial == true
+                          ? '${_licenseInfo?.typeLabel} (Aktif)'
+                          : 'VIP Tam Sürüm (Sınırsız)')
+                      : 'Lisans Bekleniyor',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: _isLicensed
+                        ? (_licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981))
+                        : const Color(0xFFF59E0B),
+                  ),
                 ),
               ),
             ],
           ),
+          if (_isLicensed && _licenseInfo?.isTrial == true) ...[
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF3B82F6).withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFF3B82F6).withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.hourglass_top_rounded, color: Color(0xFF3B82F6), size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Kalan Süre: ${_licenseInfo?.remainingFormatted}\n(Deneme sürümünde telif koruması için SS alımı kapalıdır)',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF2563EB),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           const SizedBox(height: 10),
           Text(
             'Cihaz Benzersiz Donanım Kodu (Hardware ID):',

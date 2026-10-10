@@ -1,14 +1,76 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:cryptography/cryptography.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// Lisans Durumu ve Süre Bilgisi Modeli
+class LicenseInfo {
+  final bool isValid;
+  final bool isTrial;
+  final String type; // '1D', '3D', '7D', 'INF', 'NONE'
+  final DateTime? activatedAt;
+  final DateTime? expiresAt;
+  final Duration? remainingTime;
+
+  LicenseInfo({
+    required this.isValid,
+    required this.isTrial,
+    required this.type,
+    this.activatedAt,
+    this.expiresAt,
+    this.remainingTime,
+  });
+
+  String get remainingFormatted {
+    if (!isValid) return 'Süresi Doldu / Geçersiz';
+    if (!isTrial || remainingTime == null) return 'Sınırsız / Ömür Boyu';
+    final rem = remainingTime!;
+    final days = rem.inDays;
+    final hours = rem.inHours % 24;
+    final minutes = rem.inMinutes % 60;
+    if (days > 0) {
+      return '$days gün $hours saat kaldı';
+    } else if (hours > 0) {
+      return '$hours saat $minutes dk kaldı';
+    } else {
+      return '${minutes.clamp(1, 60)} dakika kaldı';
+    }
+  }
+
+  String get typeLabel {
+    switch (type) {
+      case '1D':
+        return '1 Günlük Deneme Sürümü';
+      case '3D':
+        return '3 Günlük Deneme Sürümü';
+      case '7D':
+        return '7 Günlük Deneme Sürümü';
+      case 'INF':
+        return 'VIP Tam Sürüm (Sınırsız)';
+      default:
+        return 'Lisanssız Sürüm';
+    }
+  }
+
+  String get badgeText {
+    if (!isValid) return 'Lisans Bekleniyor';
+    if (!isTrial) return 'VIP Tam Sürüm (Sınırsız)';
+    return 'Deneme Sürümü ($remainingFormatted)';
+  }
+}
+
+class _ParsedKeyInfo {
+  final List<int> signatureBytes;
+  final String type;
+  _ParsedKeyInfo({required this.signatureBytes, required this.type});
+}
 
 /// KPSS Soru Bankası - Asimetrik Kriptografik Lisanslama Servisi (Ed25519)
 /// ---------------------------------------------------------------------
 /// Geliştirici bilgisayarında ÖZEL ANAHTAR (Private Key) ile imzalanan
-/// lisans şifrelerini, uygulama içindeki AÇIK ANAHTAR (Public Key) ile doğrular.
-/// Özel anahtar ASLA APK içerisine dahil edilmez; tersine mühendislik ile lisans
-/// üretici yapılması matematiksel olarak imkansızdır.
+/// 1-3-7 günlük ve sınırsız lisans şifrelerini AÇIK ANAHTAR (Public Key) ile doğrular.
+/// Deneme sürümleri için süre dolumunu ve ekran görüntüsü (SS) güvenliğini denetler.
 class LicenseService {
   static final LicenseService instance = LicenseService._();
   LicenseService._();
@@ -19,7 +81,13 @@ class LicenseService {
 
   static const String _keyDeviceId = "kpss_unique_device_id";
   static const String _keyActivationSignature = "kpss_activation_signature";
+  static const String _keyLicenseType = "kpss_license_type";
   static const String _keyActivatedAt = "kpss_activated_at";
+  static const String _keyExpiresAt = "kpss_expires_at";
+  static const String _keyLastVerifiedAt = "kpss_last_verified_at";
+
+  static const MethodChannel _platformChannel =
+      MethodChannel('com.kpss.kpss_soru_bankasi/notifications');
 
   String? _cachedDeviceId;
   SimplePublicKey? _cachedPublicKey;
@@ -75,48 +143,193 @@ class LicenseService {
     return code.trim().toUpperCase().replaceAll('-', '').replaceAll(' ', '');
   }
 
-  /// Uygulamanın bu cihazda geçerli bir asimetrik imza ile lisanslanıp lisanslanmadığını kontrol eder
-  Future<bool> isActivated() async {
+  /// Deneme sürümü aktifken ekran görüntüsü ve ekran kaydını kapat (Android FLAG_SECURE)
+  Future<void> applyScreenSecurity() async {
+    try {
+      final info = await getLicenseInfo();
+      // Deneme sürümü aktifse veya lisanssız deneme modunda ise SS alımını kapat
+      final bool shouldSecure = (info.isTrial && info.isValid) || !info.isValid;
+      await _platformChannel.invokeMethod('setSecureScreen', {
+        'enabled': shouldSecure,
+      });
+    } catch (_) {}
+  }
+
+  /// Detaylı lisans durumu ve kalan süre bilgisini getirir
+  Future<LicenseInfo> getLicenseInfo() async {
     final prefs = await SharedPreferences.getInstance();
     final storedSig = prefs.getString(_keyActivationSignature);
-    if (storedSig == null || storedSig.isEmpty) return false;
+    if (storedSig == null || storedSig.isEmpty) {
+      return LicenseInfo(
+        isValid: false,
+        isTrial: false,
+        type: 'NONE',
+      );
+    }
 
+    final type = prefs.getString(_keyLicenseType) ?? 'INF';
+    final isTrial = type == '1D' || type == '3D' || type == '7D';
+
+    DateTime? activatedAt;
+    final actStr = prefs.getString(_keyActivatedAt);
+    if (actStr != null) {
+      activatedAt = DateTime.tryParse(actStr);
+    }
+
+    DateTime? expiresAt;
+    final expStr = prefs.getString(_keyExpiresAt);
+    if (expStr != null) {
+      expiresAt = DateTime.tryParse(expStr);
+    }
+
+    final now = DateTime.now();
+
+    // Süre kontrolü
+    if (isTrial && expiresAt != null) {
+      // Saat geri alma kontrolü
+      final lastVerifiedStr = prefs.getString(_keyLastVerifiedAt);
+      if (lastVerifiedStr != null) {
+        final lastVerified = DateTime.tryParse(lastVerifiedStr);
+        if (lastVerified != null &&
+            now.isBefore(lastVerified.subtract(const Duration(hours: 1)))) {
+          // Saat 1 saatten fazla geriye alınmış -> hileli geri alma engellendi
+          return LicenseInfo(
+            isValid: false,
+            isTrial: true,
+            type: type,
+            activatedAt: activatedAt,
+            expiresAt: expiresAt,
+            remainingTime: Duration.zero,
+          );
+        }
+      }
+
+      await prefs.setString(_keyLastVerifiedAt, now.toIso8601String());
+
+      if (now.isAfter(expiresAt)) {
+        return LicenseInfo(
+          isValid: false,
+          isTrial: true,
+          type: type,
+          activatedAt: activatedAt,
+          expiresAt: expiresAt,
+          remainingTime: Duration.zero,
+        );
+      }
+    }
+
+    // Kriptografik imza kontrolü
     final deviceId = await getDeviceId();
     final sigBytes = _parseSignatureBytes(storedSig);
-    if (sigBytes == null || sigBytes.length != 64) return false;
+    if (sigBytes == null || sigBytes.length != 64) {
+      return LicenseInfo(
+        isValid: false,
+        isTrial: isTrial,
+        type: type,
+      );
+    }
 
     try {
       final normId = cleanCode(deviceId);
-      final payload = utf8.encode(normId);
-      final signature = Signature(sigBytes, publicKey: _getPublicKey());
-      final isValid = await _ed25519.verify(payload, signature: signature);
-      return isValid;
+      final publicKey = _getPublicKey();
+      final signature = Signature(sigBytes, publicKey: publicKey);
+
+      bool isValid = false;
+
+      // 1. Tip bazlı imza doğrulama (normId:TYPE)
+      final typedPayload = utf8.encode('$normId:$type');
+      isValid = await _ed25519.verify(typedPayload, signature: signature);
+
+      // 2. Geriye dönük uyumluluk (Sınırsız için sadece normId)
+      if (!isValid && type == 'INF') {
+        final legacyPayload = utf8.encode(normId);
+        isValid = await _ed25519.verify(legacyPayload, signature: signature);
+      }
+
+      if (!isValid) {
+        return LicenseInfo(
+          isValid: false,
+          isTrial: isTrial,
+          type: type,
+        );
+      }
+
+      final remaining = (isTrial && expiresAt != null) ? expiresAt.difference(now) : null;
+
+      return LicenseInfo(
+        isValid: true,
+        isTrial: isTrial,
+        type: type,
+        activatedAt: activatedAt,
+        expiresAt: expiresAt,
+        remainingTime: remaining,
+      );
     } catch (_) {
-      return false;
+      return LicenseInfo(
+        isValid: false,
+        isTrial: isTrial,
+        type: type,
+      );
     }
   }
 
-  /// Kullanıcının girdiği şifreyi doğrular ve geçerliyse cihazı kalıcı olarak aktifleştirir
-  Future<bool> activateWithKey(String inputKey) async {
-    final deviceId = await getDeviceId();
-    final sigBytes = _parseSignatureBytes(inputKey);
+  /// Uygulamanın aktif lisanslı olup olmadığını doğrular
+  Future<bool> isActivated() async {
+    final info = await getLicenseInfo();
+    return info.isValid;
+  }
 
-    if (sigBytes == null || sigBytes.length != 64) {
-      return false;
-    }
+  /// Kullanıcının girdiği şifreyi (1D, 3D, 7D veya INF) doğrular ve cihazı aktifleştirir
+  Future<bool> activateWithKey(String inputKey) async {
+    final parsed = _parseKeyAndType(inputKey);
+    if (parsed == null) return false;
+
+    final deviceId = await getDeviceId();
+    final normId = cleanCode(deviceId);
+    final sigBytes = parsed.signatureBytes;
+    final type = parsed.type; // '1D', '3D', '7D', 'INF'
 
     try {
-      final normId = cleanCode(deviceId);
-      final payload = utf8.encode(normId);
-      final signature = Signature(sigBytes, publicKey: _getPublicKey());
+      final publicKey = _getPublicKey();
+      final signature = Signature(sigBytes, publicKey: publicKey);
 
-      final isValid = await _ed25519.verify(payload, signature: signature);
+      bool isValid = false;
+
+      // 1. Tip bazlı imza kontrolü
+      final typedPayload = utf8.encode('$normId:$type');
+      isValid = await _ed25519.verify(typedPayload, signature: signature);
+
+      // 2. Geriye dönük uyumluluk (Sınırsız için sadece normId)
+      if (!isValid && type == 'INF') {
+        final legacyPayload = utf8.encode(normId);
+        isValid = await _ed25519.verify(legacyPayload, signature: signature);
+      }
+
       if (isValid) {
         final prefs = await SharedPreferences.getInstance();
-        // İmzayı kalıcı sakla (Base64Url)
         final cleanB64 = base64Url.encode(sigBytes).replaceAll('=', '');
+        final now = DateTime.now();
+
         await prefs.setString(_keyActivationSignature, cleanB64);
-        await prefs.setString(_keyActivatedAt, DateTime.now().toIso8601String());
+        await prefs.setString(_keyLicenseType, type);
+        await prefs.setString(_keyActivatedAt, now.toIso8601String());
+        await prefs.setString(_keyLastVerifiedAt, now.toIso8601String());
+
+        int durationDays = 0;
+        if (type == '1D') durationDays = 1;
+        if (type == '3D') durationDays = 3;
+        if (type == '7D') durationDays = 7;
+
+        if (durationDays > 0) {
+          final expiresAt = now.add(Duration(days: durationDays));
+          await prefs.setString(_keyExpiresAt, expiresAt.toIso8601String());
+        } else {
+          await prefs.remove(_keyExpiresAt);
+        }
+
+        // Ekran güvenliğini uygula (Deneme sürümüyse SS engelle, sınırsızsa izin ver)
+        await applyScreenSecurity();
+
         return true;
       }
     } catch (_) {
@@ -124,6 +337,38 @@ class LicenseService {
     }
 
     return false;
+  }
+
+  /// Anahtar girdisinden süreyi (1D, 3D, 7D, INF) ve 64 byte imzayı ayrıştırır
+  _ParsedKeyInfo? _parseKeyAndType(String input) {
+    var clean = input.trim();
+    String type = 'INF';
+
+    final upper = clean.toUpperCase();
+    if (upper.startsWith('ACT-1D-') || upper.startsWith('ACT_1D_')) {
+      type = '1D';
+      clean = clean.substring(7).trim();
+    } else if (upper.startsWith('ACT-3D-') || upper.startsWith('ACT_3D_')) {
+      type = '3D';
+      clean = clean.substring(7).trim();
+    } else if (upper.startsWith('ACT-7D-') || upper.startsWith('ACT_7D_')) {
+      type = '7D';
+      clean = clean.substring(7).trim();
+    } else if (upper.startsWith('ACT-INF-') || upper.startsWith('ACT_INF_')) {
+      type = 'INF';
+      clean = clean.substring(8).trim();
+    } else if (upper.startsWith('ACT-') || upper.startsWith('ACT_')) {
+      type = 'INF';
+      clean = clean.substring(4).trim();
+    } else if (upper.startsWith('ACT')) {
+      type = 'INF';
+      clean = clean.substring(3).trim();
+    }
+
+    final sigBytes = _parseSignatureBytes(clean);
+    if (sigBytes == null || sigBytes.length != 64) return null;
+
+    return _ParsedKeyInfo(signatureBytes: sigBytes, type: type);
   }
 
   /// Kullanıcı girdisini (Base64, Base64Url veya Hex) ayrıştırarak 64 byte Ed25519 imzasına dönüştürür

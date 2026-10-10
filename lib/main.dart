@@ -105,6 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
 
       final isActivated = await LicenseService.instance.isActivated();
+      await LicenseService.instance.applyScreenSecurity();
 
       if (mounted) {
         final Widget targetScreen = isActivated ? const MainNavigationScreen() : const ActivationScreen();
