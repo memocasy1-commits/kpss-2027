@@ -187,6 +187,14 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     super.dispose();
   }
 
+  
+  EdgeInsets get _screenPadding => EdgeInsets.fromLTRB(
+        16,
+        16,
+        16,
+        16 + MediaQuery.of(context).padding.bottom + 28,
+      );
+
   void _switchTopic(int topicNum) {
     setState(() {
       _selectedTopicNumber = topicNum;
@@ -308,7 +316,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
               ),
             ],
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(88),
+              preferredSize: const Size.fromHeight(114),
               child: Column(
                 children: [
                   // Konu Seçim Şeridi
@@ -344,6 +352,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
                   TabBar(
                     controller: _tabController,
                     isScrollable: true,
+                    tabAlignment: TabAlignment.start,
                     labelColor: brandColor,
                     unselectedLabelColor: textSecondary,
                     indicatorColor: brandColor,
@@ -430,7 +439,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     Color brandColor,
   ) {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -606,31 +615,35 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Column(
-                    children: [
-                      Text('A Rakamı: $_digitA', style: TextStyle(fontWeight: FontWeight.bold, color: textPrimary)),
-                      Slider(
-                        value: _digitA.toDouble(),
-                        min: 1,
-                        max: 9,
-                        divisions: 8,
-                        onChanged: (v) => setState(() => _digitA = v.toInt()),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text('A Rakamı: $_digitA', style: TextStyle(fontWeight: FontWeight.bold, color: textPrimary)),
+                        Slider(
+                          value: _digitA.toDouble(),
+                          min: 1,
+                          max: 9,
+                          divisions: 8,
+                          onChanged: (v) => setState(() => _digitA = v.toInt()),
+                        ),
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      Text('B Rakamı: $_digitB', style: TextStyle(fontWeight: FontWeight.bold, color: textPrimary)),
-                      Slider(
-                        value: _digitB.toDouble(),
-                        min: 1,
-                        max: 9,
-                        divisions: 8,
-                        onChanged: (v) => setState(() => _digitB = v.toInt()),
-                      ),
-                    ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text('B Rakamı: $_digitB', style: TextStyle(fontWeight: FontWeight.bold, color: textPrimary)),
+                        Slider(
+                          value: _digitB.toDouble(),
+                          min: 1,
+                          max: 9,
+                          divisions: 8,
+                          onChanged: (v) => setState(() => _digitB = v.toInt()),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -783,7 +796,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final ekokVal = _lcm(_ebobNumA, _ebobNumB);
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -856,29 +869,33 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          children: [
-                            const Text('EBOB (En Büyük Ortak Bölen)', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, color: Colors.blue)),
-                            const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                              decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
-                              child: Text('$ebobVal', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.blue)),
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Text('EBOB (En Büyük Ortak Bölen)', textAlign: TextAlign.center, style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, color: Colors.blue)),
+                              const SizedBox(height: 4),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
+                                child: Text('$ebobVal', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.blue)),
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          children: [
-                            const Text('EKOK (En Küçük Ortak Kat)', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, color: Colors.purple)),
-                            const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                              decoration: BoxDecoration(color: Colors.purple.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
-                              child: Text('$ekokVal', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.purple)),
-                            ),
-                          ],
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Text('EKOK (En Küçük Ortak Kat)', textAlign: TextAlign.center, style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, color: Colors.purple)),
+                              const SizedBox(height: 4),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                decoration: BoxDecoration(color: Colors.purple.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
+                                child: Text('$ekokVal', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.purple)),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -1207,7 +1224,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     Color brandColor,
   ) {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -1530,7 +1547,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     Color brandColor,
   ) {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -1653,36 +1670,41 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
                     const Text('• 0 sayısı bu aralığın İÇİNDEDİR: -3 < 0 < 5', style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.w600, fontSize: 12.5)),
                     const SizedBox(height: 8),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          children: [
-                            const Text('(-3)² = 9', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                            const SizedBox(height: 2),
-                            const Text('(Uç Nokta)', style: TextStyle(fontSize: 10, color: Colors.grey)),
-                          ],
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Text('(-3)² = 9', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                              const SizedBox(height: 2),
+                              const Text('(Uç Nokta)', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, color: Colors.grey)),
+                            ],
+                          ),
                         ),
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                              decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
-                              child: const Text('0² = 0', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.green)),
-                            ),
-                            const SizedBox(height: 2),
-                            const Text('(En Küçük Değer!)', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.green)),
-                          ],
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
+                                child: const Text('0² = 0', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.green)),
+                              ),
+                              const SizedBox(height: 2),
+                              const Text('(En Küçük Değer!)', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.green)),
+                            ],
+                          ),
                         ),
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                              decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
-                              child: const Text('5² = 25', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.blue)),
-                            ),
-                            const SizedBox(height: 2),
-                            const Text('(Maksimum Üst Sınır)', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue)),
-                          ],
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
+                                child: const Text('5² = 25', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.blue)),
+                              ),
+                              const SizedBox(height: 2),
+                              const Text('(Maksimum Üst Sınır)', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue)),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -1850,7 +1872,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final int simplifiedK = denom != 0 ? _conjK ~/ denom : 1;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -2225,7 +2247,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final int constC = _factorM * _factorN;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -2602,7 +2624,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final double calcDone2 = denom1 != 0 ? (_jobDone1 * denom2) / denom1 : 0.0;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -2931,7 +2953,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final curSys = sysPresets[_k8SysPreset];
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -3052,7 +3074,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final futureDiff = momFuture - kidFuture;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -3166,7 +3188,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final finalRate = totalMass > 0 ? ((_k10MixM1 * _k10MixR1 + _k10MixM2 * _k10MixR2) / totalMass) : 0.0;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -3283,7 +3305,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final jointDays = (_k11WorkerDays1 * _k11WorkerDays2) / (_k11WorkerDays1 + _k11WorkerDays2);
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -3404,7 +3426,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final invFxVal = _k12FuncA != 0 ? ((fxVal - _k12FuncB) / _k12FuncA) : 0.0;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -3520,7 +3542,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final probPct = (pairs.length / 36.0) * 100.0;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -3632,7 +3654,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final smallAngle = diffAngle > 180 ? (360 - diffAngle) : diffAngle;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildInfoBanner(
           brandColor: brandColor,
@@ -3736,7 +3758,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final currentStepIdx = _problemStepProgress[problem.id] ?? 0;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -3767,7 +3789,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
         ),
 
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: _screenPadding,
           decoration: BoxDecoration(
             color: cardBg,
             borderRadius: BorderRadius.circular(16),
@@ -3827,7 +3849,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
           return Container(
             margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
+            padding: _screenPadding,
             decoration: BoxDecoration(
               color: isUnlocked ? cardBg : cardBg.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(16),
@@ -3992,7 +4014,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
         if (currentStepIdx >= problem.steps.length)
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: _screenPadding,
             decoration: BoxDecoration(
               color: Colors.green.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(16),
@@ -4039,7 +4061,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     final trap = traps[_currentTrapIndex];
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         Container(
           padding: const EdgeInsets.all(14),
@@ -4263,7 +4285,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
   ) {
     if (_selectedTopicNumber == 14) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: "1",
@@ -4321,7 +4343,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 13) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: "1",
@@ -4379,7 +4401,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 12) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: "1",
@@ -4437,7 +4459,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 11) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: "1",
@@ -4495,7 +4517,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 10) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: "1",
@@ -4553,7 +4575,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 9) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: "1",
@@ -4611,7 +4633,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 8) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: "1",
@@ -4668,7 +4690,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
     }
     if (_selectedTopicNumber == 7) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: '1',
@@ -4726,7 +4748,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 6) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: '1',
@@ -4784,7 +4806,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 5) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: '1',
@@ -4842,7 +4864,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 4) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: '1',
@@ -4900,7 +4922,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 3) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: '1',
@@ -4958,7 +4980,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     if (_selectedTopicNumber == 2) {
       return ListView(
-        padding: const EdgeInsets.all(16),
+        padding: _screenPadding,
         children: [
           _buildTacticCard(
             number: '1',
@@ -5016,7 +5038,7 @@ class _MathLabScreenState extends State<MathLabScreen> with SingleTickerProvider
 
     // Konu 1 Taktikleri
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: _screenPadding,
       children: [
         _buildTacticCard(
           number: '1',
