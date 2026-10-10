@@ -137,15 +137,16 @@ class StudyPlanService {
           estimatedMinutes: 25,
         ));
 
-        // Zaman kısıtına göre ek Leitner hafıza tekrarı
-        if (goal.dailyHours >= 4.0 || dayIdx % 3 == 0) {
+        // Hata Defteri veya Leitner hafıza tekrarı
+        if (goal.dailyHours >= 4.0 || dayIdx % 2 == 0) {
+          final isWrongNotebook = dayIdx % 4 == 0;
           dayMissions.add(DailyMissionItem(
             id: 'm_${missionCounter++}',
             dayNumber: dayIdx,
-            title: 'Leitner Spaced Repetition Tekrarı',
-            subtitle: 'Önceki günlerde yanlış yapılan soruları erit',
+            title: isWrongNotebook ? 'Hata Defteri Telafi Seansı' : 'Leitner Spaced Repetition Tekrarı',
+            subtitle: isWrongNotebook ? 'Yanlış yaptığın ve yıldızladığın soruları erit' : 'Önceki günlerde zorlandığın soruları hafızaya al',
             type: MissionType.spacedRepetition,
-            targetKey: 'leitner_box',
+            targetKey: isWrongNotebook ? 'wrong_notebook' : 'leitner_box',
             estimatedMinutes: 20,
           ));
         }
@@ -232,10 +233,10 @@ class StudyPlanService {
           dayMissions.add(DailyMissionItem(
             id: 'm_${missionCounter++}',
             dayNumber: dayIdx,
-            title: 'Deneme Analizi & Hata Notları',
-            subtitle: 'Yanlış ve boş soruların video/çözüm incelemesi',
+            title: 'Deneme Hata Analizi & Hata Defteri',
+            subtitle: 'Yanlış ve boş soruların çözümlerini detaylı incele',
             type: MissionType.spacedRepetition,
-            targetKey: 'deneme_review',
+            targetKey: 'wrong_notebook',
             estimatedMinutes: 30,
           ));
         } else {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/question_model.dart';
 import '../services/question_service.dart';
 import '../services/theme_service.dart';
-import '../services/pdf_service.dart';
 import '../services/security_service.dart';
 import '../theme/app_theme.dart';
 import 'exam_screen.dart';
@@ -1139,33 +1138,6 @@ class _TestListScreenState extends State<TestListScreen> {
                       ),
                     ],
                   ),
-                ),
-                IconButton(
-                  tooltip: 'PDF Olarak İndir / Yazdır',
-                  icon: const Icon(Icons.picture_as_pdf_rounded, size: 20, color: Color(0xFFEF4444)),
-                  onPressed: () async {
-                    final canPdf = await SecurityService.instance.canExportPdf();
-                    if (!canPdf) {
-                      if (mounted) {
-                        SecurityService.instance.showLicenseLockDialog(
-                          context: context,
-                          featureTitle: 'A4 PDF Kitapçık Çıktısı',
-                        );
-                      }
-                      return;
-                    }
-                    final questions = QuestionService.instance.getQuestionsForTest(
-                      widget.courseId,
-                      test.testNum,
-                    );
-                    if (mounted) {
-                      PdfService.instance.exportQuestionsAsPdf(
-                        context: context,
-                        title: '${widget.courseTitle} - Test ${test.testNum}',
-                        questions: questions,
-                      );
-                    }
-                  },
                 ),
                 Icon(
                   Icons.arrow_forward_ios_rounded,

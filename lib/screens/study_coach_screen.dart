@@ -12,6 +12,8 @@ import 'spaced_repetition_screen.dart';
 import 'deneme_list_screen.dart';
 import 'test_list_screen.dart';
 
+import 'wrong_questions_screen.dart';
+
 class StudyCoachScreen extends StatefulWidget {
   const StudyCoachScreen({super.key});
 
@@ -125,7 +127,11 @@ class _StudyCoachScreenState extends State<StudyCoachScreen> with SingleTickerPr
         destination = MathLabScreen(initialTopicNumber: topicNum);
         break;
       case MissionType.spacedRepetition:
-        destination = const SpacedRepetitionScreen();
+        if (mission.targetKey == 'wrong_notebook') {
+          destination = const WrongQuestionsScreen();
+        } else {
+          destination = const SpacedRepetitionScreen();
+        }
         break;
       case MissionType.deneme:
         destination = const DenemeListScreen();

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/question_model.dart';
 import '../services/question_service.dart';
 import '../services/theme_service.dart';
-import '../services/pdf_service.dart';
 import '../theme/app_theme.dart';
 import 'exam_screen.dart';
 
@@ -45,25 +44,6 @@ class _WrongQuestionsScreenState extends State<WrongQuestionsScreen> with Single
     }
   }
 
-  void _exportCurrentTabPdf() {
-    final isWrongTab = _tabController.index == 0;
-    final targetList = isWrongTab ? _wrongQuestions : _bookmarkedQuestions;
-    final title = isWrongTab ? 'KPSS Hata Defteri Testi' : 'KPSS Yıldızlı Sorular Testi';
-
-    if (targetList.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Dışa aktarılacak soru bulunmuyor.')),
-      );
-      return;
-    }
-
-    PdfService.instance.exportQuestionsAsPdf(
-      context: context,
-      title: title,
-      questions: targetList,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeModeType>(
@@ -85,11 +65,6 @@ class _WrongQuestionsScreenState extends State<WrongQuestionsScreen> with Single
               style: TextStyle(color: textPrimary, fontSize: 19, fontWeight: FontWeight.bold),
             ),
             actions: [
-              IconButton(
-                tooltip: 'PDF Olarak İndir / Yazdır',
-                icon: const Icon(Icons.picture_as_pdf_rounded, color: Color(0xFFEF4444)),
-                onPressed: _exportCurrentTabPdf,
-              ),
               IconButton(
                 tooltip: 'Yenile',
                 icon: Icon(Icons.refresh_rounded, color: textSecondary),
@@ -256,17 +231,6 @@ class _WrongQuestionsScreenState extends State<WrongQuestionsScreen> with Single
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              OutlinedButton.icon(
-                onPressed: _exportCurrentTabPdf,
-                icon: const Icon(Icons.picture_as_pdf_rounded, size: 18, color: Color(0xFFEF4444)),
-                label: const Text('PDF', style: TextStyle(fontWeight: FontWeight.bold)),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                  side: BorderSide(color: cardBorder),
                 ),
               ),
             ],

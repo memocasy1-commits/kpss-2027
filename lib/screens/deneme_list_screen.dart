@@ -3,7 +3,6 @@ import '../models/deneme_model.dart';
 import '../services/question_service.dart';
 import '../theme/app_theme.dart';
 import '../services/theme_service.dart';
-import '../services/pdf_service.dart';
 import '../services/security_service.dart';
 import 'mock_exam_screen.dart';
 
@@ -433,46 +432,19 @@ class _DenemeListScreenState extends State<DenemeListScreen> {
                   ],
                 ),
                 if (isReady)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        tooltip: 'PDF Kitapçığı İndir / Yazdır',
-                        icon: const Icon(Icons.picture_as_pdf_rounded, color: Color(0xFFEF4444), size: 22),
-                        onPressed: () async {
-                          final canPdf = await SecurityService.instance.canExportPdf();
-                          if (!canPdf) {
-                            if (context.mounted) {
-                              SecurityService.instance.showLicenseLockDialog(
-                                context: context,
-                                featureTitle: 'Deneme PDF Kitapçık Çıktısı',
-                              );
-                            }
-                            return;
-                          }
-                          if (context.mounted) {
-                            PdfService.instance.exportQuestionsAsPdf(
-                              context: context,
-                              title: exam.title,
-                              questions: exam.questions,
-                            );
-                          }
-                        },
-                      ),
-                      const SizedBox(width: 4),
-                      ElevatedButton.icon(
-                        onPressed: () async {
-                          final canAccess = await SecurityService.instance.canAccessDeneme(exam.id);
-                          if (!canAccess) {
-                            if (context.mounted) {
-                              SecurityService.instance.showLicenseLockDialog(
-                                context: context,
-                                featureTitle: exam.title,
-                              );
-                            }
-                            return;
-                          }
-                          if (context.mounted) {
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      final canAccess = await SecurityService.instance.canAccessDeneme(exam.id);
+                      if (!canAccess) {
+                        if (context.mounted) {
+                          SecurityService.instance.showLicenseLockDialog(
+                            context: context,
+                            featureTitle: exam.title,
+                          );
+                        }
+                        return;
+                      }
+                      if (context.mounted) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -489,9 +461,7 @@ class _DenemeListScreenState extends State<DenemeListScreen> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                         ),
-                      ),
-                    ],
-                  )
+                      )
                 else
                   TextButton.icon(
                     onPressed: () {

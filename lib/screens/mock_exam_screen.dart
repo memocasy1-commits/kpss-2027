@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/deneme_model.dart';
 import '../theme/app_theme.dart';
 import '../services/theme_service.dart';
+import '../services/haptic_service.dart';
 import '../widgets/formatted_question_view.dart';
 import '../widgets/source_page_view.dart';
 import '../widgets/question_report_dialog.dart';
@@ -34,6 +37,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
   final Set<int> _flaggedQuestions = {};
 
   void _toggleEliminateOption(int optionIndex) {
+    HapticService.instance.light();
     setState(() {
       final set = _eliminatedOptions.putIfAbsent(_currentIndex, () => <int>{});
       if (set.contains(optionIndex)) {
@@ -42,6 +46,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
         set.add(optionIndex);
       }
     });
+    _saveSession();
   }
 
   // KPSS 130 minutes countdown timer (130 * 60 = 7800 seconds)
@@ -54,12 +59,83 @@ class _MockExamScreenState extends State<MockExamScreen> {
     super.initState();
     _remainingSeconds = widget.deneme.durationMinutes * 60;
     _startTimer();
+    _restoreSessionIfAny();
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _saveSession();
     super.dispose();
+  }
+
+  Future<void> _saveSession() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final data = {
+        'currentIndex': _currentIndex,
+        'userAnswers': _userAnswers.map((k, v) => MapEntry(k.toString(), v)),
+        'eliminatedOptions': _eliminatedOptions.map((k, v) => MapEntry(k.toString(), v.toList())),
+        'flaggedQuestions': _flaggedQuestions.toList(),
+        'remainingSeconds': _remainingSeconds,
+        'elapsedSeconds': _elapsedSeconds,
+        'timestamp': DateTime.now().millisecondsSinceEpoch,
+      };
+      await prefs.setString('kpss_deneme_session_${widget.deneme.id}', jsonEncode(data));
+    } catch (_) {}
+  }
+
+  Future<void> _restoreSessionIfAny() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('kpss_deneme_session_${widget.deneme.id}');
+      if (raw == null || raw.isEmpty) return;
+      final Map<String, dynamic> data = jsonDecode(raw);
+      final int timestamp = data['timestamp'] as int? ?? 0;
+      final diff = DateTime.now().millisecondsSinceEpoch - timestamp;
+      final int remSec = data['remainingSeconds'] as int? ?? 0;
+
+      // Son 48 saat içinde kaydedilmiş ve süresi bitmemiş bir oturum varsa kurtar
+      if (diff < 48 * 3600 * 1000 && remSec > 10) {
+        if (!mounted) return;
+        final answersMap = (data['userAnswers'] as Map<String, dynamic>? ?? {})
+            .map((k, v) => MapEntry(int.parse(k), v as int));
+        final elimMap = (data['eliminatedOptions'] as Map<String, dynamic>? ?? {})
+            .map((k, v) => MapEntry(int.parse(k), (v as List).map((e) => e as int).toSet()));
+        final flags = (data['flaggedQuestions'] as List? ?? []).map((e) => e as int).toSet();
+
+        setState(() {
+          _currentIndex = (data['currentIndex'] as int? ?? 0).clamp(0, widget.deneme.questions.length - 1);
+          _remainingSeconds = remSec;
+          _elapsedSeconds = data['elapsedSeconds'] as int? ?? 0;
+          _userAnswers.clear();
+          _userAnswers.addAll(answersMap);
+          _eliminatedOptions.clear();
+          _eliminatedOptions.addAll(elimMap);
+          _flaggedQuestions.clear();
+          _flaggedQuestions.addAll(flags);
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Önceki deneme sınavı oturumunuz kurtarıldı: Soru ${_currentIndex + 1} (${_userAnswers.length} işaretli)',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: AppColors.primary,
+            duration: const Duration(seconds: 4),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _clearSavedSession() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('kpss_deneme_session_${widget.deneme.id}');
+    } catch (_) {}
   }
 
   void _startTimer() {
@@ -69,6 +145,9 @@ class _MockExamScreenState extends State<MockExamScreen> {
         if (_remainingSeconds > 0) {
           _remainingSeconds--;
           _elapsedSeconds++;
+          if (_elapsedSeconds % 15 == 0) {
+            _saveSession();
+          }
         } else {
           _timer?.cancel();
           _finishExam(autoFinish: true);
@@ -89,6 +168,8 @@ class _MockExamScreenState extends State<MockExamScreen> {
 
   void _finishExam({bool autoFinish = false}) {
     _timer?.cancel();
+    HapticService.instance.medium();
+    _clearSavedSession();
 
     final result = DenemeResult.calculate(
       denemeId: widget.deneme.id,
@@ -585,6 +666,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
                       // Flag Question Button (Şüpheli)
                       InkWell(
                         onTap: () {
+                          HapticService.instance.selection();
                           setState(() {
                             if (isFlagged) {
                               _flaggedQuestions.remove(_currentIndex);
@@ -592,6 +674,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
                               _flaggedQuestions.add(_currentIndex);
                             }
                           });
+                          _saveSession();
                         },
                         borderRadius: BorderRadius.circular(8),
                         child: Container(
@@ -719,6 +802,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
                         padding: const EdgeInsets.only(bottom: 12.0),
                         child: InkWell(
                           onTap: () {
+                            HapticService.instance.selection();
                             setState(() {
                               if (isEliminated) {
                                 _eliminatedOptions[_currentIndex]?.remove(optIdx);
@@ -729,6 +813,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
                                 _userAnswers[_currentIndex] = optIdx; // Mark choice
                               }
                             });
+                            _saveSession();
                           },
                           onLongPress: () => _toggleEliminateOption(optIdx),
                           borderRadius: BorderRadius.circular(14),
@@ -824,7 +909,11 @@ class _MockExamScreenState extends State<MockExamScreen> {
                   children: [
                     ElevatedButton.icon(
                       onPressed: _currentIndex > 0
-                          ? () => setState(() => _currentIndex--)
+                          ? () {
+                              HapticService.instance.selection();
+                              setState(() => _currentIndex--);
+                              _saveSession();
+                            }
                           : null,
                       icon: const Icon(Icons.arrow_back_rounded, size: 18),
                       label: const Text('Önceki Soru'),
@@ -839,7 +928,11 @@ class _MockExamScreenState extends State<MockExamScreen> {
                     ),
                     ElevatedButton.icon(
                       onPressed: _currentIndex < widget.deneme.questions.length - 1
-                          ? () => setState(() => _currentIndex++)
+                          ? () {
+                              HapticService.instance.selection();
+                              setState(() => _currentIndex++);
+                              _saveSession();
+                            }
                           : _showFinishConfirmationDialog,
                       icon: Icon(
                         _currentIndex < widget.deneme.questions.length - 1

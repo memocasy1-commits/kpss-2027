@@ -39,10 +39,53 @@ class MathExpressionWidget extends StatelessWidget {
     );
   }
 
+  static const Map<String, String> _superscriptMap = {
+    '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+    '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹',
+    '+': '⁺', '-': '⁻', '=': '⁼', '(': '⁽', ')': '⁾',
+    'a': 'ᵃ', 'b': 'ᵇ', 'c': 'ᶜ', 'd': 'ᵈ', 'e': 'ᵉ',
+    'k': 'ᵏ', 'm': 'ᵐ', 'n': 'ⁿ', 'p': 'ᵖ', 'r': 'ʳ',
+    's': 'ˢ', 't': 'ᵗ', 'x': 'ˣ', 'y': 'ʸ', 'z': 'ᶻ',
+  };
+
+  /// Matematiksel sembol, üslü sayı ve köklü ifade Unicode normalizasyonu
+  static String normalizeMathText(String input) {
+    if (input.isEmpty) return input;
+    String s = input;
+
+    // 1. Semboller
+    s = s.replaceAll(r'\pm', '±').replaceAll('+/-', '±');
+    s = s.replaceAll('<=', '≤').replaceAll('>=', '≥');
+    s = s.replaceAll(r'\le', '≤').replaceAll(r'\ge', '≥');
+    s = s.replaceAll('!=', '≠').replaceAll(r'\neq', '≠');
+    s = s.replaceAll(r'\times', '×').replaceAll(r'\cdot', '·');
+
+    // 2. Köklü İfadeler: \sqrt{x} veya sqrt(x)
+    s = s.replaceAllMapped(RegExp(r'\\?sqrt\{([^}]+)\}'), (m) => '√(${m.group(1)})');
+    s = s.replaceAllMapped(RegExp(r'\bsqrt\(([^)]+)\)'), (m) => '√(${m.group(1)})');
+
+    // 3. Çarpma Noktası (sayı * sayı veya değişken * değişken)
+    s = s.replaceAllMapped(RegExp(r'(?<=\d|[a-zA-Z])\s*\*\s*(?=\d|[a-zA-Z(])'), (m) => ' · ');
+
+    // 4. Parantezli Üsler: x^(2n+1) -> x²ⁿ⁺¹
+    s = s.replaceAllMapped(RegExp(r'\^\(([-+0-9a-zA-Z]+)\)'), (m) {
+      final exp = m.group(1)!;
+      return exp.split('').map((c) => _superscriptMap[c] ?? c).join();
+    });
+
+    // 5. Standart Üsler: 2^10, x^2, a^n, 10^-3
+    s = s.replaceAllMapped(RegExp(r'\^(-?[0-9]+|[a-zA-Z])'), (m) {
+      final exp = m.group(1)!;
+      return exp.split('').map((c) => _superscriptMap[c] ?? c).join();
+    });
+
+    return s;
+  }
+
   static const String _turkishChars = r'a-zA-Z0-9çğıöşüÇĞİÖŞÜ_';
 
   static final Set<String> _nonMathWords = {
-    'km/sa', 'm/sn', 'm/s', 've/veya', 'kâr/zarar', 'kar/zarar', 'tl/ay', 'kg/sa', 'sayfa/sa', 'pdf',
+    'km/sa', 'm/sn', 'm/s', 've/veya', 'kâr/zarar', 'kar/zarar', 'tl/ay', 'kg/sa', 'sayfa/sa',
     'tl', 'ay', 'yıl', 'gün', 'saat', 'dk', 'sn'
   };
 
@@ -52,6 +95,8 @@ class MathExpressionWidget extends StatelessWidget {
   };
 
   static Widget _buildRichText(BuildContext context, String rawText, TextStyle baseStyle) {
+    final text = normalizeMathText(rawText);
+
     // 1. (pay) / (payda)
     // 2. (pay) / payda
     // 3. pay / (payda)
@@ -63,9 +108,9 @@ class MathExpressionWidget extends StatelessWidget {
       '|(?<![$_turkishChars\\/])(-?(?:\\d+[a-zA-Z]*|[a-zA-Z]{1,2}))\\s*\\/\\s*((?:\\d+[a-zA-Z]*|[a-zA-Z]{1,2}))(?![$_turkishChars\\/])', // 3/4, 2x/3, a/b
     );
 
-    if (!fracRegex.hasMatch(rawText)) {
+    if (!fracRegex.hasMatch(text)) {
       return Text(
-        rawText,
+        text,
         style: baseStyle,
         textAlign: TextAlign.start,
       );
@@ -74,10 +119,10 @@ class MathExpressionWidget extends StatelessWidget {
     final spans = <InlineSpan>[];
     int lastEnd = 0;
 
-    for (final match in fracRegex.allMatches(rawText)) {
+    for (final match in fracRegex.allMatches(text)) {
       if (match.start > lastEnd) {
         spans.add(TextSpan(
-          text: rawText.substring(lastEnd, match.start),
+          text: text.substring(lastEnd, match.start),
           style: baseStyle,
         ));
       }
@@ -210,9 +255,9 @@ class MathExpressionWidget extends StatelessWidget {
       lastEnd = match.end;
     }
 
-    if (lastEnd < rawText.length) {
+    if (lastEnd < text.length) {
       spans.add(TextSpan(
-        text: rawText.substring(lastEnd),
+        text: text.substring(lastEnd),
         style: baseStyle,
       ));
     }

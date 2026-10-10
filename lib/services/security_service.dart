@@ -10,7 +10,7 @@ import '../screens/activation_screen.dart';
 /// 1. Çok Katmanlı Asimetrik İmza Doğrulama: Sadece tek bir boolean değişkene
 ///    güvenmek yerine, her kritik işlemde Ed25519 imzasını cihaz kimliğiyle doğrular.
 /// 2. Derinlemesine Savunma (Defense-in-Depth): main.dart baypass edilse dahi,
-///    testlerin (%99'u), PDF dışa aktarımı ve deneme sınavları kilitli kalır.
+///    testlerin (%99'u), akıllı çalışma özellikleri ve deneme sınavları kilitli kalır.
 /// 3. Bellek Yamalama Savunması: Lisans durumu dinamik SHA-256 token ile mühürlenir.
 class SecurityService {
   static final SecurityService instance = SecurityService._();
@@ -88,10 +88,6 @@ class SecurityService {
     return await verifyLicenseIntegrity();
   }
 
-  /// PDF indirme / yazdırma izni (Lisanslı kullanıcılara özeldir)
-  Future<bool> canExportPdf() async {
-    return await verifyLicenseIntegrity();
-  }
 
   /// 120 Soruluk ÖSYM Deneme Sınavı erişim izni
   Future<bool> canAccessDeneme(dynamic denemeId) async {
@@ -175,7 +171,7 @@ class SecurityService {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '• A4 PDF Kitapçık İndirme ve Yazdırma',
+                      '• Akıllı Koç & İnteraktif Matematik Atölyesi',
                       style: TextStyle(color: textSecondary, fontSize: 12),
                     ),
                     const SizedBox(height: 4),

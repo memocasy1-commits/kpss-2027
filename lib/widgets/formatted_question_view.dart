@@ -25,71 +25,78 @@ class FormattedQuestionView extends StatelessWidget {
     this.hasVisualDiagram = false,
   });
 
+  static final Map<String, ParsedQuestion> _parsedCache = <String, ParsedQuestion>{};
+
   @override
   Widget build(BuildContext context) {
     // Split the raw question into passage/premises and question stem (soru kökü)
     final ParsedQuestion parsed = _parseQuestion(question);
 
-    return ValueListenableBuilder<ThemeModeType>(
-      valueListenable: ThemeService.instance.modeNotifier,
-      builder: (context, themeMode, _) {
-        final bool isDark = AppColors.isDarkMode;
-        final bool isOled = AppColors.isOledMode;
-        final bool isSepia = themeMode == ThemeModeType.sepia;
+    return RepaintBoundary(
+      child: ValueListenableBuilder<ThemeModeType>(
+        valueListenable: ThemeService.instance.modeNotifier,
+        builder: (context, themeMode, _) {
+          final bool isDark = AppColors.isDarkMode;
+          final bool isOled = AppColors.isOledMode;
+          final bool isSepia = themeMode == ThemeModeType.sepia;
 
-        final Color cardBg = AppColors.card;
-        final Color readingBoxBg = isOled
-            ? const Color(0xFF000000)
-            : (isDark
-                ? const Color(0xFF1E293B)
-                : (isSepia ? const Color(0xFFF3EBD8) : const Color(0xFFF1F5F9)));
+          final Color cardBg = AppColors.card;
+          final Color readingBoxBg = isOled
+              ? const Color(0xFF000000)
+              : (isDark
+                  ? const Color(0xFF1E293B)
+                  : (isSepia ? const Color(0xFFF3EBD8) : const Color(0xFFF1F5F9)));
 
-        return SelectionArea(
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            decoration: BoxDecoration(
-              color: cardBg,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: AppColors.cardBorder,
-                width: 1.2,
+          return SelectionArea(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              decoration: BoxDecoration(
+                color: cardBg,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.cardBorder,
+                  width: 1.2,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Passage / Context / Premises (Dedicated Reading Box)
+                  if (parsed.passage.isNotEmpty) ...[
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: readingBoxBg,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.cardBorder.withValues(alpha: 0.7),
+                          width: 1.0,
+                        ),
+                      ),
+                      child: _buildPassageContent(context, parsed.passage),
+                    ),
+                    if (parsed.prompt.isNotEmpty) const SizedBox(height: 14),
+                  ],
+
+                  // Soru Kökü (Prompt) - Bold, high-contrast, authentic exam typography
+                  if (parsed.prompt.isNotEmpty)
+                    _buildPromptText(context, parsed.prompt),
+                ],
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Passage / Context / Premises (Dedicated Reading Box)
-                if (parsed.passage.isNotEmpty) ...[
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: readingBoxBg,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: AppColors.cardBorder.withValues(alpha: 0.7),
-                        width: 1.0,
-                      ),
-                    ),
-                    child: _buildPassageContent(context, parsed.passage),
-                  ),
-                  if (parsed.prompt.isNotEmpty) const SizedBox(height: 14),
-                ],
-
-                // Soru Kökü (Prompt) - Bold, high-contrast, authentic exam typography
-                if (parsed.prompt.isNotEmpty)
-                  _buildPromptText(context, parsed.prompt),
-              ],
-            ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
   /// Parses the question text into passage (including premises) and question prompt.
   ParsedQuestion _parseQuestion(String raw) {
+    final cached = _parsedCache[raw];
+    if (cached != null) return cached;
+
     String text = raw.trim();
 
     String passage = '';
@@ -141,10 +148,15 @@ class FormattedQuestionView extends StatelessWidget {
     }
   }
 
-  return ParsedQuestion(
+    final result = ParsedQuestion(
       passage: passage,
       prompt: prompt,
     );
+    if (_parsedCache.length >= 300) {
+      _parsedCache.clear();
+    }
+    _parsedCache[raw] = result;
+    return result;
   }
 
   bool _looksLikePrompt(String s) {
