@@ -1,13 +1,5 @@
 {
-  "updatedAt": "2026-10-10T15:54:33.046260Z",
-  "revokedDevices": [
-    {
-      "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
-      "recipientName": "Öğrenci",
-      "deviceModel": "Cihaz",
-      "reason": "Hata bildiriminden engellendi",
-      "revokedAt": "2026-10-10T18:54:33.046231"
-    }
-  ],
+  "updatedAt": "2026-10-10T15:57:09.095564Z",
+  "revokedDevices": [],
   "revokedKeys": []
 }
