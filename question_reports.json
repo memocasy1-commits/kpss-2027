@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T16:59:06.937538Z",
+  "updatedAt": "2026-10-10T16:59:10.636737Z",
   "reports": [
     {
       "id": "rep_1791651513837_2647",
@@ -18,25 +18,6 @@
       "userNote": "",
       "deviceId": "KPSS-JQA5-PW3Y-JRTP",
       "createdAt": "2026-10-10T19:58:33.837670",
-      "status": "pending"
-    },
-    {
-      "id": "rep_1791649046838_8815",
-      "questionId": "turkce_k1_t1_q1",
-      "courseId": "turkce",
-      "questionText": "Edebiyat kuramcılarına göre bir metnin estetik değeri, yazarın dili sadece bir iletişim aracı olarak değil, varoluşsal bir kavrayış alanı olarak inşa edebilmesindedir. Bu bağlamda,\n'Ağır' sözcüğü aşağıdaki cümlelerin hangisinde 'keskin, boğucu, tahammül edilmesi güç' anlamında mecazlaşarak kullanılmıştır?",
-      "correctAnswer": "D",
-      "options": [
-        "A) Kamyonun kasasındaki ağır çuvalları iki işçi güçlükle indirebildi.",
-        "B) Konuklarına karşı takındığı ağırbaşlı ve ölçülü tavır herkesin takdirini kazandı.",
-        "C) Yaşlı adam, merdivenleri ağır adımlarla ve dinlenerek çıkıyordu.",
-        "D) Fabrikanın kimyasal atık borusundan çevreye ağır bir koku yayılıyordu.",
-        "E) Ağır sanayi hamlesinin bu bölgede başlatılması ekonomik kalkınmayı hızlandırdı."
-      ],
-      "reason": "Doğru cevap anahtarı veya şıklar hatalı",
-      "userNote": "",
-      "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
-      "createdAt": "2026-10-10T19:17:26.838995",
       "status": "pending"
     }
   ]
