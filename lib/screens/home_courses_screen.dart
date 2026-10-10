@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/license_service.dart';
 import '../services/question_service.dart';
-import 'activation_screen.dart';
 import '../services/theme_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_drawer.dart';
@@ -24,6 +23,7 @@ import '../services/study_plan_service.dart';
 import 'study_coach_screen.dart';
 import '../services/daily_motivation_service.dart';
 import '../widgets/daily_motivation_dialog.dart';
+import 'ozel_soru_bankasi_screen.dart';
 
 class HomeCoursesScreen extends StatefulWidget {
   const HomeCoursesScreen({super.key});
@@ -506,6 +506,26 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (_) => const LectureHubScreen()),
+                              ).then((_) => _loadDashboardData());
+                            },
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Kart 4: Özel Soru Bankası
+                          _buildMajorActionCard(
+                            surfaceBg: surfaceBg,
+                            borderColor: borderColor,
+                            textPrimary: textPrimary,
+                            textSecondary: textSecondary,
+                            accentColor: const Color(0xFF8B5CF6),
+                            icon: Icons.stars_rounded,
+                            badge: 'VIP ARŞİV • 68 BÖLÜM • 7.199 ÇÖZÜMLÜ SORU',
+                            title: 'Özel Soru Bankası',
+                            subtitle: '7 branşta 7.199 sorudan oluşan detaylı çözümlü KPSS soru arşivi.',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const OzelSoruBankasiScreen()),
                               ).then((_) => _loadDashboardData());
                             },
                           ),

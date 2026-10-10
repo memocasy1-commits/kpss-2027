@@ -17,7 +17,7 @@ import '../screens/spaced_repetition_screen.dart';
 import '../screens/lecture_hub_screen.dart';
 import '../screens/math_lab_screen.dart';
 import '../screens/study_coach_screen.dart';
-import 'daily_motivation_dialog.dart';
+import '../screens/ozel_soru_bankasi_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -124,6 +124,26 @@ class AppDrawer extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   physics: const BouncingScrollPhysics(),
                   children: [
+                    // ÖZEL SERİ
+                    _buildSectionHeader('VIP & ÖZEL ARŞİV', textSecondary),
+                    _buildDrawerItem(
+                      icon: Icons.stars_rounded,
+                      color: const Color(0xFF8B5CF6),
+                      title: 'Özel Soru Bankası',
+                      subtitle: '68 Bölüm • 7.199 Çözümlü Soru Arşivi',
+                      textPrimary: textPrimary,
+                      textSecondary: textSecondary,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const OzelSoruBankasiScreen(),
+                          ),
+                        );
+                      },
+                    ),
+
                     // GRUP 1: MODÜLER DERSLER
                     _buildSectionHeader('MODÜLER DERS KÜTÜPHANESİ', textSecondary),
                     _buildDrawerItem(

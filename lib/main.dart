@@ -10,6 +10,7 @@ import 'services/theme_service.dart';
 import 'services/settings_service.dart';
 import 'services/notification_service.dart';
 import 'services/update_service.dart';
+import 'services/ozel_soru_bankasi_service.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -146,11 +147,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _initApp() async {
     try {
-      setState(() => _statusText = '15.000 soru veritabanı hazırlanıyor...');
-      await QuestionService.instance.loadData();
-      final total = QuestionService.instance.grandTotalQuestionCount;
+      setState(() => _statusText = 'Soru bankaları ve çözümlü arşivler hazırlanıyor...');
+      await Future.wait([
+        QuestionService.instance.loadData(),
+        OzelSoruBankasiService.instance.loadData(),
+      ]);
+      final total = QuestionService.instance.grandTotalQuestionCount + OzelSoruBankasiService.instance.grandTotalQuestions;
       if (mounted) {
-        setState(() => _statusText = '${QuestionService.formatNumber(total)} soru hazırlandı, başlatılıyor...');
+        setState(() => _statusText = '${QuestionService.formatNumber(total)} çözümlü soru hazırlandı, başlatılıyor...');
       }
 
       // Uzaktan lisans iptali kontrolü yap
