@@ -1,12 +1,12 @@
 {
-  "versionCode": 19,
-  "versionName": "1.0.18",
-  "version": "1.0.18",
-  "build_number": 19,
-  "apkSize": "101.2 MB",
-  "releaseNotes": "Yenilenen 33 başarı rozeti ve seviye/XP sistemi, günün ilk açılışında başarı sözleri & günün tavsiyesi, metin taşması düzeltmeleri ve güncelleme bildirim geliştirmeleri.",
+  "versionCode": 21,
+  "versionName": "1.0.20",
+  "version": "1.0.20",
+  "build_number": 21,
+  "apkSize": "101.6 MB",
+  "releaseNotes": "Uzaktan lisans iptal & anında aktivasyon altyapısı, sadeleştirilmiş minimal günün sözü açılış kartı ve performans geliştirmeleri.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-10T16:50:00Z",
+  "questionsUpdatedAt": "2026-10-10T17:15:00Z",
   "mandatory": false
 }
