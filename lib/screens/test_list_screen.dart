@@ -877,12 +877,16 @@ class _TestListScreenState extends State<TestListScreen> {
                         const Spacer(),
                         const Icon(Icons.check_circle_rounded, color: AppColors.success, size: 16),
                         const SizedBox(width: 4),
-                        Text(
-                          '${currentTopic.questionCount} Soru (${currentTopic.endTest - currentTopic.startTest + 1} Test)',
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                        Flexible(
+                          child: Text(
+                            '${currentTopic.questionCount} Soru (${currentTopic.endTest - currentTopic.startTest + 1} Test)',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],

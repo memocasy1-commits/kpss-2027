@@ -496,51 +496,57 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: _isLicensed
-                            ? (_licenseInfo?.isTrial == true
-                                ? const Color(0xFF3B82F6).withValues(alpha: 0.15)
-                                : const Color(0xFF10B981).withValues(alpha: 0.15))
-                            : const Color(0xFFF59E0B).withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
                           color: _isLicensed
                               ? (_licenseInfo?.isTrial == true
-                                  ? const Color(0xFF3B82F6).withValues(alpha: 0.4)
-                                  : const Color(0xFF10B981).withValues(alpha: 0.4))
-                              : const Color(0xFFF59E0B).withValues(alpha: 0.4),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            _isLicensed
-                                ? (_licenseInfo?.isTrial == true ? Icons.timer_outlined : Icons.check_circle_rounded)
-                                : Icons.star_rounded,
-                            size: 13,
+                                  ? const Color(0xFF3B82F6).withValues(alpha: 0.15)
+                                  : const Color(0xFF10B981).withValues(alpha: 0.15))
+                              : const Color(0xFFF59E0B).withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
                             color: _isLicensed
-                                ? (_licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981))
-                                : const Color(0xFFF59E0B),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            _isLicensed
                                 ? (_licenseInfo?.isTrial == true
-                                    ? 'Deneme (${_licenseInfo?.remainingFormatted})'
-                                    : 'VIP Tam Sürüm')
-                                : 'Ücretsiz Deneme Sürümü',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
+                                    ? const Color(0xFF3B82F6).withValues(alpha: 0.4)
+                                    : const Color(0xFF10B981).withValues(alpha: 0.4))
+                                : const Color(0xFFF59E0B).withValues(alpha: 0.4),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              _isLicensed
+                                  ? (_licenseInfo?.isTrial == true ? Icons.timer_outlined : Icons.check_circle_rounded)
+                                  : Icons.star_rounded,
+                              size: 13,
                               color: _isLicensed
                                   ? (_licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981))
                                   : const Color(0xFFF59E0B),
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 4),
+                            Flexible(
+                              child: Text(
+                                _isLicensed
+                                    ? (_licenseInfo?.isTrial == true
+                                        ? 'Deneme (${_licenseInfo?.remainingFormatted})'
+                                        : 'VIP Tam Sürüm')
+                                    : 'Ücretsiz Deneme Sürümü',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: _isLicensed
+                                      ? (_licenseInfo?.isTrial == true ? const Color(0xFF3B82F6) : const Color(0xFF10B981))
+                                      : const Color(0xFFF59E0B),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -1312,13 +1318,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SelectableText(
-                  _deviceId,
-                  style: TextStyle(
-                    fontFamily: 'monospace',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13,
-                    color: textPrimary,
+                Expanded(
+                  child: SelectableText(
+                    _deviceId,
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                      color: textPrimary,
+                    ),
                   ),
                 ),
                 InkWell(

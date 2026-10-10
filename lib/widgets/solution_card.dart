@@ -104,13 +104,17 @@ class SolutionCard extends StatelessWidget {
                     child: Icon(Icons.lightbulb_rounded, color: answerIconColor, size: 20),
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    'DOĞRU CEVAP: $correctAnswer',
-                    style: TextStyle(
-                      color: answerColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.5,
+                  Flexible(
+                    child: Text(
+                      'DOĞRU CEVAP: $correctAnswer',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: answerColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                   ),
                   const Spacer(),

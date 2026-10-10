@@ -1657,7 +1657,7 @@ class _LectureDetailScreenState extends State<LectureDetailScreen> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const Spacer(),
+                      const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                         decoration: BoxDecoration(
@@ -2761,15 +2761,19 @@ class _LectureDetailScreenState extends State<LectureDetailScreen> {
                 children: [
                   const Icon(Icons.architecture_rounded, size: 14, color: Color(0xFF4F46E5)),
                   const SizedBox(width: 6),
-                  Text(
-                    'Geometri Çizimi (Büyütmek için dokunun)',
-                    style: TextStyle(
-                      fontSize: 10.5 * fontScale,
-                      fontWeight: FontWeight.w700,
-                      color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF475569),
+                  Expanded(
+                    child: Text(
+                      'Geometri Çizimi (Büyütmek için dokunun)',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 10.5 * fontScale,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF475569),
+                      ),
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(width: 6),
                   const Icon(Icons.zoom_in_rounded, size: 16, color: Color(0xFF4F46E5)),
                 ],
               ),

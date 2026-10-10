@@ -58,27 +58,33 @@ class LectureHubScreen extends StatelessWidget {
                   child: Icon(Icons.import_contacts_rounded, color: brandBlue, size: 20),
                 ),
                 const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'KONU ANLATIMI & KÜTÜPHANE',
-                      style: TextStyle(
-                        color: textPrimary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 0.4,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'KONU ANLATIMI & KÜTÜPHANE',
+                        style: TextStyle(
+                          color: textPrimary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.4,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    Text(
-                      'ÖSYM Odaklı Mikro Konu Notları',
-                      style: TextStyle(
-                        color: textSecondary,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
+                      Text(
+                        'ÖSYM Odaklı Mikro Konu Notları',
+                        style: TextStyle(
+                          color: textSecondary,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -153,9 +159,13 @@ class LectureHubScreen extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          Text(
-                            'Soru Odaklı Notlar',
-                            style: TextStyle(color: textSecondary, fontSize: 11, fontWeight: FontWeight.w600),
+                          Flexible(
+                            child: Text(
+                              'Soru Odaklı Notlar',
+                              style: TextStyle(color: textSecondary, fontSize: 11, fontWeight: FontWeight.w600),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),

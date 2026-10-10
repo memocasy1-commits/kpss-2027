@@ -355,9 +355,9 @@ class _ActivationScreenState extends State<ActivationScreen> {
                                     _deviceId,
                                     style: TextStyle(
                                       color: isDark ? const Color(0xFF38BDF8) : const Color(0xFF0284C7),
-                                      fontSize: 16.5,
+                                      fontSize: 13.5,
                                       fontWeight: FontWeight.w800,
-                                      letterSpacing: 1.5,
+                                      letterSpacing: 0.8,
                                       fontFamily: 'monospace',
                                     ),
                                   ),

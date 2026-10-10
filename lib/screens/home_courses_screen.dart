@@ -783,44 +783,53 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: brandNavy.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: brandNavy.withValues(alpha: 0.2)),
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: brandNavy.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: brandNavy.withValues(alpha: 0.2)),
+                      ),
+                      child: Icon(Icons.event_available_outlined, color: brandNavy, size: 20),
                     ),
-                    child: Icon(Icons.event_available_outlined, color: brandNavy, size: 20),
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '2027 KPSS LİSANS HEDEFİ',
-                        style: TextStyle(
-                          color: textSecondary,
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.6,
-                        ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '2027 KPSS LİSANS HEDEFİ',
+                            style: TextStyle(
+                              color: textSecondary,
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.6,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Hedefe $daysLeft Gün Kaldı',
+                            style: TextStyle(
+                              color: textPrimary,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'Hedefe $daysLeft Gün Kaldı',
-                        style: TextStyle(
-                          color: textPrimary,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
@@ -1244,12 +1253,16 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            'Akıllı Planlama Koçu',
-                            style: TextStyle(
-                              color: textPrimary,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 13.5,
+                          Flexible(
+                            child: Text(
+                              'Akıllı Planlama Koçu',
+                              style: TextStyle(
+                                color: textPrimary,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 13.5,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           const SizedBox(width: 6),
