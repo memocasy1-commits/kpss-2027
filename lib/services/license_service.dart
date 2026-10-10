@@ -384,13 +384,23 @@ class LicenseService {
 
         final prefs = await SharedPreferences.getInstance();
         final mySignature = prefs.getString(_keyActivationSignature) ?? '';
+        final myActivatedAtStr = prefs.getString(_keyActivatedAt);
+        final myActivatedAt = myActivatedAtStr != null ? DateTime.tryParse(myActivatedAtStr) : null;
 
         bool isRevoked = false;
 
         for (var item in revokedDevices) {
           String devIdStr = '';
+          DateTime? revokedAt;
+          String? revokedKey;
+
           if (item is Map) {
             devIdStr = item['deviceId']?.toString() ?? '';
+            final revAtStr = item['revokedAt']?.toString();
+            if (revAtStr != null) {
+              revokedAt = DateTime.tryParse(revAtStr);
+            }
+            revokedKey = item['revokedKey']?.toString();
           } else if (item is String) {
             devIdStr = item;
           }
@@ -399,9 +409,23 @@ class LicenseService {
             final targetClean = cleanCode(devIdStr);
             final targetNorm = targetClean.replaceAll('KPSS', '');
 
-            if (targetClean == myCleanId || targetNorm == myNormId ||
+            final isDeviceMatch = targetClean == myCleanId || targetNorm == myNormId ||
                 (targetNorm.length >= 12 && myNormId.contains(targetNorm)) ||
-                (myNormId.length >= 12 && targetNorm.contains(myNormId))) {
+                (myNormId.length >= 12 && targetNorm.contains(myNormId));
+
+            if (isDeviceMatch) {
+              // Eğer bu iptalden SONRA yeni bir lisans aktive edilmişse, yeni lisans geçerlidir!
+              if (myActivatedAt != null && revokedAt != null && myActivatedAt.isAfter(revokedAt)) {
+                // Yeni lisans iptal tarihinden sonra girilmiş -> iptal uygulanmaz
+                continue;
+              }
+              isRevoked = true;
+              break;
+            }
+          }
+
+          if (revokedKey != null && revokedKey.isNotEmpty && mySignature.isNotEmpty) {
+            if (mySignature.contains(revokedKey) || revokedKey.contains(mySignature)) {
               isRevoked = true;
               break;
             }
