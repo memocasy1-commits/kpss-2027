@@ -19,6 +19,8 @@ import 'lecture_hub_screen.dart';
 import '../services/update_service.dart';
 import '../services/study_plan_service.dart';
 import 'study_coach_screen.dart';
+import '../services/daily_motivation_service.dart';
+import '../widgets/daily_motivation_dialog.dart';
 
 class HomeCoursesScreen extends StatefulWidget {
   const HomeCoursesScreen({super.key});
@@ -81,6 +83,21 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
     super.initState();
     _loadDashboardData();
     _setupUpdateListener();
+    _checkDailyMotivation();
+  }
+
+  void _checkDailyMotivation() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final shouldShow = await DailyMotivationService.instance.shouldShowDailyQuote();
+      if (shouldShow && mounted) {
+        final info = UpdateService.instance.availableUpdateNotifier.value;
+        final bool hasNewApk = info != null && info.versionCode > UpdateService.currentVersionCode;
+        if (!hasNewApk) {
+          DailyMotivationDialog.show(context);
+        }
+      }
+    });
   }
 
   void _setupUpdateListener() {
@@ -880,45 +897,51 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          // Günün Hap Bilgisi Şeridi
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: brandNavy.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: brandNavy.withValues(alpha: 0.15)),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: brandNavy,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    dailyTip['tag'] ?? 'BİLGİ',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 9.5,
-                      fontWeight: FontWeight.w800,
+          // Günün Hap Bilgisi & İlham Şeridi (Dokununca Günün Sözü & Tavsiyesi açılır)
+          InkWell(
+            onTap: () => DailyMotivationDialog.show(context),
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: brandNavy.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: brandNavy.withValues(alpha: 0.15)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: brandNavy,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      dailyTip['tag'] ?? 'BİLGİ',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    dailyTip['tip'] ?? '',
-                    style: TextStyle(
-                      color: textPrimary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      height: 1.35,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      dailyTip['tip'] ?? '',
+                      style: TextStyle(
+                        color: textPrimary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        height: 1.35,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 6),
+                  Icon(Icons.auto_awesome_rounded, size: 14, color: brandNavy.withValues(alpha: 0.7)),
+                ],
+              ),
             ),
           ),
         ],

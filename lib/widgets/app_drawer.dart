@@ -17,6 +17,7 @@ import '../screens/spaced_repetition_screen.dart';
 import '../screens/lecture_hub_screen.dart';
 import '../screens/math_lab_screen.dart';
 import '../screens/study_coach_screen.dart';
+import 'daily_motivation_dialog.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -429,7 +430,7 @@ class AppDrawer extends StatelessWidget {
                       icon: Icons.military_tech_outlined,
                       color: const Color(0xFFD97706),
                       title: 'Başarı Rozetleri',
-                      subtitle: '14 Hedef ve kazanım durumu',
+                      subtitle: 'Seviye, XP ve 33 hedef kazanımı',
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
                       onTap: () {
@@ -438,6 +439,18 @@ class AppDrawer extends StatelessWidget {
                           context,
                           MaterialPageRoute(builder: (_) => const BadgesScreen()),
                         );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      icon: Icons.auto_awesome_rounded,
+                      color: const Color(0xFF6366F1),
+                      title: 'Günün İlhamı & Başarı Sözü',
+                      subtitle: 'Atatürk, Sancar, Başgil ve bilge sözler',
+                      textPrimary: textPrimary,
+                      textSecondary: textSecondary,
+                      onTap: () {
+                        Navigator.pop(context);
+                        DailyMotivationDialog.show(context);
                       },
                     ),
                     _buildDrawerItem(

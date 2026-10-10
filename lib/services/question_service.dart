@@ -1208,6 +1208,14 @@ class QuestionService {
 
     // Update streak
     await _checkAndUpdateStreak(prefs);
+
+    // Track study time habits
+    final hour = DateTime.now().hour;
+    if (hour >= 22 || hour < 4) {
+      await prefs.setInt('stat_night_solved', (prefs.getInt('stat_night_solved') ?? 0) + 1);
+    } else if (hour >= 6 && hour < 9) {
+      await prefs.setInt('stat_morning_solved', (prefs.getInt('stat_morning_solved') ?? 0) + 1);
+    }
   }
 
   Future<void> _checkAndUpdateStreak(SharedPreferences prefs) async {

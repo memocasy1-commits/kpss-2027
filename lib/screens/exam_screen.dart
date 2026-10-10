@@ -11,6 +11,7 @@ import '../widgets/drawing_canvas_overlay.dart';
 import '../services/haptic_service.dart';
 import '../services/leitner_service.dart';
 import '../services/notes_service.dart';
+import '../services/gamification_service.dart';
 import '../widgets/question_report_dialog.dart';
 
 class ExamScreen extends StatefulWidget {
@@ -341,6 +342,10 @@ class _ExamScreenState extends State<ExamScreen> {
       } else {
         emptyCount++;
       }
+    }
+
+    if (correctCount == widget.questions.length && widget.questions.isNotEmpty) {
+      GamificationService.instance.recordPerfectTest();
     }
 
     showDialog(
