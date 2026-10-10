@@ -905,12 +905,9 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          // Günün Hap Bilgisi & İlham Şeridi (Dokununca Günün Sözü & Tavsiyesi açılır)
-          InkWell(
-            onTap: () => DailyMotivationDialog.show(context),
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              padding: const EdgeInsets.all(10),
+          // Günün Hap Bilgisi Şeridi
+          Container(
+            padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: brandNavy.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(10),
@@ -951,7 +948,6 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                 ],
               ),
             ),
-          ),
         ],
       ),
     );

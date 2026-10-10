@@ -441,18 +441,7 @@ class AppDrawer extends StatelessWidget {
                         );
                       },
                     ),
-                    _buildDrawerItem(
-                      icon: Icons.auto_awesome_rounded,
-                      color: const Color(0xFF6366F1),
-                      title: 'Günün İlhamı & Başarı Sözü',
-                      subtitle: 'Atatürk, Sancar, Başgil ve bilge sözler',
-                      textPrimary: textPrimary,
-                      textSecondary: textSecondary,
-                      onTap: () {
-                        Navigator.pop(context);
-                        DailyMotivationDialog.show(context);
-                      },
-                    ),
+
                     _buildDrawerItem(
                       icon: Icons.extension_outlined,
                       color: const Color(0xFF6D28D9),
