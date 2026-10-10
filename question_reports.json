@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T16:59:03.807194Z",
+  "updatedAt": "2026-10-10T16:59:06.937538Z",
   "reports": [
     {
       "id": "rep_1791651513837_2647",
@@ -38,25 +38,6 @@
       "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
       "createdAt": "2026-10-10T19:17:26.838995",
       "status": "pending"
-    },
-    {
-      "id": "rep_1791647527237_6013",
-      "questionId": "mat_t6_q2",
-      "courseId": "matematik",
-      "questionText": "AB ve BA iki basamaklı doğal sayılardır.\n\nAB - BA = 45\n\nolduğuna göre, (A - B) farkı kaçtır?",
-      "correctAnswer": "E",
-      "options": [
-        "A) 3",
-        "B) 4",
-        "C) 7",
-        "D) 6",
-        "E) 5"
-      ],
-      "reason": "Yazım, imla veya harf hatası mevcut",
-      "userNote": "",
-      "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
-      "createdAt": "2026-10-10T18:52:07.238",
-      "status": "resolved"
     }
   ]
 }
