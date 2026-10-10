@@ -17,6 +17,8 @@ import 'spaced_repetition_screen.dart';
 import 'games_hub_screen.dart';
 import 'lecture_hub_screen.dart';
 import '../services/update_service.dart';
+import '../services/study_plan_service.dart';
+import 'study_coach_screen.dart';
 
 class HomeCoursesScreen extends StatefulWidget {
   const HomeCoursesScreen({super.key});
@@ -223,37 +225,44 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
               title: Row(
                 children: [
                   Container(
-                    width: 36,
-                    height: 36,
+                    width: 34,
+                    height: 34,
                     decoration: BoxDecoration(
                       color: surfaceBg,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: borderColor),
                     ),
-                    child: Icon(Icons.school_outlined, color: brandNavy, size: 20),
+                    child: Icon(Icons.school_outlined, color: brandNavy, size: 19),
                   ),
-                  const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'KPSS AKADEMİ',
-                        style: TextStyle(
-                          color: textPrimary,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 0.5,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'KPSS AKADEMİ',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: textPrimary,
+                            fontSize: 14.5,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.5,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Çalışma Masası & Performans',
-                        style: TextStyle(
-                          color: textSecondary,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
+                        Text(
+                          'Çalışma Masası & Performans',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: textSecondary,
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -384,6 +393,15 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                             textSecondary: textSecondary,
                             brandNavy: brandNavy,
                             onTap: _resumeLastStudied,
+                          ),
+                          const SizedBox(height: 14),
+
+                          // 2.5 BÖLÜM: AKILLI PLANLAMA KOÇU ÖZET KARTI
+                          _buildStudyCoachCard(
+                            surfaceBg: surfaceBg,
+                            borderColor: borderColor,
+                            textPrimary: textPrimary,
+                            textSecondary: textSecondary,
                           ),
                           const SizedBox(height: 20),
 
@@ -1171,6 +1189,97 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
               overflow: TextOverflow.ellipsis,
             ),
           ],
+        ),
+      ),
+    );
+  }
+  Widget _buildStudyCoachCard({
+    required Color surfaceBg,
+    required Color borderColor,
+    required Color textPrimary,
+    required Color textSecondary,
+  }) {
+    final hasPlan = StudyPlanService.instance.hasActivePlan;
+    final plan = StudyPlanService.instance.currentPlan;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: surfaceBg,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.35), width: 1.2),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const StudyCoachScreen()),
+            ).then((_) => setState(() {}));
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.25)),
+                  ),
+                  child: const Icon(Icons.psychology_rounded, color: Color(0xFF6366F1), size: 26),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Akıllı Planlama Koçu',
+                            style: TextStyle(
+                              color: textPrimary,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13.5,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              hasPlan ? 'AKTİF' : 'YENİ',
+                              style: const TextStyle(
+                                color: Color(0xFF6366F1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 9.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        hasPlan
+                            ? 'Hedef: ${plan!.goal.targetScore}+ Puan • Gün ${plan.currentDayNumber}/${plan.totalDays} • ${plan.currentStudyDay.completedCount}/${plan.currentStudyDay.missions.length} Görev'
+                            : 'Hedefine göre günlük soru ve konu programı',
+                        style: TextStyle(color: textSecondary, fontSize: 11.5),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right_rounded, color: Color(0xFF6366F1), size: 22),
+              ],
+            ),
+          ),
         ),
       ),
     );

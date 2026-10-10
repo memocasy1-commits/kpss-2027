@@ -1,12 +1,12 @@
 {
-  "versionCode": 14,
-  "versionName": "1.0.13",
-  "version": "1.0.13",
-  "build_number": 14,
+  "versionCode": 15,
+  "versionName": "1.0.14",
+  "version": "1.0.14",
+  "build_number": 15,
   "apkSize": "102.0 MB",
-  "releaseNotes": "Harita Nokta Atışı soru havuzu 86 sorudan tam 200 KPSS coğrafya sorusuna genişletildi (Madenler, Yer Şekilleri, Ovalar & Platolar, Su Kaynakları, Sanayi & Ulaşım, Nüfus & İklim, Turizm & UNESCO).",
+  "releaseNotes": "Üst menü simge çakışması giderildi. Akıllı Planlama Koçu arayüz metinleri sadeleştirildi ve kişiselleştirilmiş rehberlik deneyimi güncellendi.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-09T08:00:00Z",
+  "questionsUpdatedAt": "2026-10-10T09:20:00Z",
   "mandatory": false
 }

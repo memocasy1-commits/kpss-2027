@@ -15,6 +15,8 @@ import '../screens/question_search_screen.dart';
 import '../screens/starred_questions_screen.dart';
 import '../screens/spaced_repetition_screen.dart';
 import '../screens/lecture_hub_screen.dart';
+import '../screens/math_lab_screen.dart';
+import '../screens/study_coach_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -293,11 +295,41 @@ class AppDrawer extends StatelessWidget {
                         );
                       },
                     ),
+                    _buildDrawerItem(
+                      icon: Icons.functions_rounded,
+                      color: const Color(0xFF4F46E5),
+                      title: 'İnteraktif Matematik Atölyesi',
+                      subtitle: 'Konu 1: Temel Kavramlar • Simülatör & Sokratik Çözücü',
+                      textPrimary: textPrimary,
+                      textSecondary: textSecondary,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const MathLabScreen()),
+                        );
+                      },
+                    ),
 
                     const Divider(height: 24, indent: 16, endIndent: 16),
 
                     // GRUP 2.5: AKILLI ÇALIŞMA ARAÇLARI
                     _buildSectionHeader('AKILLI ÇALIŞMA ARAÇLARI', textSecondary),
+                    _buildDrawerItem(
+                      icon: Icons.psychology_rounded,
+                      color: const Color(0xFF6366F1),
+                      title: 'Akıllı Planlama Koçu',
+                      subtitle: 'Hedef ve süreye göre günlük çalışma programı',
+                      textPrimary: textPrimary,
+                      textSecondary: textSecondary,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const StudyCoachScreen()),
+                        );
+                      },
+                    ),
                     _buildDrawerItem(
                       icon: Icons.search_rounded,
                       color: const Color(0xFF2563EB),
