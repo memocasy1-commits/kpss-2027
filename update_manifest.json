@@ -1,12 +1,12 @@
 {
-  "versionCode": 15,
-  "versionName": "1.0.14",
-  "version": "1.0.14",
-  "build_number": 15,
+  "versionCode": 16,
+  "versionName": "1.0.15",
+  "version": "1.0.15",
+  "build_number": 16,
   "apkSize": "102.0 MB",
-  "releaseNotes": "Üst menü simge çakışması giderildi. Akıllı Planlama Koçu arayüz metinleri sadeleştirildi ve kişiselleştirilmiş rehberlik deneyimi güncellendi.",
+  "releaseNotes": "Ayarlar ekranı açılır başlıklara (akordiyon mimarisine) kavuşturuldu; kalabalık arayüz sadeleştirildi. Güncelleme denetimi önbellek temizleme ve doğrudan indirme bağlantıları ile güçlendirildi.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-10T09:20:00Z",
+  "questionsUpdatedAt": "2026-10-10T09:45:00Z",
   "mandatory": false
 }

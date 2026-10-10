@@ -66,8 +66,8 @@ class UpdateService {
   static final UpdateService instance = UpdateService._internal();
   UpdateService._internal();
 
-  static const int currentVersionCode = 15;
-  static const String currentVersionName = '1.0.14';
+  static const int currentVersionCode = 16;
+  static const String currentVersionName = '1.0.15';
 
   // Primary: GitHub Raw & jsDelivr CDN (Sınırsız trafik, Netlify kotasını tüketmez)
   static const List<String> _versionEndpoints = [
@@ -127,12 +127,19 @@ class UpdateService {
     try {
       RemoteVersionInfo? info;
 
-      // Endpointleri sırayla dene (Netlify CDN -> Fallbacks)
+      // Endpointleri sırayla dene (Cache-busting ile)
+      final int cb = DateTime.now().millisecondsSinceEpoch;
       for (final endpoint in _versionEndpoints) {
         try {
-          final res = await http.get(Uri.parse(endpoint)).timeout(
-                const Duration(seconds: 5),
-              );
+          final uri = Uri.parse('$endpoint?_cb=$cb');
+          final res = await http.get(
+            uri,
+            headers: {
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              'Pragma': 'no-cache',
+              'Expires': '0',
+            },
+          ).timeout(const Duration(seconds: 8));
           if (res.statusCode == 200) {
             final data = json.decode(utf8.decode(res.bodyBytes));
             if (data is Map<String, dynamic>) {

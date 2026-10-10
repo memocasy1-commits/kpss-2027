@@ -20,6 +20,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   String _deviceId = 'Yükleniyor...';
   bool _isLicensed = false;
+  final Set<String> _expandedSections = <String>{};
 
   @override
   void initState() {
@@ -70,45 +71,205 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               // 1. Profil & Uygulama Kimlik Kartı
               _buildAppProfileCard(isDark, cardBg, cardBorder, textPrimary, textSecondary),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
-              // 2. Görünüm & Okuma Konforu
-              _buildSectionHeader('GÖRÜNÜM & OKUMA KONFORU', Icons.palette_rounded, isDark),
-              _buildAppearanceSection(themeMode, isDark, cardBg, cardBorder, textPrimary, textSecondary),
-              const SizedBox(height: 20),
+              // Açılır Başlıklar Kontrol Çubuğu (Tümünü Aç / Kapat)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'AYAR KATEGORİLERİ (${_expandedSections.length}/8)',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.8,
+                        color: textSecondary,
+                      ),
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        visualDensity: VisualDensity.compact,
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          if (_expandedSections.length == 8) {
+                            _expandedSections.clear();
+                          } else {
+                            _expandedSections.addAll({
+                              'appearance',
+                              'exam',
+                              'target',
+                              'reminder',
+                              'license',
+                              'data',
+                              'update',
+                              'about',
+                            });
+                          }
+                        });
+                      },
+                      child: Text(
+                        _expandedSections.length == 8 ? 'Tümünü Kapat' : 'Tümünü Aç',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: isDark ? const Color(0xFF818CF8) : const Color(0xFF4F46E5),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
 
-              // 3. Soru Çözüm Tercihleri
-              _buildSectionHeader('SINAV & ÇÖZÜM TERCIHLERİ', Icons.tune_rounded, isDark),
-              _buildExamPreferencesSection(isDark, cardBg, cardBorder, textPrimary, textSecondary),
-              const SizedBox(height: 20),
+              // 1. Görünüm & Okuma Konforu
+              _buildCollapsibleSection(
+                sectionKey: 'appearance',
+                title: 'Görünüm & Okuma Konforu',
+                icon: Icons.palette_rounded,
+                iconColor: const Color(0xFF6366F1),
+                summary: 'Tema modu, yazı boyutu, kontrast ayarları',
+                content: _buildAppearanceSection(themeMode, isDark, Colors.transparent, Colors.transparent, textPrimary, textSecondary),
+                isDark: isDark,
+                cardBg: cardBg,
+                cardBorder: cardBorder,
+                textPrimary: textPrimary,
+                textSecondary: textSecondary,
+              ),
 
-              // 4. KPSS Hedef & Sınav Türü
-              _buildSectionHeader('KPSS HEDEF & PLANLAMA', Icons.flag_rounded, isDark),
-              _buildTargetSection(isDark, cardBg, cardBorder, textPrimary, textSecondary),
-              const SizedBox(height: 20),
+              // 2. Sınav & Çözüm Tercihleri
+              _buildCollapsibleSection(
+                sectionKey: 'exam',
+                title: 'Sınav & Çözüm Tercihleri',
+                icon: Icons.tune_rounded,
+                iconColor: const Color(0xFF0EA5E9),
+                summary: 'Titreşim, anında çözüm ve süre sayacı',
+                content: _buildExamPreferencesSection(isDark, Colors.transparent, Colors.transparent, textPrimary, textSecondary),
+                isDark: isDark,
+                cardBg: cardBg,
+                cardBorder: cardBorder,
+                textPrimary: textPrimary,
+                textSecondary: textSecondary,
+              ),
 
-              // 5. Bildirim & Günlük Hatırlatıcı
-              _buildSectionHeader('BİLDİRİM & GÜNLÜK HATIRLATICI', Icons.notifications_active_rounded, isDark),
-              _buildReminderSection(isDark, cardBg, cardBorder, textPrimary, textSecondary),
-              const SizedBox(height: 20),
+              // 3. KPSS Hedef & Planlama
+              _buildCollapsibleSection(
+                sectionKey: 'target',
+                title: 'KPSS Hedef & Planlama',
+                icon: Icons.flag_rounded,
+                iconColor: const Color(0xFFF59E0B),
+                summary: 'Sınav alanı, hedef puan ve günlük soru hedefi',
+                content: _buildTargetSection(isDark, Colors.transparent, Colors.transparent, textPrimary, textSecondary),
+                isDark: isDark,
+                cardBg: cardBg,
+                cardBorder: cardBorder,
+                textPrimary: textPrimary,
+                textSecondary: textSecondary,
+              ),
 
-              // 6. Lisans & Cihaz Güvenliği
-              _buildSectionHeader('LİSANS & CİHAZ GÜVENLİĞİ', Icons.verified_user_rounded, isDark),
-              _buildLicenseSection(isDark, cardBg, cardBorder, textPrimary, textSecondary),
-              const SizedBox(height: 20),
+              // 4. Bildirim & Günlük Hatırlatıcı
+              _buildCollapsibleSection(
+                sectionKey: 'reminder',
+                title: 'Bildirim & Günlük Hatırlatıcı',
+                icon: Icons.notifications_active_rounded,
+                iconColor: const Color(0xFFEC4899),
+                summary: 'Çalışma saati ve koç hatırlatmaları',
+                content: _buildReminderSection(isDark, Colors.transparent, Colors.transparent, textPrimary, textSecondary),
+                isDark: isDark,
+                cardBg: cardBg,
+                cardBorder: cardBorder,
+                textPrimary: textPrimary,
+                textSecondary: textSecondary,
+              ),
+
+              // 5. Lisans & Cihaz Güvenliği
+              _buildCollapsibleSection(
+                sectionKey: 'license',
+                title: 'Lisans & Cihaz Güvenliği',
+                icon: Icons.verified_user_rounded,
+                iconColor: const Color(0xFF10B981),
+                summary: _isLicensed ? 'VIP Tam Sürüm Aktif' : 'Aktivasyon & Cihaz Kimliği',
+                trailingBadge: _isLicensed
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF10B981).withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text('VIP', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF10B981))),
+                      )
+                    : null,
+                content: _buildLicenseSection(isDark, Colors.transparent, Colors.transparent, textPrimary, textSecondary),
+                isDark: isDark,
+                cardBg: cardBg,
+                cardBorder: cardBorder,
+                textPrimary: textPrimary,
+                textSecondary: textSecondary,
+              ),
 
               // 6. Veri & İlerleme Yönetimi
-              _buildSectionHeader('VERİ & HAFIZA YÖNETİMİ', Icons.storage_rounded, isDark),
-              _buildDataManagementSection(isDark, cardBg, cardBorder, textPrimary, textSecondary),
-              const SizedBox(height: 20),
+              _buildCollapsibleSection(
+                sectionKey: 'data',
+                title: 'Veri & Hafıza Yönetimi',
+                icon: Icons.storage_rounded,
+                iconColor: const Color(0xFFEF4444),
+                summary: 'İlerleme sıfırlama ve soru hafızası temizleme',
+                content: _buildDataManagementSection(isDark, Colors.transparent, Colors.transparent, textPrimary, textSecondary),
+                isDark: isDark,
+                cardBg: cardBg,
+                cardBorder: cardBorder,
+                textPrimary: textPrimary,
+                textSecondary: textSecondary,
+              ),
 
-              // 7. Güncelleme & Canlı Senkronizasyon Modu
-              _buildSectionHeader('GÜNCELLEME & SENKRONİZASYON', Icons.sync_rounded, isDark),
-              _buildUpdateSection(isDark, cardBg, cardBorder, textPrimary, textSecondary, textMuted),
-              const SizedBox(height: 20),
+              // 7. Güncelleme & Senkronizasyon
+              _buildCollapsibleSection(
+                sectionKey: 'update',
+                title: 'Güncelleme & Senkronizasyon',
+                icon: Icons.sync_rounded,
+                iconColor: const Color(0xFF8B5CF6),
+                summary: 'v${UpdateService.currentVersionName} • Canlı soru çekme & APK denetimi',
+                trailingBadge: ValueListenableBuilder<RemoteVersionInfo?>(
+                  valueListenable: UpdateService.instance.availableUpdateNotifier,
+                  builder: (context, updateInfo, _) {
+                    final hasUpdate = updateInfo != null &&
+                        updateInfo.versionCode > UpdateService.currentVersionCode;
+                    if (!hasUpdate) return const SizedBox.shrink();
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF10B981).withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text('YENİ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF10B981))),
+                    );
+                  },
+                ),
+                content: _buildUpdateSection(isDark, cardBg, cardBorder, textPrimary, textSecondary, textMuted),
+                isDark: isDark,
+                cardBg: cardBg,
+                cardBorder: cardBorder,
+                textPrimary: textPrimary,
+                textSecondary: textSecondary,
+              ),
 
               // 8. Uygulama Hakkında & Sürüm
-              _buildAboutSection(isDark, cardBg, cardBorder, textPrimary, textMuted),
+              _buildCollapsibleSection(
+                sectionKey: 'about',
+                title: 'Uygulama Hakkında & Sürüm',
+                icon: Icons.info_outline_rounded,
+                iconColor: const Color(0xFF64748B),
+                summary: 'KPSS 2027 • 15.000 Soru • Telif Hakları',
+                content: _buildAboutSection(isDark, Colors.transparent, Colors.transparent, textPrimary, textMuted),
+                isDark: isDark,
+                cardBg: cardBg,
+                cardBorder: cardBorder,
+                textPrimary: textPrimary,
+                textSecondary: textSecondary,
+              ),
               const SizedBox(height: 32),
             ],
           ),
@@ -117,21 +278,142 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title, IconData icon, bool isDark) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 8),
-      child: Row(
+  Widget _buildCollapsibleSection({
+    required String sectionKey,
+    required String title,
+    required IconData icon,
+    required String summary,
+    required Widget content,
+    required bool isDark,
+    required Color cardBg,
+    required Color cardBorder,
+    required Color textPrimary,
+    required Color textSecondary,
+    Color? iconColor,
+    Widget? trailingBadge,
+  }) {
+    final bool isExpanded = _expandedSections.contains(sectionKey);
+    final Color effectiveIconColor =
+        iconColor ?? (isDark ? const Color(0xFF818CF8) : const Color(0xFF4F46E5));
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isExpanded
+              ? effectiveIconColor.withValues(alpha: 0.45)
+              : cardBorder,
+          width: isExpanded ? 1.5 : 1.0,
+        ),
+        boxShadow: isExpanded
+            ? [
+                BoxShadow(
+                  color: effectiveIconColor.withValues(alpha: isDark ? 0.12 : 0.06),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+              ]
+            : null,
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Icon(icon, size: 16, color: isDark ? const Color(0xFF818CF8) : const Color(0xFF4F46E5)),
-          const SizedBox(width: 8),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.8,
-              color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+          // Tıklanabilir Başlık (Accordion Header)
+          InkWell(
+            onTap: () {
+              setState(() {
+                if (isExpanded) {
+                  _expandedSections.remove(sectionKey);
+                } else {
+                  _expandedSections.add(sectionKey);
+                }
+              });
+            },
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              child: Row(
+                children: [
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: effectiveIconColor.withValues(alpha: isDark ? 0.16 : 0.10),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(icon, size: 20, color: effectiveIconColor),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              title,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: textPrimary,
+                              ),
+                            ),
+                            if (trailingBadge != null) ...[
+                              const SizedBox(width: 8),
+                              trailingBadge,
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          summary,
+                          style: TextStyle(
+                            fontSize: 11.5,
+                            color: textSecondary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  AnimatedRotation(
+                    turns: isExpanded ? 0.5 : 0.0,
+                    duration: const Duration(milliseconds: 240),
+                    curve: Curves.easeInOut,
+                    child: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: 24,
+                      color: isExpanded ? effectiveIconColor : textSecondary,
+                    ),
+                  ),
+                ],
+              ),
             ),
+          ),
+
+          // Açılır İçerik Gövdesi
+          AnimatedCrossFade(
+            firstChild: const SizedBox(width: double.infinity, height: 0),
+            secondChild: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Divider(height: 1, color: cardBorder.withValues(alpha: 0.5)),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, bottom: 8),
+                  child: content,
+                ),
+              ],
+            ),
+            crossFadeState:
+                isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 260),
+            sizeCurve: Curves.easeInOutCubic,
           ),
         ],
       ),
@@ -1566,16 +1848,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               : () async {
                                   final info = await UpdateService.instance.checkForUpdates();
                                   if (context.mounted) {
-                                    if (info == null || info.versionCode <= UpdateService.currentVersionCode) {
+                                    if (info == null) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Güncelleme sunucusuna erişilemedi. Lütfen internet bağlantınızı kontrol edin.'),
+                                          backgroundColor: Color(0xFFEF4444),
+                                        ),
+                                      );
+                                    } else if (info.versionCode <= UpdateService.currentVersionCode) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                           content: Text('Tebrikler! Uygulamanız en güncel sürümde (v${UpdateService.currentVersionName}).'),
                                           backgroundColor: const Color(0xFF10B981),
                                         ),
                                       );
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Yeni sürüm bulundu: v${info.versionName}! Aşağıdaki yeşil butondan indirebilirsiniz.'),
+                                          backgroundColor: const Color(0xFF10B981),
+                                        ),
+                                      );
                                     }
                                   }
                                 },
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton.icon(
+                          icon: const Icon(Icons.open_in_new_rounded, size: 15),
+                          label: Text(
+                            'GitHub Sürümler Sayfasını Aç (Releases)',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isDark ? const Color(0xFF818CF8) : const Color(0xFF4F46E5),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          onPressed: () => UpdateService.instance.launchApkDownload(
+                            'https://github.com/memocasy1-commits/kpss-2027/releases/latest',
+                          ),
                         ),
                       ),
                     ],
