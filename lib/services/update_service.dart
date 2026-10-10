@@ -66,8 +66,8 @@ class UpdateService {
   static final UpdateService instance = UpdateService._internal();
   UpdateService._internal();
 
-  static const int currentVersionCode = 17;
-  static const String currentVersionName = '1.0.16';
+  static const int currentVersionCode = 19;
+  static const String currentVersionName = '1.0.18';
 
   // Primary: GitHub Raw & jsDelivr CDN (Sınırsız trafik, Netlify kotasını tüketmez)
   static const List<String> _versionEndpoints = [
