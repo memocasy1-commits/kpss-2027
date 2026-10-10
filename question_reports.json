@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-10T16:17:27.575076Z",
+  "updatedAt": "2026-10-10T16:58:34.459768Z",
   "reports": [
+    {
+      "id": "rep_1791651513837_2647",
+      "questionId": "mantik_t01_q01",
+      "courseId": "mantik",
+      "questionText": "1 - 4. Soruları Aşağıdaki Bilgilere Göre Birbirinden Bağımsız Olarak Cevaplayınız.\n\nbir şehir maratonu koşusuna katılan Ahmet, Aslı, Ali, Aylin, Alper, Aysel ve Barış adlı yedi kişinin sıradaki yerleşimi ile ilgili şunlar bilinmektedir:\n\n• **Aslı**, Ahmet'ten hemen sonraki sırada yer almaktadır.\n• **Aysel**, tam ortada bulunan 4. sırada yer almaktadır.\n• **Ali** ile **Alper** arasında tam 2 kişi bulunmaktadır ve Ali, Alper'den daha önceki bir sıradadir.\n• **Barış**, son iki sırada (6 veya 7. sırada) yer almamaktadır.\n• **Aylin**, ilk üç sırada yer almamıştır.\n\nBuna göre, aşağıdakilerden hangisi **kesinlikle doğrudur**?",
+      "correctAnswer": "A",
+      "options": [
+        "A) Ali, Alper'den daha önceki bir sırada yer almaktadır.",
+        "B) Aslı, 3. sıradadir.",
+        "C) Aylin, 2. sıradadir.",
+        "D) Barış, 7. sıradadir.",
+        "E) Ahmet, 1. sıradadir."
+      ],
+      "reason": "Çözüm ve açıklama yetersiz / hatalı",
+      "userNote": "",
+      "deviceId": "KPSS-JQA5-PW3Y-JRTP",
+      "createdAt": "2026-10-10T19:58:33.837670",
+      "status": "pending"
+    },
     {
       "id": "rep_1791649046838_8815",
       "questionId": "turkce_k1_t1_q1",
