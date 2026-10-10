@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'services/question_service.dart';
@@ -9,6 +10,8 @@ import 'services/theme_service.dart';
 import 'services/settings_service.dart';
 import 'services/notification_service.dart';
 import 'services/update_service.dart';
+
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +25,53 @@ void main() async {
   runApp(const KpssSoruBankasiApp());
 }
 
-class KpssSoruBankasiApp extends StatelessWidget {
+class KpssSoruBankasiApp extends StatefulWidget {
   const KpssSoruBankasiApp({super.key});
+
+  @override
+  State<KpssSoruBankasiApp> createState() => _KpssSoruBankasiAppState();
+}
+
+class _KpssSoruBankasiAppState extends State<KpssSoruBankasiApp> with WidgetsBindingObserver {
+  Timer? _revocationTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    LicenseService.instance.licenseRevokedNotifier.addListener(_onGlobalLicenseRevoked);
+
+    // Her 15 saniyede bir arka planda sessizce uzaktan iptali kontrol et
+    _revocationTimer = Timer.periodic(const Duration(seconds: 15), (_) {
+      LicenseService.instance.checkRevocation();
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    LicenseService.instance.licenseRevokedNotifier.removeListener(_onGlobalLicenseRevoked);
+    _revocationTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Uygulama arka plandan her öne geldiğinde 0-gecikmeyle hemen kontrol et
+      LicenseService.instance.checkRevocation();
+    }
+  }
+
+  void _onGlobalLicenseRevoked() {
+    if (LicenseService.instance.licenseRevokedNotifier.value) {
+      // Hangi ekranda olursa olsun anında lisans ekranına kilitle
+      rootNavigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const ActivationScreen(isRevokedAlert: true)),
+        (route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +96,7 @@ class KpssSoruBankasiApp extends StatelessWidget {
         }
 
         return MaterialApp(
+          navigatorKey: rootNavigatorKey,
           title: 'KPSS 2027 Çözümlü Soru Bankası',
           debugShowCheckedModeBanner: false,
           theme: activeTheme,

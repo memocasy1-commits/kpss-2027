@@ -6,7 +6,8 @@ import '../theme/app_theme.dart';
 import 'main_navigation_screen.dart';
 
 class ActivationScreen extends StatefulWidget {
-  const ActivationScreen({super.key});
+  final bool isRevokedAlert;
+  const ActivationScreen({super.key, this.isRevokedAlert = false});
 
   @override
   State<ActivationScreen> createState() => _ActivationScreenState();
@@ -179,6 +180,34 @@ class _ActivationScreenState extends State<ActivationScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          if (widget.isRevokedAlert) ...[
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFEF4444).withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(color: const Color(0xFFEF4444).withValues(alpha: 0.5)),
+                              ),
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.block_rounded, color: Color(0xFFEF4444), size: 28),
+                                  SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      'Bu cihazın lisansı yönetici tarafından uzaktan İPTAL EDİLMİŞTİR.\nKullanıma devam etmek için yeni lisans anahtarı giriniz.',
+                                      style: TextStyle(
+                                        color: Color(0xFFEF4444),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                        height: 1.3,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                           const SizedBox(height: 16),
                           // Logo / Shield Icon
                           Container(

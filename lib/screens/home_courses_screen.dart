@@ -40,8 +40,6 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
   bool _isUpdateBannerDismissed = false;
   static bool _hasShownUpdateDialogInSession = false;
 
-  Timer? _revocationTimer;
-
   static const List<Map<String, String>> _dailyTips = [
     {
       'tag': 'VATANDAŞLIK',
@@ -93,66 +91,7 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
   }
 
   void _setupRevocationListener() {
-    LicenseService.instance.licenseRevokedNotifier.addListener(_onLicenseRevokedChanged);
-    // Açılışta uzaktan iptal listesini hemen kontrol et
     LicenseService.instance.checkRevocation();
-    // Arka planda 2 dakikada bir düzenli kontrol sağla
-    _revocationTimer = Timer.periodic(const Duration(minutes: 2), (_) {
-      LicenseService.instance.checkRevocation();
-    });
-  }
-
-  void _onLicenseRevokedChanged() {
-    if (LicenseService.instance.licenseRevokedNotifier.value && mounted) {
-      _handleRevokedUI();
-    }
-  }
-
-  void _handleRevokedUI() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) => PopScope(
-        canPop: false,
-        child: AlertDialog(
-          backgroundColor: AppColors.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Row(
-            children: const [
-              Icon(Icons.block_rounded, color: Color(0xFFEF4444), size: 28),
-              SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Lisansınız İptal Edildi',
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
-                ),
-              ),
-            ],
-          ),
-          content: const Text(
-            'Bu cihazın lisansı yönetici tarafından iptal edilmiştir.\n\nUygulamayı kullanabilmek için lütfen yönetici ile iletişime geçip yeni bir lisans anahtarı edininiz.',
-            style: TextStyle(fontSize: 14, height: 1.4),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const ActivationScreen()),
-                  (route) => false,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFEF4444),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              ),
-              child: const Text('Lisans Ekranına Dön', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   void _checkDailyMotivation() {
@@ -196,8 +135,6 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
 
   @override
   void dispose() {
-    _revocationTimer?.cancel();
-    LicenseService.instance.licenseRevokedNotifier.removeListener(_onLicenseRevokedChanged);
     UpdateService.instance.availableUpdateNotifier.removeListener(_onUpdateAvailableChanged);
     super.dispose();
   }
