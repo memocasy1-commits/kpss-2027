@@ -1,12 +1,12 @@
 {
-  "versionCode": 17,
-  "versionName": "1.0.16",
-  "version": "1.0.16",
-  "build_number": 17,
-  "apkSize": "102.0 MB",
-  "releaseNotes": "Yeni minimalist ve prestijli uygulama simgesi uygulandı. Alt gezinme çubuğu siyah zemin çakışması ve içerik taşması giderildi.",
+  "versionCode": 19,
+  "versionName": "1.0.18",
+  "version": "1.0.18",
+  "build_number": 19,
+  "apkSize": "101.2 MB",
+  "releaseNotes": "Yenilenen 33 başarı rozeti ve seviye/XP sistemi, günün ilk açılışında başarı sözleri & günün tavsiyesi, metin taşması düzeltmeleri ve güncelleme bildirim geliştirmeleri.",
   "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
   "webUrl": "https://kpss-2027.netlify.app",
-  "questionsUpdatedAt": "2026-10-10T10:44:00Z",
+  "questionsUpdatedAt": "2026-10-10T16:50:00Z",
   "mandatory": false
 }
