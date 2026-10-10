@@ -1,0 +1,12 @@
+{
+  "versionCode": 22,
+  "versionName": "1.0.21",
+  "version": "1.0.21",
+  "build_number": 22,
+  "apkSize": "103.0 MB",
+  "releaseNotes": "Özel Soru Bankası eklendi (68 Bölüm, 7.199 çözümlü soru arşivi - Ana sayfa ve menüden doğrudan erişilebilir). Gezinme ve arayüz sadeleştirildi.",
+  "apkUrl": "https://github.com/memocasy1-commits/kpss-2027/releases/latest/download/app-release.apk",
+  "webUrl": "https://kpss-2027.netlify.app",
+  "questionsUpdatedAt": "2026-10-10T21:15:00Z",
+  "mandatory": false
+}
