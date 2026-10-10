@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T16:58:34.459768Z",
+  "updatedAt": "2026-10-10T16:59:02.773975Z",
   "reports": [
     {
       "id": "rep_1791651513837_2647",
@@ -56,25 +56,6 @@
       "userNote": "",
       "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
       "createdAt": "2026-10-10T18:52:07.238",
-      "status": "resolved"
-    },
-    {
-      "id": "rep_1791645566452_3710",
-      "questionId": "mat_t1_q1",
-      "courseId": "matematik",
-      "questionText": "a ve b birer doğal sayıdır.\n\n3a + 4b = 48\n\nolduğuna göre, a'nın alabileceği kaç farklı değer vardır?",
-      "correctAnswer": "B",
-      "options": [
-        "A) 3",
-        "B) 5",
-        "C) 4",
-        "D) 6",
-        "E) 7"
-      ],
-      "reason": "Diğer / Belirtmek istediğim bir husus var",
-      "userNote": "denemee",
-      "deviceId": "KPSS-FA5D-MKBO-GU6C-OCAW-OYNG-43LN-DETW-G3AK-B4",
-      "createdAt": "2026-10-10T18:19:26.452207",
       "status": "resolved"
     }
   ]
