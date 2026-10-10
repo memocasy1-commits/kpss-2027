@@ -110,7 +110,7 @@ class QuestionReportService {
     } catch (_) {}
 
     // 2. GitHub üzerindeki question_reports.json'a aktar (Asenkron)
-    _pushToGitHub(report);
+    await _pushToGitHub(report);
   }
 
   Future<void> _pushToGitHub(QuestionReport report) async {
