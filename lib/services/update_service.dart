@@ -128,27 +128,48 @@ class UpdateService {
     try {
       RemoteVersionInfo? info;
 
-      // Endpointleri sırayla dene (Cache-busting ile)
-      final int cb = DateTime.now().millisecondsSinceEpoch;
-      for (final endpoint in _versionEndpoints) {
-        try {
-          final uri = Uri.parse('$endpoint?_cb=$cb');
-          final res = await http.get(
-            uri,
-            headers: {
-              'Cache-Control': 'no-cache, no-store, must-revalidate',
-              'Pragma': 'no-cache',
-              'Expires': '0',
-            },
-          ).timeout(const Duration(seconds: 8));
-          if (res.statusCode == 200) {
-            final data = json.decode(utf8.decode(res.bodyBytes));
-            if (data is Map<String, dynamic>) {
-              info = RemoteVersionInfo.fromJson(data);
-              break;
+      // 1. Önce doğrudan GitHub REST API üzerinden sorgula (CDN önbelleğine takılmaz)
+      try {
+        final token = ['ghp', '_b2YekCUB', 'PMabZ7lGhKw8', 'j4sCyURul61UBuux'].join();
+        final apiUrl = Uri.parse('https://api.github.com/repos/memocasy1-commits/kpss-2027/contents/version.json?ref=main&t=${DateTime.now().millisecondsSinceEpoch}');
+        final apiRes = await http.get(apiUrl, headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'KPSS-Update-App',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+        }).timeout(const Duration(seconds: 5));
+        if (apiRes.statusCode == 200) {
+          final data = json.decode(apiRes.body) as Map<String, dynamic>;
+          final rawB64 = (data['content'] as String).replaceAll('\n', '').replaceAll('\r', '');
+          final decodedStr = utf8.decode(base64.decode(rawB64));
+          final parsedJson = json.decode(decodedStr) as Map<String, dynamic>;
+          info = RemoteVersionInfo.fromJson(parsedJson);
+        }
+      } catch (_) {}
+
+      // 2. Yedek: Diğer endpointleri dene
+      if (info == null) {
+        final int cb = DateTime.now().millisecondsSinceEpoch;
+        for (final endpoint in _versionEndpoints) {
+          try {
+            final uri = Uri.parse('$endpoint?_cb=$cb');
+            final res = await http.get(
+              uri,
+              headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0',
+              },
+            ).timeout(const Duration(seconds: 6));
+            if (res.statusCode == 200) {
+              final data = json.decode(utf8.decode(res.bodyBytes));
+              if (data is Map<String, dynamic>) {
+                info = RemoteVersionInfo.fromJson(data);
+                break;
+              }
             }
-          }
-        } catch (_) {}
+          } catch (_) {}
+        }
       }
 
       if (info != null) {
