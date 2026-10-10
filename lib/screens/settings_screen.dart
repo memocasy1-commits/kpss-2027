@@ -67,7 +67,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.fromLTRB(
+              16,
+              12,
+              16,
+              12 + MediaQuery.of(context).padding.bottom + 28,
+            ),
             children: [
               // 1. Profil & Uygulama Kimlik Kartı
               _buildAppProfileCard(isDark, cardBg, cardBorder, textPrimary, textSecondary),

@@ -345,7 +345,12 @@ class _HomeCoursesScreenState extends State<HomeCoursesScreen> {
                     onRefresh: _loadDashboardData,
                     child: SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                      padding: EdgeInsets.fromLTRB(
+                        16.0,
+                        16.0,
+                        16.0,
+                        16.0 + MediaQuery.of(context).padding.bottom + 28.0,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

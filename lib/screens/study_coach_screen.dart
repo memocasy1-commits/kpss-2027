@@ -254,7 +254,7 @@ class _StudyCoachScreenState extends State<StudyCoachScreen> with SingleTickerPr
     Color brandColor,
   ) {
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 20 + MediaQuery.of(context).padding.bottom + 28),
       children: [
         // Bilgilendirme Bannerı
         Container(
@@ -398,7 +398,7 @@ class _StudyCoachScreenState extends State<StudyCoachScreen> with SingleTickerPr
     final progress = day.progress;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom + 28),
       children: [
         // İlerleme & Faz Kartı
         Container(
@@ -591,7 +591,7 @@ class _StudyCoachScreenState extends State<StudyCoachScreen> with SingleTickerPr
     final plan = StudyPlanService.instance.currentPlan!;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom + 28),
       children: [
         Text('Pedagojik Faz Dağılımı', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15, color: textPrimary)),
         const SizedBox(height: 12),
@@ -738,7 +738,7 @@ class _StudyCoachScreenState extends State<StudyCoachScreen> with SingleTickerPr
     Color brandColor,
   ) {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom + 28),
       children: [
         Container(
           padding: const EdgeInsets.all(16),

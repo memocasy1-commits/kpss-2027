@@ -123,9 +123,8 @@ class ThemeService {
         statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
         systemNavigationBarColor: navBg,
         systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-        systemNavigationBarDividerColor: isOled
-            ? const Color(0xFF141414)
-            : (isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0)),
+        systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarContrastEnforced: false,
       ),
     );
   }

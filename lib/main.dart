@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'services/question_service.dart';
 import 'theme/app_theme.dart';
 import 'screens/main_navigation_screen.dart';
@@ -11,6 +12,7 @@ import 'services/update_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   await ThemeService.instance.init();
   await SettingsService.instance.init();
   await NotificationService.instance.init();
