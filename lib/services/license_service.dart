@@ -124,45 +124,59 @@ class LicenseService {
 
   String getDeviceIdSyncFallback() => _cachedDeviceId ?? '';
 
-  Future<String> _getDeviceSlug() async {
+  static const String _base32Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+  static const int _xorMask = 0x5B;
+
+  /// Cihaz modelini gizli ve şifreli şekilde içeren seri kod üretir
+  /// Öğrencinin ekranında marka/model düz metin olarak GÖRÜNMEZ.
+  /// Örn: KPSS-BA5D-MKBO-GU6C-OCAW-OYEG-E2TK-DETW-GA3P
+  Future<String> _generateNewDeviceId() async {
+    String brand = 'Android';
+    String model = 'Device';
     try {
       final res = await _platformChannel.invokeMethod<Map>('getDeviceInfo');
       if (res != null) {
-        String mfg = (res['manufacturer'] ?? '').toString().toUpperCase().trim();
-        String model = (res['model'] ?? '').toString().toUpperCase().trim();
-
-        mfg = mfg.replaceAll(RegExp(r'[^A-Z0-9]'), '');
-        model = model.replaceAll(RegExp(r'[^A-Z0-9]'), '');
-
-        if (mfg.isNotEmpty && model.startsWith(mfg) && model.length > mfg.length) {
-          model = model.substring(mfg.length);
-        }
-
-        if (mfg.length > 7) mfg = mfg.substring(0, 7);
-        if (model.length > 8) model = model.substring(0, 8);
-
-        if (mfg.isNotEmpty && model.isNotEmpty) {
-          return '$mfg-$model';
-        } else if (mfg.isNotEmpty) {
-          return mfg;
-        }
+        final mfg = (res['manufacturer'] ?? '').toString().trim();
+        final mdl = (res['model'] ?? '').toString().trim();
+        if (mfg.isNotEmpty) brand = mfg;
+        if (mdl.isNotEmpty) model = mdl;
       }
     } catch (_) {}
-    return 'MOB';
-  }
 
-  /// Cihaz modelini içeren ve okunması kolay tekil cihaz kodu üretir
-  /// Örn: KPSS-SAMSUNG-S23-8X42-9B1K veya KPSS-XIAOMI-NOTE12-7A9B-3C4D
-  Future<String> _generateNewDeviceId() async {
-    final slug = await _getDeviceSlug();
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 0/O ve 1/I hariç
+    // 4 karakterlik rastgele güvenlik tuzu
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     final rand = Random.secure();
+    final salt = List.generate(4, (_) => chars[rand.nextInt(chars.length)]).join();
 
-    String randPart(int len) {
-      return List.generate(len, (_) => chars[rand.nextInt(chars.length)]).join();
+    final raw = utf8.encode('$brand|$model|$salt');
+    final masked = raw.map((b) => b ^ _xorMask).toList();
+
+    var bitBuffer = 0;
+    var bitCount = 0;
+    final result = StringBuffer();
+
+    for (final b in masked) {
+      bitBuffer = (bitBuffer << 8) | b;
+      bitCount += 8;
+      while (bitCount >= 5) {
+        bitCount -= 5;
+        final index = (bitBuffer >> bitCount) & 0x1F;
+        result.write(_base32Alphabet[index]);
+      }
     }
 
-    return 'KPSS-$slug-${randPart(4)}-${randPart(4)}';
+    if (bitCount > 0) {
+      final index = (bitBuffer << (5 - bitCount)) & 0x1F;
+      result.write(_base32Alphabet[index]);
+    }
+
+    final enc = result.toString();
+    final chunks = <String>[];
+    for (var i = 0; i < enc.length; i += 4) {
+      final end = (i + 4 < enc.length) ? i + 4 : enc.length;
+      chunks.add(enc.substring(i, end));
+    }
+    return 'KPSS-${chunks.join("-")}';
   }
 
   /// Kodları normalize eder (Tire, boşluk temizler, büyük harfe çevirir)
