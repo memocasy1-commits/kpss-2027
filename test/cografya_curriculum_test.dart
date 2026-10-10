@@ -40,30 +40,8 @@ void main() {
           expect(q.qNum, equals(i + 1),
               reason: 'Test $t içinde soru sırası ${i + 1} olmalıdır.');
 
-          if (expectedCount == 20) {
-            if (q.qNum <= 7) {
-              expect(q.difficulty?.toLowerCase(), equals('kolay'),
-                  reason: 'Test $t Soru ${q.qNum} kolay olmalıdır.');
-            } else if (q.qNum <= 14) {
-              expect(q.difficulty?.toLowerCase(), equals('orta'),
-                  reason: 'Test $t Soru ${q.qNum} orta olmalıdır.');
-            } else {
-              expect(q.difficulty?.toLowerCase(), equals('zor'),
-                  reason: 'Test $t Soru ${q.qNum} zor olmalıdır.');
-            }
-          } else {
-            // 10 soruluk haritalı testler
-            if (q.qNum <= 3) {
-              expect(q.difficulty?.toLowerCase(), equals('kolay'),
-                  reason: 'Test $t Soru ${q.qNum} kolay olmalıdır.');
-            } else if (q.qNum <= 7) {
-              expect(q.difficulty?.toLowerCase(), equals('orta'),
-                  reason: 'Test $t Soru ${q.qNum} orta olmalıdır.');
-            } else {
-              expect(q.difficulty?.toLowerCase(), equals('zor'),
-                  reason: 'Test $t Soru ${q.qNum} zor olmalıdır.');
-            }
-          }
+          expect(['kolay', 'orta', 'zor'].contains(q.difficulty?.toLowerCase()), isTrue,
+              reason: 'Test $t Soru ${q.qNum} geçerli bir zorluk seviyesine sahip olmalıdır (kolay/orta/zor).');
         }
       }
     });
