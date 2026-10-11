@@ -1,13 +1,5 @@
 {
   "updatedAt": "2026-10-11T07:35:00Z",
-  "revokedDevices": [
-    {
-      "deviceId": "TEST-DEVICE-123",
-      "recipientName": "Test",
-      "deviceModel": "TestModel",
-      "reason": "Test",
-      "revokedAt": "2026-10-11T07:35:00Z"
-    }
-  ],
+  "revokedDevices": [],
   "revokedKeys": []
 }
