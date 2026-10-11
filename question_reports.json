@@ -1,13 +1,4 @@
 {
   "updatedAt": "2026-10-11T07:35:00Z",
-  "reports": [
-    {
-      "id": "test_rep_1",
-      "questionId": "q1",
-      "courseId": "tarih",
-      "reason": "Test",
-      "reportedAt": "2026-10-11T07:35:00Z",
-      "status": "pending"
-    }
-  ]
+  "reports": []
 }
